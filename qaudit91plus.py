@@ -6,7 +6,7 @@ actionName = "History audit"
 class Qaudit91plus():
     def __init__(self, iface):
         self.iface = iface
-        QgsMapLayerRegistry.instance().layersAdded.connect(self.canvasLayersChanged)
+        QgsMapLayerRegistry.instance().layersAdded.connect(self.addLayersActions)
         self.addLayersActions()
 
     def addLayersActions(self):
