@@ -17,6 +17,7 @@ class Qaudit91plus():
         for layerid, layer in QgsMapLayerRegistry.instance().mapLayers().iteritems():
             if layer.dataProvider().name() == "postgres":
                 actionExists = False
+                actions = layer.actions()
                 for i in range(actions.size()):
                     action = actions.at(i)
                     if action.name() == actionName:
