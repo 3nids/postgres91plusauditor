@@ -5,6 +5,7 @@ import re
 class LogLayer():
     def __init__(self):
         self.settings = MySettings()
+        self.results = LogResults()
 
 
     def isValid(self):
@@ -39,8 +40,7 @@ class LogLayer():
         while iterator.nextFeature( logFeature ):
             if logFeature.attribute("schema_name").toString() == dataUri.schema() and logFeature.attribute("table_name").toString() == dataUri.table():
                 data = logFeature.attribute("row_data").toString()
-                id = self.getAttribute(data, pkeyName)
-                if id is not None:
+                if featureId == self.getAttribute(data, pkeyName).toInt()[0]:
                     print data
 
 
@@ -59,5 +59,11 @@ class LogLayer():
             if p:
                 return data[p.start()+1:p.end()-1]
         return None
+
+
+
+class LogResults():
+    def __init__(self):
+        pass
 
 

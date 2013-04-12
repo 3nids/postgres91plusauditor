@@ -10,6 +10,8 @@ from ui.ui_showhistory import Ui_showHistory
 from qgistools.gui import VectorLayerCombo, FieldCombo
 from qgistools.pluginsettings import PluginSettings
 
+columnVarSetting = ("displayColumnDate","displayColumnUser","displayColumnAction","displayColumnChangedFields","displayColumnApplication","displayColumnClientIP")
+columnFancyName = ("Date","User", "Action", "Fields", "Application", "Client IP:port")
 
 class ShowHistoryDialog(QDialog, Ui_showHistory, PluginSettings):
     rejectLater = pyqtSignal()
@@ -25,6 +27,9 @@ class ShowHistoryDialog(QDialog, Ui_showHistory, PluginSettings):
 
         self.logLayer = LogLayer()
 
+        for col in columnVarSetting:
+            self.setting(col).valueChanged.connect(self.displayColumns)
+
         self.layerComboManager = VectorLayerCombo(legendInterface, self.layerCombo, layerId, {"dataProvider":"postgres"})
         pkeyName = ""
         layer = self.layerComboManager.getLayer()
@@ -34,6 +39,7 @@ class ShowHistoryDialog(QDialog, Ui_showHistory, PluginSettings):
                 pkeyName = layer.pendingFields()[pkeyIdx[0]].name()
         self.fieldComboManager = FieldCombo(self.pkeyCombo, self.layerComboManager, pkeyName)
         self.featureEdit.setText( "%s" % featureId )
+        self.displayColumns()
 
         #TODO: disable geometry checkbox if layer has no geom
 
@@ -60,6 +66,19 @@ class ShowHistoryDialog(QDialog, Ui_showHistory, PluginSettings):
                 return
 
             self.searchHistory()
+
+    def displayColumns(self,dummy=None):
+        #self.tableWidget.clear()
+        headerList = []
+        while self.tableWidget.columnCount()>0:
+            self.tableWidget.removeColumn(0)
+        for i,col in enumerate(columnVarSetting):
+            if self.value(col):
+                self.tableWidget.insertColumn(0)
+                headerList.append(columnFancyName[i])
+        self.tableWidget.setHorizontalHeaderLabels(headerList)
+
+
 
 
     def searchHistory(self):
