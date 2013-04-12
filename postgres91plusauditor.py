@@ -2,7 +2,7 @@ from qgis.core import *
 from PyQt4.QtGui import QAction,QIcon
 
 from showhistory import ShowHistoryDialog
-from mysettings import LogLayerChooserDialog
+from loglayerchooserdialog import LogLayerChooserDialog
 
 import resources
 
@@ -64,11 +64,3 @@ class Postgres91plusAuditor():
                 actionStr = "qgis.utils.plugins['%s'].showHistory('%s',[%% $id %%])" % (pluginName, layerid)
 
                 actions.addAction(QgsAction.GenericPython, actionName, actionStr)
-
-
-
-
-     # QgsDataSourceURI(layer.dataProvider().dataSourceUri()).geometryColumn()
-
-
-

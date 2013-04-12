@@ -10,8 +10,11 @@
     <height>84</height>
    </rect>
   </property>
+  <property name="acceptDrops">
+   <bool>false</bool>
+  </property>
   <property name="windowTitle">
-   <string>Postgres Auditor 91 plus :: logged action layer chooser</string>
+   <string>Postgres 91 plus Auditor :: logged action layer chooser</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="1" column="1">
