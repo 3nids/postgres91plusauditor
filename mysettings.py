@@ -12,8 +12,8 @@ from qgistools.gui import VectorLayerCombo
 
 from ui.ui_loglayerchooser import Ui_LogLayerChooser
 from loglayer import LogLayer
+pluginName = "postgres91plusauditor"
 
-pluginName = "postgresauditor91plus"
 
 mySettings = [
     # global settings

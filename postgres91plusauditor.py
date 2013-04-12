@@ -1,22 +1,29 @@
 from qgis.core import *
+from PyQt4.QtGui import QAction,QIcon
 
 from showhistory import ShowHistoryDialog
 from mysettings import LogLayerChooserDialog
 
 actionName = "History audit"
+pluginName = "postgres91plusauditor"
 
 
-class PostgresAuditor91plus():
+class Postgres91plusAuditor():
     def __init__(self, iface):
         self.iface = iface
         QgsMapLayerRegistry.instance().layersAdded.connect(self.addLayersActions)
         self.addLayersActions()
 
     def initGui(self):
-        self.connectLayerAction = QAction(QIcon(":/plugins/itembrowser/icons/connect.png"), "Define logged actions layer", self.iface.mainWindow())
-        self.connectLayerAction.triggered.connect( LogLayerChooserDialog().exec_)
-        self.iface.addToolBarIcon(self.connectLayerAction)
-        self.iface.addPluginToMenu("&Postgres Auditor 91 plus", self.connectLayerAction)
+        # log layer chooser
+        self.connectLayerAction = QAction(QIcon(":/plugins/postgres91plusauditor/icons/connect.png"), "Define logged actions layer", self.iface.mainWindow())
+        self.connectLayerAction.triggered.connect( LogLayerChooserDialog(self.iface.legendInterface()).exec_ )
+        self.iface.addPluginToMenu("&Postgres 91 plus Auditor", self.connectLayerAction)
+        # show history action
+        self.showHistoryAction = QAction(QIcon(":/plugins/postgres91plusauditor/icons/qaudit-64.png"), "Audit logged actions", self.iface.mainWindow())
+        self.showHistoryAction.triggered.connect( ShowHistoryDialog(self.iface.legendInterface()).exec_ )
+        self.iface.addToolBarIcon(self.showHistoryAction)
+        self.iface.addPluginToMenu("&Postgres 91 plus Auditor", self.showHistoryAction)
 
     def unload(self):
         for layerid, layer in QgsMapLayerRegistry.instance().mapLayers().iteritems():
@@ -42,7 +49,7 @@ class PostgresAuditor91plus():
                 if actionExists:
                     break
 
-                actionStr = "qgis.utils.plugins['postgresauditor91plus'].showHistory('%s',[%% $id %%])" % layerid
+                actionStr = "qgis.utils.plugins['%s'].showHistory('%s',[%% $id %%])" % (pluginName, layerid)
 
                 actions.addAction(QgsAction.GenericPython, actionName, actionStr)
 

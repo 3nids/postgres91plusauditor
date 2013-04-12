@@ -1,5 +1,5 @@
 [general]
-name=Postgres Auditor 91 plus
+name=Postgres 91 plus Auditor
 description=Postgres Auditor 91 plus is a QGIS plugin providing a nice UI to rollback changes on postgis layers using the Audit Trigger 91 plus
 version=1.0
 qgisMinimumVersion=1.9
