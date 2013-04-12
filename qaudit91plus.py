@@ -10,7 +10,7 @@ class Qaudit91plus():
         self.addLayersActions()
 
 
-    def initGui(selfself):
+    def initGui(self):
         pass
 
     def addLayersActions(self):
