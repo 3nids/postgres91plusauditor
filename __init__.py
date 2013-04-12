@@ -6,8 +6,8 @@ April. 2013
 """
 
 def classFactory(iface):
-    from qaudit91plus import Qaudit91plus
-    return Qaudit91plus(iface)
+    from postgresauditor91plus import PostgresAuditor91plus
+    return PostgresAuditor91plus(iface)
     
 
 

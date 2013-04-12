@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>501</width>
-    <height>440</height>
+    <width>556</width>
+    <height>355</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -26,18 +26,8 @@
       <property name="margin">
        <number>0</number>
       </property>
-      <item row="0" column="2">
-       <widget class="QLabel" name="label_2">
-        <property name="text">
-         <string>Feature</string>
-        </property>
-       </widget>
-      </item>
       <item row="0" column="1">
        <widget class="QComboBox" name="layerCombo"/>
-      </item>
-      <item row="0" column="3">
-       <widget class="QLineEdit" name="featureEdit"/>
       </item>
       <item row="0" column="0">
        <widget class="QLabel" name="label">
@@ -46,12 +36,45 @@
         </property>
        </widget>
       </item>
-      <item row="0" column="4">
+      <item row="0" column="2">
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>Feature</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="4">
        <widget class="QPushButton" name="searchButton">
         <property name="text">
          <string>search</string>
         </property>
        </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QComboBox" name="pkeyCombo"/>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_3">
+        <property name="text">
+         <string>Primary key</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="3">
+       <spacer name="horizontalSpacer_3">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="0" column="3" colspan="2">
+       <widget class="QLineEdit" name="featureEdit"/>
       </item>
      </layout>
     </widget>
@@ -66,15 +89,93 @@
        <property name="margin">
         <number>0</number>
        </property>
-       <item row="0" column="0">
-        <widget class="QToolButton" name="toolButton">
-         <property name="text">
-          <string>...</string>
-         </property>
-        </widget>
+       <item row="3" column="0">
+        <widget class="QTableWidget" name="tableWidget"/>
        </item>
        <item row="1" column="0">
-        <widget class="QTableWidget" name="tableWidget"/>
+        <widget class="QgsCollapsibleGroupBoxBasic" name="groupBox_2">
+         <property name="title">
+          <string>Advanced search</string>
+         </property>
+         <property name="collapsed" stdset="0">
+          <bool>true</bool>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_8">
+          <item row="0" column="0">
+           <widget class="QCheckBox" name="searchOnlyGeometry">
+            <property name="text">
+             <string>Search only for geometry changes</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QgsCollapsibleGroupBoxBasic" name="groupBox">
+         <property name="title">
+          <string>Columns</string>
+         </property>
+         <property name="collapsed" stdset="0">
+          <bool>true</bool>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_7">
+          <item row="0" column="1">
+           <widget class="QCheckBox" name="displayColumnChangedFields">
+            <property name="text">
+             <string>changed fields</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QCheckBox" name="displayColumnAction">
+            <property name="text">
+             <string>action</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QCheckBox" name="displayColumnDate">
+            <property name="text">
+             <string>date</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0">
+           <widget class="QCheckBox" name="displayColumnUser">
+            <property name="text">
+             <string>user</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QCheckBox" name="displayColumnApplication">
+            <property name="text">
+             <string>application</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QCheckBox" name="displayColumnClientIP">
+            <property name="text">
+             <string>client IP:port</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
        </item>
       </layout>
      </widget>
@@ -147,6 +248,14 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QgsCollapsibleGroupBoxBasic</class>
+   <extends>QGroupBox</extends>
+   <header>qgis.gui.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
