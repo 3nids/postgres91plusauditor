@@ -1,8 +1,8 @@
 <RCC>
-    <qresource prefix="/plugins/postres91plusauditor" >
+    <qresource prefix="/plugins/postgres91plusauditor" >
         <file>icons/connect.png</file>
     </qresource>
-    <qresource prefix="/plugins/postres91plusauditor" >
+    <qresource prefix="/plugins/postgres91plusauditor" >
         <file>icons/qaudit-64.png</file>
     </qresource>
 </RCC>

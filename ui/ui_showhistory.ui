@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>556</width>
-    <height>355</height>
+    <width>616</width>
+    <height>371</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -28,6 +28,9 @@
       </property>
       <item row="0" column="1">
        <widget class="QComboBox" name="layerCombo"/>
+      </item>
+      <item row="0" column="3" colspan="2">
+       <widget class="QLineEdit" name="featureEdit"/>
       </item>
       <item row="0" column="0">
        <widget class="QLabel" name="label">
@@ -73,9 +76,6 @@
         </property>
        </spacer>
       </item>
-      <item row="0" column="3" colspan="2">
-       <widget class="QLineEdit" name="featureEdit"/>
-      </item>
      </layout>
     </widget>
    </item>
@@ -104,7 +104,8 @@
           <item row="0" column="0">
            <widget class="QCheckBox" name="searchOnlyGeometry">
             <property name="text">
-             <string>Search only for geometry changes</string>
+             <string>Search only for 
+geometry changes</string>
             </property>
            </widget>
           </item>

@@ -21,9 +21,9 @@ mySettings = [
     Bool(pluginName,"displayColumnAction       ", "global", True ),
     Bool(pluginName,"displayColumnDate         ", "global", True ),
     Bool(pluginName,"displayColumnUser         ", "global", True ),
-    Bool(pluginName,"displayColumnApplication  ", "global", True ),
-    Bool(pluginName,"displayColumnClientIP     ", "global", True ),
-    Bool(pluginName,"searchOnlyGeometry        ", "global", True ),
+    Bool(pluginName,"displayColumnApplication  ", "global", False ),
+    Bool(pluginName,"displayColumnClientIP     ", "global", False ),
+    Bool(pluginName,"searchOnlyGeometry        ", "global", False ),
 
     # project
     String(pluginName, "logLayer", "project", "")
@@ -44,7 +44,8 @@ class LogLayerChooserDialog(QDialog, Ui_LogLayerChooser, PluginSettings):
 
 
     def accept(self):
-        if LogLayer(self.layerComboManager.getLayer().id()).isValid():
+        layer = self.layerComboManager.getLayer()
+        if layer is not None and LogLayer(layer.id()).isValid():
             QDialog.accept()
         else:
             self.logLayer.currentIndex(0)

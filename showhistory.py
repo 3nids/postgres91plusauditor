@@ -1,3 +1,4 @@
+from PyQt4.QtCore import *
 from PyQt4.QtGui import QDialog
 from qgis.core import QgsMapLayerRegistry, QgsFeature, QgsFeatureRequest
 
@@ -10,14 +11,19 @@ from qgistools.pluginsettings import PluginSettings
 
 
 class ShowHistoryDialog(QDialog, Ui_showHistory, PluginSettings):
+    rejectLater = pyqtSignal()
+
     def __init__(self, legendInterface, layerId=None, featureId=None):
+        print layerId
         QDialog.__init__(self)
         self.setupUi(self)
         PluginSettings.__init__(self, pluginName, mySettings, False, True) # column chooser, advanced search options
         self.legendInterface = legendInterface
-
         self.layerId = layerId
         self.featureId = featureId
+        self.rejectLater.connect( self.reject, Qt.QueuedConnection )
+
+        self.logLayer = LogLayer( self.value("logLayer") )
 
         self.layerComboManager = VectorLayerCombo(legendInterface, self.layerCombo, layerId, {"dataProvider":"postgres"})
         pkeyName = ""
@@ -31,19 +37,18 @@ class ShowHistoryDialog(QDialog, Ui_showHistory, PluginSettings):
 
 
 
-
     def showEvent(self, e):
-        self.logLayer = LogLayer( self.value("logLayer") )
         if not self.logLayer.isValid():
-            if not LogLayerChooserDialog(self.legendInterface):
-                e.ignore()
-
+            if not LogLayerChooserDialog(self.legendInterface).exec_():
+                self.rejectLater.emit()
+                return
 
         if self.layerId is not None:
             self.layerCombo.setEnabled( False )
             layer = self.layerComboManager.getLayer()
             if layer is None:
-                e.ignore()
+                self.rejectLater.emit()
+                return
 
         if self.featureId is not None:
             self.featureEdit.setEnabled( False )
@@ -51,8 +56,13 @@ class ShowHistoryDialog(QDialog, Ui_showHistory, PluginSettings):
             f = QgsFeature()
             featReq = QgsFeatureRequest().setFilterFid( self.featureId ).setFlags( QgsFeatureRequest.NoGeometry )
             if layer.getFeatures( featReq ).nextFeature( f ) is False:
-                e.ignore()
+                self.rejectLater.emit()
+                return
+
+            self.searcHistory()
 
 
-   # def searchHistory(self):
+    def searchHistory(self):
+        onlyGeometry = self.value("searchOnlyGeometry")
+        self.logLayer.performSearch(onlyGeometry)
 
