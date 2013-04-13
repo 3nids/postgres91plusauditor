@@ -186,37 +186,17 @@ geometry changes</string>
             </property>
            </widget>
           </item>
-          <item row="4" column="0">
-           <widget class="QCheckBox" name="displayColumnAction">
-            <property name="text">
-             <string>action</string>
-            </property>
-            <property name="checked">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="0">
-           <widget class="QCheckBox" name="displayColumnDate">
-            <property name="text">
-             <string>date</string>
-            </property>
-            <property name="checked">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
           <item row="3" column="1">
-           <widget class="QCheckBox" name="displayColumnApplication">
+           <widget class="QCheckBox" name="displayColumnClientIP">
             <property name="text">
-             <string>application</string>
+             <string>client IP</string>
             </property>
            </widget>
           </item>
           <item row="4" column="1">
-           <widget class="QCheckBox" name="displayColumnClientIP">
+           <widget class="QCheckBox" name="displayColumnClientPort">
             <property name="text">
-             <string>client IP:port</string>
+             <string>client port</string>
             </property>
            </widget>
           </item>
@@ -234,6 +214,36 @@ geometry changes</string>
            <widget class="QCheckBox" name="displayColumnUser">
             <property name="text">
              <string>user</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QCheckBox" name="displayColumnDate">
+            <property name="text">
+             <string>date</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QCheckBox" name="displayColumnAction">
+            <property name="text">
+             <string>action</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0">
+           <widget class="QCheckBox" name="displayColumnApplication">
+            <property name="text">
+             <string>application</string>
             </property>
             <property name="checked">
              <bool>true</bool>

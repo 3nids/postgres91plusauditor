@@ -20,6 +20,7 @@ mySettings = [
     Bool(pluginName,"displayColumnChangedGeometry", "global", True ),
     Bool(pluginName,"displayColumnApplication"    , "global", False ),
     Bool(pluginName,"displayColumnClientIP"       , "global", False ),
+    Bool(pluginName,"displayColumnClientPort"     , "global", False ),
     Bool(pluginName,"searchOnlyGeometry"          , "global", False ),
 
     # project

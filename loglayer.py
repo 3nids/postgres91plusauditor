@@ -4,9 +4,9 @@ from mysettings import MySettings
 import re
 
 
-columnVarSetting    = ("displayColumnDate","displayColumnUser","displayColumnAction","displayColumnChangedGeometry","displayColumnChangedFields","displayColumnApplication","displayColumnClientIP")
-columnFancyName     = ("Date"             ,"User"             ,"Action"             ,"G"                           ,"Fields"                    ,"Application"             ,"Client IP:port"       )
-columnRowName       = ("dateStr"          ,"user"             ,"action"             ,"changedGeometry"             ,"changedFields"             ,"application"             ,"clientIPport"         )
+columnVarSetting    = ("displayColumnDate","displayColumnUser","displayColumnAction","displayColumnChangedGeometry","displayColumnChangedFields","displayColumnApplication","displayColumnClientIP","displayColumnClientPort")
+columnFancyName     = ("Date"             ,"User"             ,"Action"             ,"G"                           ,"Fields"                    ,"Application"             ,"Client IP"            ,"Client port"            )
+columnRowName       = ("dateStr"          ,"user"             ,"action"             ,"changedGeometry"             ,"changedFields"             ,"application"             ,"clientIP"             ,"clientPort"             )
 
 def getFieldValue(data, fieldName):
     regex = re.compile( '("%s"|%s)\s*=\>\s*' % (fieldName,fieldName) )
@@ -117,8 +117,11 @@ class LogResultRow():
     def application(self):
         return self.logFeature.attribute("application_name").toString()
 
-    def clientIPport(self):
-        return self.logFeature.attribute("client_addr").toString()+":"+logFeature.attribute("client_port").toString()
+    def clientIP(self):
+        return self.logFeature.attribute("client_addr").toString()
+
+    def clientPort(self):
+        return self.logFeature.attribute("client_port").toString()
 
     def changedFields(self):
         data = self.logFeature.attribute("changed_fields").toString()
