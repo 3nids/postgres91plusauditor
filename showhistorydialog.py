@@ -102,7 +102,7 @@ class ShowHistoryDialog(QDialog, Ui_showHistory, PluginSettings):
                 if not self.value(col):
                     continue
                 item = QTableWidgetItem( eval("row."+columnRowName[i]+"()") )
+                item.setFlags(Qt.ItemIsEnabled | Qt.ItemIsSelectable)
                 self.tableWidget.setItem(r,c,item)
                 c+=1
-
         self.tableWidget.resizeColumnsToContents()

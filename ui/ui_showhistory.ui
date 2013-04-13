@@ -94,17 +94,7 @@
          <property name="margin">
           <number>6</number>
          </property>
-         <item row="2" column="1">
-          <widget class="QCheckBox" name="checkBox_2">
-           <property name="text">
-            <string>Delete</string>
-           </property>
-           <property name="checked">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="1">
+         <item row="0" column="1">
           <widget class="QCheckBox" name="checkBox">
            <property name="text">
             <string>Updates</string>
@@ -114,7 +104,7 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="1">
+         <item row="0" column="0">
           <widget class="QCheckBox" name="checkBox_3">
            <property name="text">
             <string>Insert</string>
@@ -124,15 +114,30 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="0" rowspan="2">
-          <widget class="QCheckBox" name="searchOnlyGeometry">
+         <item row="0" column="2">
+          <widget class="QCheckBox" name="checkBox_2">
            <property name="text">
-            <string>Search only for 
-geometry changes</string>
+            <string>Delete</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
            </property>
           </widget>
          </item>
-         <item row="1" column="2">
+         <item row="1" column="0" colspan="3">
+          <widget class="QCheckBox" name="searchOnlyGeometry">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>Search only for geometry changes</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="3">
           <spacer name="horizontalSpacer_2">
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
@@ -187,80 +192,102 @@ geometry changes</string>
          </property>
          <layout class="QGridLayout" name="gridLayout_7">
           <property name="margin">
-           <number>6</number>
+           <number>3</number>
           </property>
-          <item row="1" column="1">
-           <widget class="QCheckBox" name="displayColumnChangedFields">
-            <property name="text">
-             <string>changed fields</string>
-            </property>
-            <property name="checked">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="1">
-           <widget class="QCheckBox" name="displayColumnClientIP">
-            <property name="text">
-             <string>client IP</string>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="1">
-           <widget class="QCheckBox" name="displayColumnClientPort">
-            <property name="text">
-             <string>client port</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="QCheckBox" name="displayColumnChangedGeometry">
-            <property name="text">
-             <string>changed geometry</string>
-            </property>
-            <property name="checked">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
           <item row="0" column="0">
-           <widget class="QCheckBox" name="displayColumnUser">
-            <property name="text">
-             <string>user</string>
-            </property>
-            <property name="checked">
+           <widget class="QScrollArea" name="scrollArea">
+            <property name="widgetResizable">
              <bool>true</bool>
             </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="QCheckBox" name="displayColumnDate">
-            <property name="text">
-             <string>date</string>
-            </property>
-            <property name="checked">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="0">
-           <widget class="QCheckBox" name="displayColumnAction">
-            <property name="text">
-             <string>action</string>
-            </property>
-            <property name="checked">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="0">
-           <widget class="QCheckBox" name="displayColumnApplication">
-            <property name="text">
-             <string>application</string>
-            </property>
-            <property name="checked">
-             <bool>true</bool>
-            </property>
+            <widget class="QWidget" name="scrollAreaWidgetContents">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>0</y>
+               <width>291</width>
+               <height>83</height>
+              </rect>
+             </property>
+             <layout class="QGridLayout" name="gridLayout_9">
+              <property name="margin">
+               <number>3</number>
+              </property>
+              <item row="1" column="0">
+               <widget class="QCheckBox" name="displayColumnDate">
+                <property name="text">
+                 <string>date</string>
+                </property>
+                <property name="checked">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1">
+               <widget class="QCheckBox" name="displayColumnChangedFields">
+                <property name="text">
+                 <string>changed fields</string>
+                </property>
+                <property name="checked">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1">
+               <widget class="QCheckBox" name="displayColumnChangedGeometry">
+                <property name="text">
+                 <string>changed geometry</string>
+                </property>
+                <property name="checked">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="1">
+               <widget class="QCheckBox" name="displayColumnClientIP">
+                <property name="text">
+                 <string>client IP</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="0">
+               <widget class="QCheckBox" name="displayColumnUser">
+                <property name="text">
+                 <string>user</string>
+                </property>
+                <property name="checked">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="0">
+               <widget class="QCheckBox" name="displayColumnAction">
+                <property name="text">
+                 <string>action</string>
+                </property>
+                <property name="checked">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="0">
+               <widget class="QCheckBox" name="displayColumnApplication">
+                <property name="text">
+                 <string>application</string>
+                </property>
+                <property name="checked">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="1">
+               <widget class="QCheckBox" name="displayColumnClientPort">
+                <property name="text">
+                 <string>client port</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
            </widget>
           </item>
          </layout>
