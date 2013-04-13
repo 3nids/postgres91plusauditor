@@ -8,7 +8,7 @@ denis.rouzaud@gmail.com
 
 from qgistools.pluginsettings import *
 
-pluginName =" postgres91plusauditor"
+pluginName = "postgres91plusauditor"
 
 
 mySettings = [

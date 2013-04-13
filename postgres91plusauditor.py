@@ -9,6 +9,7 @@ import resources
 actionName = "History audit"
 pluginName = "postgres91plusauditor"
 
+# run manually qgis.utils.plugins["postgres91plusauditor"].showHistory("",1)
 
 class Postgres91plusAuditor():
     def __init__(self, iface):
