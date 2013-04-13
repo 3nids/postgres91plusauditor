@@ -1,5 +1,5 @@
 from PyQt4.QtCore import *
-from PyQt4.QtGui import QDialog,QTableWidgetItem
+from PyQt4.QtGui import QDialog,QTableWidgetItem, QIcon
 from qgis.core import QgsMapLayerRegistry, QgsFeature, QgsFeatureRequest
 
 from mysettings import mySettings, pluginName
@@ -78,7 +78,9 @@ class ShowHistoryDialog(QDialog, Ui_showHistory, PluginSettings):
                 self.tableWidget.insertColumn(c)
                 self.tableWidget.setHorizontalHeaderItem(c, QTableWidgetItem(columnFancyName[i]))
                 c += 1
+        self.tableWidget.horizontalHeader().setMinimumSectionSize(15)
         self.displayLoggedActionsLines()
+
 
     def searchHistory(self):
         layer = self.layerComboManager.getLayer()
@@ -99,10 +101,8 @@ class ShowHistoryDialog(QDialog, Ui_showHistory, PluginSettings):
             for i,col in enumerate(columnVarSetting):
                 if not self.value(col):
                     continue
-                item = QTableWidgetItem(eval("row."+columnRowName[i]))
+                item = QTableWidgetItem( eval("row."+columnRowName[i]+"()") )
                 self.tableWidget.setItem(r,c,item)
                 c+=1
 
-
-
-
+        self.tableWidget.resizeColumnsToContents()

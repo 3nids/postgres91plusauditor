@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>608</width>
-    <height>435</height>
+    <width>684</width>
+    <height>423</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -176,7 +176,7 @@ geometry changes</string>
           <property name="margin">
            <number>6</number>
           </property>
-          <item row="0" column="1">
+          <item row="1" column="1">
            <widget class="QCheckBox" name="displayColumnChangedFields">
             <property name="text">
              <string>changed fields</string>
@@ -186,7 +186,7 @@ geometry changes</string>
             </property>
            </widget>
           </item>
-          <item row="2" column="0">
+          <item row="4" column="0">
            <widget class="QCheckBox" name="displayColumnAction">
             <property name="text">
              <string>action</string>
@@ -196,10 +196,34 @@ geometry changes</string>
             </property>
            </widget>
           </item>
-          <item row="1" column="0">
+          <item row="3" column="0">
            <widget class="QCheckBox" name="displayColumnDate">
             <property name="text">
              <string>date</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="QCheckBox" name="displayColumnApplication">
+            <property name="text">
+             <string>application</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1">
+           <widget class="QCheckBox" name="displayColumnClientIP">
+            <property name="text">
+             <string>client IP:port</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QCheckBox" name="displayColumnChangedGeometry">
+            <property name="text">
+             <string>changed geometry</string>
             </property>
             <property name="checked">
              <bool>true</bool>
@@ -213,20 +237,6 @@ geometry changes</string>
             </property>
             <property name="checked">
              <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QCheckBox" name="displayColumnApplication">
-            <property name="text">
-             <string>application</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="1">
-           <widget class="QCheckBox" name="displayColumnClientIP">
-            <property name="text">
-             <string>client IP:port</string>
             </property>
            </widget>
           </item>
