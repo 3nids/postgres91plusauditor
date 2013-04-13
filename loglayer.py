@@ -2,6 +2,13 @@ from qgis.core import *
 from mysettings import MySettings
 import re
 
+
+columnVarSetting    = ("displayColumnDate","displayColumnUser","displayColumnAction","displayColumnChangedFields","displayColumnApplication","displayColumnClientIP")
+columnFancyName     = ("Date"             ,"User"             ,"Action"             ,"Fields"                    ,"Application"             ,"Client IP:port"       )
+columnRowName       = ("dateStr"          ,"user"             ,"action"             ,"changedFields"             ,"application"             ,"clientIPport"         )
+
+
+
 def getFieldValue(data, fieldName):
     regex = re.compile( '("%s"|%s)\s*=\>\s*' % (fieldName,fieldName) )
     p = regex.search(data)
@@ -36,6 +43,7 @@ class LogLayer():
         return True
 
     def performSearch(self, layer, featureId, pkeyName, onlyGeometry=False):
+        self.results.clear()
         if not self.isValid():
             return None
 
@@ -59,31 +67,39 @@ class LogLayer():
         while iterator.nextFeature( logFeature ):
             if logFeature.attribute("schema_name").toString() == dataUri.schema() and logFeature.attribute("table_name").toString() == dataUri.table():
                 row = LogResultRow(logFeature, layerFeature, pkeyName)
-                if row.logFeatureId == featureId:
+                if featureId == 0 or row.logFeatureId == featureId:
                     self.results.addRow(row)
-
 
 
 class LogResults(dict):
     def __init__(self):
         self.layerFeature = QgsFeature()
 
+    def geometry(self):
+        self.layerFeature.geometry()
+
+    def clear(self):
+        dict.clear(self)
+
     def setFeature(self, layerFeature):
         self.layerFeature = layerFeature
 
     def addRow(self, row):
-        self[row.date.toString()] = row
+        self[row.date] = row
+
+
 
 class LogResultRow():
     def __init__(self, logFeature, layerFeature, pkeyName):
+        date    = logFeature.attribute("action_tstamp_tx").toDateTime()
+        logData = logFeature.attribute("row_data").toString()
+        self.date    = date.toMSecsSinceEpoch()
+        self.dateStr = date.toString("ddd dd MMM yyyy hh:mm")
         self.user          = logFeature.attribute("session_user_name").toString()
-        self.date          = logFeature.attribute("action_tstamp_tx").toDateTime()
         self.application   = logFeature.attribute("application_name").toString()
-        self.clientAddr    = logFeature.attribute("client_addr").toString()
-        self.clientIP      = logFeature.attribute("client_port").toString()
+        self.clientIPport  = logFeature.attribute("client_addr").toString()+":"+logFeature.attribute("client_port").toString()
         self.action        = logFeature.attribute("action").toString()
         self.changedFields = logFeature.attribute("changed_fields").toString()
-        logData            = logFeature.attribute("row_data").toString()
 
         self.logFeatureId = getFieldValue(logData, pkeyName).toInt()[0]
 
@@ -91,5 +107,6 @@ class LogResultRow():
         for field in layerFeature.fields():
             self.data[field.name()] = getFieldValue(logData, field.name())
 
+        print self.date
 
-        print self.date.toString()
+

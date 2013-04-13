@@ -1,17 +1,16 @@
 from PyQt4.QtCore import *
-from PyQt4.QtGui import QDialog
+from PyQt4.QtGui import QDialog,QTableWidgetItem
 from qgis.core import QgsMapLayerRegistry, QgsFeature, QgsFeatureRequest
 
 from mysettings import mySettings, pluginName
 from loglayerchooserdialog import LogLayerChooserDialog
-from loglayer import LogLayer
+from loglayer import LogLayer, columnVarSetting, columnFancyName, columnRowName
 from ui.ui_showhistory import Ui_showHistory
 
 from qgistools.gui import VectorLayerCombo, FieldCombo
 from qgistools.pluginsettings import PluginSettings
 
-columnVarSetting = ("displayColumnDate","displayColumnUser","displayColumnAction","displayColumnChangedFields","displayColumnApplication","displayColumnClientIP")
-columnFancyName = ("Date","User", "Action", "Fields", "Application", "Client IP:port")
+
 
 class ShowHistoryDialog(QDialog, Ui_showHistory, PluginSettings):
     rejectLater = pyqtSignal()
@@ -78,14 +77,31 @@ class ShowHistoryDialog(QDialog, Ui_showHistory, PluginSettings):
                 headerList.append(columnFancyName[i])
         self.tableWidget.setHorizontalHeaderLabels(headerList)
 
-
-
-
     def searchHistory(self):
         layer = self.layerComboManager.getLayer()
         pkeyName = self.fieldComboManager.getFieldName()
         featureId = self.featureEdit.text().toInt()[0]
         onlyGeometry = self.value("searchOnlyGeometry")
-        if layer is not None and pkeyName != "":
-            self.logLayer.performSearch(layer, featureId, pkeyName, onlyGeometry)
+        if layer is None or pkeyName == "":
+            return
+        self.logLayer.performSearch(layer, featureId, pkeyName, onlyGeometry)
+        self.displayLoggedActionsList()
+
+    def displayLoggedActionsList(self):
+        self.tableWidget.clear()
+        print "#results:",len(self.logLayer.results)
+        for row in self.logLayer.results.values():
+            r = self.tableWidget.rowCount()
+            self.tableWidget.insertRow(r)
+
+            c = 0
+            for i,col in enumerate(columnVarSetting):
+                if not self.value(col): continue
+                print "row."+columnRowName[i], eval("row."+columnRowName[i])
+                item = QTableWidgetItem(eval("row."+columnRowName[i]))
+                self.tableWidget.setItem(r,c,item)
+                c+=1
+
+
+
 
