@@ -80,7 +80,7 @@ class ShowHistoryDialog(QDialog, Ui_showHistory, PluginSettings):
                 self.tableWidget.insertColumn(c)
                 self.tableWidget.setHorizontalHeaderItem(c, QTableWidgetItem(columnFancyName[i]))
                 c += 1
-        #self.tableWidget.horizontalHeader().setMinimumSectionSize(15)
+        self.tableWidget.horizontalHeader().setMinimumSectionSize(15)
         self.displayLoggedActionsLines()
 
 
