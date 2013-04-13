@@ -22,6 +22,7 @@ mySettings = [
     Bool(pluginName,"displayColumnClientIP"       , "global", False ),
     Bool(pluginName,"displayColumnClientPort"     , "global", False ),
     Bool(pluginName,"searchOnlyGeometry"          , "global", False ),
+    Integer(pluginName,"displayMode", "global", 1),
 
     # project
     String(pluginName, "logLayer", "project"," ")

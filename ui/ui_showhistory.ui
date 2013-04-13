@@ -301,7 +301,7 @@
         <number>0</number>
        </property>
        <item row="0" column="0">
-        <widget class="QComboBox" name="comboBox">
+        <widget class="QComboBox" name="displayMode">
          <item>
           <property name="text">
            <string>Form view</string>

@@ -23,6 +23,7 @@ class ShowHistoryDialog(QDialog, Ui_showHistory, PluginSettings):
         self.layerId = layerId
         self.featureId = featureId
         self.rejectLater.connect( self.reject, Qt.QueuedConnection )
+        self.setting("displayMode").valueChanged.connect( self.switchDisplayMode )
 
         self.logLayer = LogLayer()
 
@@ -45,6 +46,7 @@ class ShowHistoryDialog(QDialog, Ui_showHistory, PluginSettings):
 
 
     def showEvent(self, e):
+        PluginSettings.showEvent(self, e)
         while not self.logLayer.isValid():
             if not LogLayerChooserDialog(self.legendInterface).exec_():
                 self.rejectLater.emit()
@@ -106,3 +108,8 @@ class ShowHistoryDialog(QDialog, Ui_showHistory, PluginSettings):
                 self.tableWidget.setItem(r,c,item)
                 c+=1
         self.tableWidget.resizeColumnsToContents()
+
+    def switchDisplayMode(self, i):
+        print i
+
+
