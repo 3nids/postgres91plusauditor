@@ -107,6 +107,4 @@ class LogResultRow():
         for field in layerFeature.fields():
             self.data[field.name()] = getFieldValue(logData, field.name())
 
-        print self.date
-
 

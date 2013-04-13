@@ -27,7 +27,7 @@ class ShowHistoryDialog(QDialog, Ui_showHistory, PluginSettings):
         self.logLayer = LogLayer()
 
         for col in columnVarSetting:
-            self.setting(col).valueChanged.connect(self.displayColumns)
+            self.setting(col).valueChanged.connect(self.displayLoggedActionsColumns)
 
         self.layerComboManager = VectorLayerCombo(legendInterface, self.layerCombo, layerId, {"dataProvider":"postgres"})
         pkeyName = ""
@@ -38,7 +38,7 @@ class ShowHistoryDialog(QDialog, Ui_showHistory, PluginSettings):
                 pkeyName = layer.pendingFields()[pkeyIdx[0]].name()
         self.fieldComboManager = FieldCombo(self.pkeyCombo, self.layerComboManager, pkeyName)
         self.featureEdit.setText( "%s" % featureId )
-        self.displayColumns()
+        self.displayLoggedActionsColumns()
 
         #TODO: disable geometry checkbox if layer has no geom
 
@@ -66,16 +66,19 @@ class ShowHistoryDialog(QDialog, Ui_showHistory, PluginSettings):
 
             self.searchHistory()
 
-    def displayColumns(self,dummy=None):
-        #self.tableWidget.clear()
-        headerList = []
-        while self.tableWidget.columnCount()>0:
-            self.tableWidget.removeColumn(0)
+    def displayLoggedActionsColumns(self,dummy=None):
+        self.tableWidget.clear()
+        for c in range( self.tableWidget.columnCount()-1, -1, -1 ):
+            self.tableWidget.removeColumn(c)
+        for r in range( self.tableWidget.rowCount()-1, -1, -1 ):
+            self.tableWidget.removeRow(r)
+        c = 0
         for i,col in enumerate(columnVarSetting):
             if self.value(col):
-                self.tableWidget.insertColumn(0)
-                headerList.append(columnFancyName[i])
-        self.tableWidget.setHorizontalHeaderLabels(headerList)
+                self.tableWidget.insertColumn(c)
+                self.tableWidget.setHorizontalHeaderItem(c, QTableWidgetItem(columnFancyName[i]))
+                c += 1
+        self.displayLoggedActionsLines()
 
     def searchHistory(self):
         layer = self.layerComboManager.getLayer()
@@ -85,19 +88,17 @@ class ShowHistoryDialog(QDialog, Ui_showHistory, PluginSettings):
         if layer is None or pkeyName == "":
             return
         self.logLayer.performSearch(layer, featureId, pkeyName, onlyGeometry)
-        self.displayLoggedActionsList()
+        self.displayLoggedActionsColumns()
 
-    def displayLoggedActionsList(self):
-        self.tableWidget.clear()
-        print "#results:",len(self.logLayer.results)
+    def displayLoggedActionsLines(self):
         for row in self.logLayer.results.values():
             r = self.tableWidget.rowCount()
             self.tableWidget.insertRow(r)
 
             c = 0
             for i,col in enumerate(columnVarSetting):
-                if not self.value(col): continue
-                print "row."+columnRowName[i], eval("row."+columnRowName[i])
+                if not self.value(col):
+                    continue
                 item = QTableWidgetItem(eval("row."+columnRowName[i]))
                 self.tableWidget.setItem(r,c,item)
                 c+=1
