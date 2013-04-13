@@ -80,7 +80,7 @@ class ShowHistoryDialog(QDialog, Ui_showHistory, PluginSettings):
                 self.tableWidget.insertColumn(c)
                 self.tableWidget.setHorizontalHeaderItem(c, QTableWidgetItem(columnFancyName[i]))
                 c += 1
-        self.tableWidget.horizontalHeader().setMinimumSectionSize(15)
+        #self.tableWidget.horizontalHeader().setMinimumSectionSize(15)
         self.displayLoggedActionsLines()
 
 
@@ -103,13 +103,33 @@ class ShowHistoryDialog(QDialog, Ui_showHistory, PluginSettings):
             for i,col in enumerate(columnVarSetting):
                 if not self.value(col):
                     continue
-                item = QTableWidgetItem( eval("row."+columnRowName[i]+"()") )
+                dataStr = eval("row."+columnRowName[i]+"()")
+                if i == 0:
+                    item = logTableWidgetItem( dataStr )
+                    item.setData(Qt.UserRole, row.dateMs)
+                else:
+                    item = QTableWidgetItem( dataStr )
                 item.setFlags(Qt.ItemIsEnabled | Qt.ItemIsSelectable)
                 self.tableWidget.setItem(r,c,item)
                 c+=1
         self.tableWidget.resizeColumnsToContents()
+        self.tableWidget.sortByColumn(0, Qt.DescendingOrder)
 
     def switchDisplayMode(self, i):
         print i
+
+
+class logTableWidgetItem(QTableWidgetItem):
+    def __init__(self, text):
+        QTableWidgetItem.__init__(self, text)
+
+    def __gt__(self, other):
+        return self.data(Qt.UserRole).toInt()[0] > other.data(Qt.UserRole).toInt()[0]
+
+    def __lt__(self, other):
+        return self.data(Qt.UserRole).toInt()[0] < other.data(Qt.UserRole).toInt()[0]
+
+    def __eq__(self, other):
+        return self.data(Qt.UserRole).toInt()[0] == other.data(Qt.UserRole).toInt()[0]
 
 

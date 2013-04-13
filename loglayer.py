@@ -87,7 +87,6 @@ class LogResults(dict):
         self[row.dateMs] = row
 
 
-
 class LogResultRow():
     def __init__(self, logFeature, layerFeature, pkeyName, geomColumn):
         self.fields = layerFeature.fields()
