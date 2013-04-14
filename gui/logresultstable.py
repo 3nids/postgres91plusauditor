@@ -1,20 +1,22 @@
 from PyQt4.QtGui import QTableWidget,QTableWidgetItem
 
+from ..src.loglayer import columnVarSetting, columnFancyName, columnRowName
 
 
-class LogResultsTable(QTableWidget):
+
+class LoggedActionsTable(QTableWidget):
     def __init__(self, parent):
         QTableWidget.__init__(self, parent)
 
-        self.resultsTable.setSortingEnabled(True)
-        self.resultsTable.setSelectionMode(QtGui.QAbstractItemView.SingleSelection)
-        self.resultsTable.setSelectionBehavior(QtGui.QAbstractItemView.SelectRows)
-        self.resultsTable.setObjectName(_fromUtf8("resultsTable"))
-        self.resultsTable.setColumnCount(0)
-        self.resultsTable.setRowCount(0)
-        self.resultsTable.horizontalHeader().setMinimumSectionSize(15)
-        self.resultsTable.verticalHeader().setVisible(False)
-        self.resultsTable.verticalHeader().setDefaultSectionSize(25)
+           # self.resultsTable.setSortingEnabled(True)
+           #self.resultsTable.setSelectionMode(QtGui.QAbstractItemView.SingleSelection)
+           #self.resultsTable.setSelectionBehavior(QtGui.QAbstractItemView.SelectRows)
+           #self.resultsTable.setObjectName(_fromUtf8("resultsTable"))
+           #self.resultsTable.setColumnCount(0)
+           #self.resultsTable.setRowCount(0)
+           #self.resultsTable.horizontalHeader().setMinimumSectionSize(15)
+           #self.resultsTable.verticalHeader().setVisible(False)
+           #self.resultsTable.verticalHeader().setDefaultSectionSize(25)
 
 
 
@@ -36,13 +38,13 @@ class LogResultsTable(QTableWidget):
 
 
 
-    def displayLoggedActionsLines(self):
+    def displayLoggedActionsRows(self, rows):
         self.clearContents()
-        for r in range( self.tableViewTable.rowCount()-1, -1, -1 ):
-            self.tableViewTable.removeRow(r)
-        for row in self.logLayer.results.values():
-            r = self.tableViewTable.rowCount()
-            self.tableViewTable.insertRow(r)
+        for r in range( self.rowCount()-1, -1, -1 ):
+            self.removeRow(r)
+        for row in rows.values():
+            r = self.rowCount()
+            self.insertRow(r)
 
             c = 0
             for i,col in enumerate(columnVarSetting):
@@ -50,7 +52,7 @@ class LogResultsTable(QTableWidget):
                     continue
                 dataStr = eval("row."+columnRowName[i]+"()")
                 if i == 0:
-                    item = LogTableWidgetItem( dataStr )
+                    item = LoggedActiontItem( dataStr )
                 else:
                     item = QTableWidgetItem( dataStr )
                 item.setData(Qt.UserRole, row.dateMs)
@@ -65,7 +67,7 @@ class LogResultsTable(QTableWidget):
 
 
 
-class LogTableWidgetItem(QTableWidgetItem):
+class LoggedActiontItem(QTableWidgetItem):
     def __init__(self, text):
         QTableWidgetItem.__init__(self, text)
 

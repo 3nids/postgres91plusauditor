@@ -5,7 +5,7 @@ from qgis.core import QgsMapLayerRegistry, QgsFeature, QgsFeatureRequest
 from ..mysettings import mySettings, pluginName
 from ..qgistools.gui import VectorLayerCombo, FieldCombo
 from ..qgistools.pluginsettings import PluginSettings
-from ..src.loglayer import LogLayer, columnVarSetting, columnFancyName, columnRowName
+from ..src.loglayer import LogLayer
 from ..ui.ui_showhistory import Ui_showHistory
 
 from loglayerchooserdialog import LogLayerChooserDialog

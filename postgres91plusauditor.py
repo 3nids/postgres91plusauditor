@@ -1,8 +1,8 @@
 from qgis.core import *
 from PyQt4.QtGui import QAction,QIcon
 
-from showhistorydialog import ShowHistoryDialog
-from loglayerchooserdialog import LogLayerChooserDialog
+from gui.showhistorydialog import ShowHistoryDialog
+from gui.loglayerchooserdialog import LogLayerChooserDialog
 
 import resources
 
