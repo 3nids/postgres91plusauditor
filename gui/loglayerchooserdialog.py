@@ -1,11 +1,10 @@
 from PyQt4.QtGui import QDialog
 
-from ui.ui_loglayerchooser import Ui_LogLayerChooser
-
-from qgistools.pluginsettings import PluginSettings
-from qgistools.gui import VectorLayerCombo
-from mysettings import mySettings, pluginName
-from loglayer import LogLayer
+from ..mysettings import mySettings, pluginName
+from ..qgistools.pluginsettings import PluginSettings
+from ..qgistools.gui import VectorLayerCombo
+from ..src.loglayer import LogLayer
+from ..ui.ui_loglayerchooser import Ui_LogLayerChooser
 
 class LogLayerChooserDialog(QDialog, Ui_LogLayerChooser, PluginSettings):
     def __init__(self, legendInterface):

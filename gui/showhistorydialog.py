@@ -1,14 +1,16 @@
 from PyQt4.QtCore import *
-from PyQt4.QtGui import QDialog,QTableWidgetItem, QIcon
+from PyQt4.QtGui import QDialog
 from qgis.core import QgsMapLayerRegistry, QgsFeature, QgsFeatureRequest
 
-from mysettings import mySettings, pluginName
-from loglayerchooserdialog import LogLayerChooserDialog
-from loglayer import LogLayer, columnVarSetting, columnFancyName, columnRowName
-from ui.ui_showhistory import Ui_showHistory
+from ..mysettings import mySettings, pluginName
+from ..qgistools.gui import VectorLayerCombo, FieldCombo
+from ..qgistools.pluginsettings import PluginSettings
+from ..src.loglayer import LogLayer, columnVarSetting, columnFancyName, columnRowName
+from ..ui.ui_showhistory import Ui_showHistory
 
-from qgistools.gui import VectorLayerCombo, FieldCombo
-from qgistools.pluginsettings import PluginSettings
+from loglayerchooserdialog import LogLayerChooserDialog
+from differenceviewer import DifferenceViewer
+from logresultstable import LogResultsTable
 
 
 
@@ -26,6 +28,8 @@ class ShowHistoryDialog(QDialog, Ui_showHistory, PluginSettings):
         self.setting("displayMode").valueChanged.connect( self.switchDisplayMode )
 
         self.logLayer = LogLayer()
+        self.differenceViewer = DifferenceViewer(self.differenceWidget)
+        self.logResultsTable = LogResultsTable(Self.logResultsWidget)
 
         for col in columnVarSetting:
             self.setting(col).valueChanged.connect(self.displayLoggedActionsColumns)
@@ -68,20 +72,7 @@ class ShowHistoryDialog(QDialog, Ui_showHistory, PluginSettings):
 
             self.searchHistory()
 
-    def displayLoggedActionsColumns(self,dummy=None):
-        self.tableWidget.clear()
-        for c in range( self.tableWidget.columnCount()-1, -1, -1 ):
-            self.tableWidget.removeColumn(c)
-        for r in range( self.tableWidget.rowCount()-1, -1, -1 ):
-            self.tableWidget.removeRow(r)
-        c = 0
-        for i,col in enumerate(columnVarSetting):
-            if self.value(col):
-                self.tableWidget.insertColumn(c)
-                self.tableWidget.setHorizontalHeaderItem(c, QTableWidgetItem(columnFancyName[i]))
-                c += 1
-        self.tableWidget.horizontalHeader().setMinimumSectionSize(15)
-        self.displayLoggedActionsLines()
+
 
 
     def searchHistory(self):
@@ -94,42 +85,24 @@ class ShowHistoryDialog(QDialog, Ui_showHistory, PluginSettings):
         self.logLayer.performSearch(layer, featureId, pkeyName, onlyGeometry)
         self.displayLoggedActionsColumns()
 
-    def displayLoggedActionsLines(self):
-        for row in self.logLayer.results.values():
-            r = self.tableWidget.rowCount()
-            self.tableWidget.insertRow(r)
-
-            c = 0
-            for i,col in enumerate(columnVarSetting):
-                if not self.value(col):
-                    continue
-                dataStr = eval("row."+columnRowName[i]+"()")
-                if i == 0:
-                    item = logTableWidgetItem( dataStr )
-                    item.setData(Qt.UserRole, row.dateMs)
-                else:
-                    item = QTableWidgetItem( dataStr )
-                item.setFlags(Qt.ItemIsEnabled | Qt.ItemIsSelectable)
-                self.tableWidget.setItem(r,c,item)
-                c+=1
-        self.tableWidget.resizeColumnsToContents()
-        self.tableWidget.sortByColumn(0, Qt.DescendingOrder)
-
-    def switchDisplayMode(self, i):
-        print i
 
 
-class logTableWidgetItem(QTableWidgetItem):
-    def __init__(self, text):
-        QTableWidgetItem.__init__(self, text)
+    def updateDifferenceDisplay(self):
+        selected = self.resultsTable.selectedItems()
+        if len(selected)!=1:
+            self.differenceViewer.clearContents()
+        rowId = selected.data(Qt.UserRole).toInt()[0]
+        logRow = self.logLayer.results[rowId]
+        feat = self.logLayer.logFeature
 
-    def __gt__(self, other):
-        return self.data(Qt.UserRole).toInt()[0] > other.data(Qt.UserRole).toInt()[0]
 
-    def __lt__(self, other):
-        return self.data(Qt.UserRole).toInt()[0] < other.data(Qt.UserRole).toInt()[0]
+    def displayDifferenceInTable(self):
+        self.tableView.clear()
+        
 
-    def __eq__(self, other):
-        return self.data(Qt.UserRole).toInt()[0] == other.data(Qt.UserRole).toInt()[0]
+
+
+
+
 
 
