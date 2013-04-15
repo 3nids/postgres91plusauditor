@@ -10,7 +10,7 @@ from ..ui.ui_showhistory import Ui_showHistory
 
 from loglayerchooserdialog import LogLayerChooserDialog
 from differenceviewer import DifferenceViewer
-from logresultstable import LogResultsTable
+from loggedactionstable import LoggedActionsTable
 
 
 
