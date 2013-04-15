@@ -1,4 +1,4 @@
-from qgis.core import *
+from qgis.core import QgsMapLayerRegistry, QgsFeature, QgsFeatureRequest, QgsDataSourceURI
 from PyQt4.QtCore import QString
 import re
 
@@ -14,12 +14,12 @@ fieldRe = lambda(fieldName): re.compile( '("%s"|%s)\s*=\>\s*' % (fieldName,field
 dataReWithQuote = re.compile('\s*".*?[^\\\\]"')
 dataReWithoutQuote = re.compile('.*?,')
 
+
 def getFieldValue(data, fieldName):
-    p = fieldRe.search(data)
+    p = fieldRe(fieldName).search(data)
     if p:
         data = data[p.end():]
-
-        p =  dataReWithQuote.match(data)
+        p = dataReWithQuote.match(data)
         if p:
             return data[p.start()+1:p.end()-1]
         p = dataReWithoutQuote.match(data)
@@ -32,7 +32,6 @@ class LogLayer():
     def __init__(self):
         self.settings = MySettings()
         self.results = LogResults()
-
 
     def isValid(self):
         self.logLayer = QgsMapLayerRegistry.instance().mapLayer( self.settings.value("logLayer") )
@@ -140,12 +139,12 @@ class LogResultRow():
         if geometry is None:
             return ""
         else:
-            return QString(u"\u2713") # check sign
+            return QString(u"\u2713")  # check sign
 
     def data(self):
         out = dict()
         for field in self.fields:
-           out[field.name()] = getFieldValue(self.logData, field.name())
+            out[field.name()] = getFieldValue(self.logData, field.name())
         return out
 
 

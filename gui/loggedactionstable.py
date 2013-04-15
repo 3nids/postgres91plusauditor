@@ -19,11 +19,13 @@ class LoggedActionsTable(QTableWidget):
         self.verticalHeader().setVisible(False)
         self.verticalHeader().setDefaultSectionSize(25)
 
-    def displayColumns(self, dummy=None):
+        self.displayColumns()
+
+    def displayColumns(self):
         self.clear()
-        for c in range(self.columnCount()-1, -1, -1):
+        for c in range(self.columnCount() - 1, -1, -1):
             self.removeColumn(c)
-        for r in range(self.rowCount()-1, -1, -1):
+        for r in range(self.rowCount() - 1, -1, -1):
             self.removeRow(r)
         c = 0
         for i,col in enumerate(columnVarSetting):

@@ -26,11 +26,11 @@ class ShowHistoryDialog(QDialog, Ui_showHistory, PluginSettings):
         self.rejectLater.connect(self.reject, Qt.QueuedConnection)
 
         self.logLayer = LogLayer()
-        self.differenceViewer = DifferenceViewer(self.differenceWidget)
-        self.loggedActionsTable = LoggedActionsTable(self.logResultsWidget)
+        self.differenceViewer = DifferenceViewer(self.differenceViewerWidget)
+        self.loggedActionsTable = LoggedActionsTable(self.loggedActionsWidget)
 
         for col in columnVarSetting:
-            self.setting(col).valueChanged.connect(self.loggedActionsTable.displayColumns)
+            self.setting(col).valueChanged.connect(self.displayLoggedActions)
 
         self.layerComboManager = VectorLayerCombo(legendInterface, self.layerCombo, layerId, {"dataProvider":"postgres"})
         pkeyName = ""
@@ -41,8 +41,7 @@ class ShowHistoryDialog(QDialog, Ui_showHistory, PluginSettings):
                 pkeyName = layer.pendingFields()[pkeyIdx[0]].name()
         self.fieldComboManager = FieldCombo(self.pkeyCombo, self.layerComboManager, pkeyName)
         self.featureEdit.setText("%s" % featureId)
-        
-        self.loggedActionsTable.displayColumns()
+
 
         #TODO: disable geometry checkbox if layer has no geom
 
@@ -77,11 +76,15 @@ class ShowHistoryDialog(QDialog, Ui_showHistory, PluginSettings):
         if layer is None or pkeyName == "":
             return
         self.logLayer.performSearch(layer, featureId, pkeyName, onlyGeometry)
-        self.displayLoggedActionsColumns()
+        self.displayLoggedActions()
+
+    def displayLoggedActions(self, dummy=None):
+        self.loggedActionsTable.displayColumns()
+        self.loggedActionsTable.displayRows(self.logLayer.results)
 
     def updateDifferenceDisplay(self):
         selected = self.resultsTable.selectedItems()
-        if len(selected)!=1:
+        if len(selected) != 1:
             self.differenceViewer.clearContents()
         rowId = selected.data(Qt.UserRole).toInt()[0]
         logRow = self.logLayer.results[rowId]
