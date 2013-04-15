@@ -1,44 +1,43 @@
-from PyQt4.QtGui import QTableWidget,QTableWidgetItem
+from PyQt4.QtCore import Qt
+from PyQt4.QtGui import QTableWidget,QTableWidgetItem,QAbstractItemView
 
+from ..mysettings import MySettings
 from ..src.loglayer import columnVarSetting, columnFancyName, columnRowName
-
 
 
 class LoggedActionsTable(QTableWidget):
     def __init__(self, parent):
         QTableWidget.__init__(self, parent)
+        self.settings = MySettings()
 
-           # self.resultsTable.setSortingEnabled(True)
-           #self.resultsTable.setSelectionMode(QtGui.QAbstractItemView.SingleSelection)
-           #self.resultsTable.setSelectionBehavior(QtGui.QAbstractItemView.SelectRows)
-           #self.resultsTable.setObjectName(_fromUtf8("resultsTable"))
-           #self.resultsTable.setColumnCount(0)
-           #self.resultsTable.setRowCount(0)
-           #self.resultsTable.horizontalHeader().setMinimumSectionSize(15)
-           #self.resultsTable.verticalHeader().setVisible(False)
-           #self.resultsTable.verticalHeader().setDefaultSectionSize(25)
+        self.setSortingEnabled(True)
+        self.setSelectionMode(QAbstractItemView.SingleSelection)
+        self.setSelectionBehavior(QAbstractItemView.SelectRows)
+        self.setColumnCount(0)
+        self.setRowCount(0)
+        self.horizontalHeader().setMinimumSectionSize(15)
+        self.verticalHeader().setVisible(False)
+        self.verticalHeader().setDefaultSectionSize(25)
 
-
-
-
-    def displayLoggedActionsColumns(self,dummy=None):
+    def displayColumns(self,dummy=None):
         self.clear()
-        for c in range( self.tableViewTable.columnCount()-1, -1, -1 ):
-            self.tableViewTable.removeColumn(c)
-        for r in range( self.tableViewTable.rowCount()-1, -1, -1 ):
-            self.tableViewTable.removeRow(r)
+        for c in range( self.columnCount()-1, -1, -1 ):
+            self.removeColumn(c)
+        for r in range( self.rowCount()-1, -1, -1 ):
+            self.removeRow(r)
         c = 0
         for i,col in enumerate(columnVarSetting):
-            if self.value(col):
-                self.tableViewTable.insertColumn(c)
-                self.tableViewTable.setHorizontalHeaderItem(c, QTableWidgetItem(columnFancyName[i]))
+            if self.settings.value(col):
+                self.insertColumn(c)
+                item = QTableWidgetItem(columnFancyName[i])
+                item.setData(Qt.UserRole, columnRowName[i])
+                self.setHorizontalHeaderItem(c, item)
                 c += 1
-        self.tableViewTable.horizontalHeader().setMinimumSectionSize(15)
-        self.displayLoggedActionsLines()
+        self.horizontalHeader().setMinimumSectionSize(15)
+        self.displayRows([])
 
 
-
-    def displayLoggedActionsRows(self, rows):
+    def displayRows(self, rows):
         self.clearContents()
         for r in range( self.rowCount()-1, -1, -1 ):
             self.removeRow(r)
@@ -46,11 +45,9 @@ class LoggedActionsTable(QTableWidget):
             r = self.rowCount()
             self.insertRow(r)
 
-            c = 0
-            for i,col in enumerate(columnVarSetting):
-                if not self.value(col):
-                    continue
-                dataStr = eval("row."+columnRowName[i]+"()")
+            for c in range(self.columnCount()):
+                crn = self.column(c).data(Qt.UserRole)
+                dataStr = eval("row."+crn+"()")
                 if i == 0:
                     item = LoggedActiontItem( dataStr )
                 else:

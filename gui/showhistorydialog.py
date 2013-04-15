@@ -5,13 +5,12 @@ from qgis.core import QgsMapLayerRegistry, QgsFeature, QgsFeatureRequest
 from ..mysettings import mySettings, pluginName
 from ..qgistools.gui import VectorLayerCombo, FieldCombo
 from ..qgistools.pluginsettings import PluginSettings
-from ..src.loglayer import LogLayer
+from ..src.loglayer import LogLayer, columnVarSetting#, columnFancyName, columnRowName   
 from ..ui.ui_showhistory import Ui_showHistory
 
 from loglayerchooserdialog import LogLayerChooserDialog
 from differenceviewer import DifferenceViewer
 from loggedactionstable import LoggedActionsTable
-
 
 
 class ShowHistoryDialog(QDialog, Ui_showHistory, PluginSettings):
@@ -25,14 +24,13 @@ class ShowHistoryDialog(QDialog, Ui_showHistory, PluginSettings):
         self.layerId = layerId
         self.featureId = featureId
         self.rejectLater.connect( self.reject, Qt.QueuedConnection )
-        self.setting("displayMode").valueChanged.connect( self.switchDisplayMode )
 
         self.logLayer = LogLayer()
         self.differenceViewer = DifferenceViewer(self.differenceWidget)
-        self.logResultsTable = LogResultsTable(Self.logResultsWidget)
+        self.loggedActionsTable = LoggedActionsTable(self.logResultsWidget)
 
         for col in columnVarSetting:
-            self.setting(col).valueChanged.connect(self.displayLoggedActionsColumns)
+            self.setting(col).valueChanged.connect(self.loggedActionsTable.displayColumns)
 
         self.layerComboManager = VectorLayerCombo(legendInterface, self.layerCombo, layerId, {"dataProvider":"postgres"})
         pkeyName = ""
@@ -43,7 +41,8 @@ class ShowHistoryDialog(QDialog, Ui_showHistory, PluginSettings):
                 pkeyName = layer.pendingFields()[pkeyIdx[0]].name()
         self.fieldComboManager = FieldCombo(self.pkeyCombo, self.layerComboManager, pkeyName)
         self.featureEdit.setText( "%s" % featureId )
-        self.displayLoggedActionsColumns()
+        
+        self.loggedActionsTable.displayColumns()
 
         #TODO: disable geometry checkbox if layer has no geom
 
