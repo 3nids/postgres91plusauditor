@@ -19,11 +19,11 @@ class LoggedActionsTable(QTableWidget):
         self.verticalHeader().setVisible(False)
         self.verticalHeader().setDefaultSectionSize(25)
 
-    def displayColumns(self,dummy=None):
+    def displayColumns(self, dummy=None):
         self.clear()
-        for c in range( self.columnCount()-1, -1, -1 ):
+        for c in range(self.columnCount()-1, -1, -1):
             self.removeColumn(c)
-        for r in range( self.rowCount()-1, -1, -1 ):
+        for r in range(self.rowCount()-1, -1, -1):
             self.removeRow(r)
         c = 0
         for i,col in enumerate(columnVarSetting):
@@ -34,12 +34,10 @@ class LoggedActionsTable(QTableWidget):
                 self.setHorizontalHeaderItem(c, item)
                 c += 1
         self.horizontalHeader().setMinimumSectionSize(15)
-        self.displayRows([])
-
 
     def displayRows(self, rows):
         self.clearContents()
-        for r in range( self.rowCount()-1, -1, -1 ):
+        for r in range(self.rowCount() - 1, -1, -1):
             self.removeRow(r)
         for row in rows.values():
             r = self.rowCount()
@@ -47,21 +45,17 @@ class LoggedActionsTable(QTableWidget):
 
             for c in range(self.columnCount()):
                 crn = self.column(c).data(Qt.UserRole)
-                dataStr = eval("row."+crn+"()")
+                dataStr = eval("row." + crn + "()")
                 if i == 0:
-                    item = LoggedActiontItem( dataStr )
+                    item = LoggedActiontItem(dataStr)
                 else:
-                    item = QTableWidgetItem( dataStr )
+                    item = QTableWidgetItem(dataStr)
                 item.setData(Qt.UserRole, row.dateMs)
                 item.setFlags(Qt.ItemIsEnabled | Qt.ItemIsSelectable)
-                self.tableViewTable.setItem(r,c,item)
-                c+=1
+                self.tableViewTable.setItem(r, c, item)
+                c += 1
         self.tableViewTable.resizeColumnsToContents()
         self.tableViewTable.sortByColumn(0, Qt.DescendingOrder)
-
-
-
-
 
 
 class LoggedActiontItem(QTableWidgetItem):

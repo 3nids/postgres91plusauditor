@@ -1,6 +1,6 @@
 from PyQt4.QtCore import *
 from PyQt4.QtGui import QDialog
-from qgis.core import QgsMapLayerRegistry, QgsFeature, QgsFeatureRequest
+from qgis.core import QgsFeature, QgsFeatureRequest
 
 from ..mysettings import mySettings, pluginName
 from ..qgistools.gui import VectorLayerCombo, FieldCombo
@@ -19,11 +19,11 @@ class ShowHistoryDialog(QDialog, Ui_showHistory, PluginSettings):
     def __init__(self, legendInterface, layerId=None, featureId=None):
         QDialog.__init__(self)
         self.setupUi(self)
-        PluginSettings.__init__(self, pluginName, mySettings, False, True) # column chooser, advanced search options
+        PluginSettings.__init__(self, pluginName, mySettings, False, True)  # column chooser, advanced search options
         self.legendInterface = legendInterface
         self.layerId = layerId
         self.featureId = featureId
-        self.rejectLater.connect( self.reject, Qt.QueuedConnection )
+        self.rejectLater.connect(self.reject, Qt.QueuedConnection)
 
         self.logLayer = LogLayer()
         self.differenceViewer = DifferenceViewer(self.differenceWidget)
@@ -37,16 +37,14 @@ class ShowHistoryDialog(QDialog, Ui_showHistory, PluginSettings):
         layer = self.layerComboManager.getLayer()
         if layer is not None:
             pkeyIdx = layer.dataProvider().pkAttributeIndexes()
-            if len(pkeyIdx)==1:
+            if len(pkeyIdx) == 1:
                 pkeyName = layer.pendingFields()[pkeyIdx[0]].name()
         self.fieldComboManager = FieldCombo(self.pkeyCombo, self.layerComboManager, pkeyName)
-        self.featureEdit.setText( "%s" % featureId )
+        self.featureEdit.setText("%s" % featureId)
         
         self.loggedActionsTable.displayColumns()
 
         #TODO: disable geometry checkbox if layer has no geom
-
-
 
     def showEvent(self, e):
         PluginSettings.showEvent(self, e)
@@ -55,24 +53,21 @@ class ShowHistoryDialog(QDialog, Ui_showHistory, PluginSettings):
                 self.rejectLater.emit()
                 return
         if self.layerId is not None:
-            self.layerCombo.setEnabled( False )
+            self.layerCombo.setEnabled(False)
             layer = self.layerComboManager.getLayer()
             if layer is None:
                 self.rejectLater.emit()
                 return
         if self.featureId is not None:
-            self.featureEdit.setEnabled( False )
+            self.featureEdit.setEnabled(False)
             self.searchButton.hide()
             f = QgsFeature()
-            featReq = QgsFeatureRequest().setFilterFid( self.featureId ).setFlags( QgsFeatureRequest.NoGeometry )
-            if layer.getFeatures( featReq ).nextFeature( f ) is False:
+            featReq = QgsFeatureRequest().setFilterFid(self.featureId).setFlags(QgsFeatureRequest.NoGeometry)
+            if layer.getFeatures(featReq).nextFeature(f) is False:
                 self.rejectLater.emit()
                 return
 
             self.searchHistory()
-
-
-
 
     def searchHistory(self):
         layer = self.layerComboManager.getLayer()
@@ -84,8 +79,6 @@ class ShowHistoryDialog(QDialog, Ui_showHistory, PluginSettings):
         self.logLayer.performSearch(layer, featureId, pkeyName, onlyGeometry)
         self.displayLoggedActionsColumns()
 
-
-
     def updateDifferenceDisplay(self):
         selected = self.resultsTable.selectedItems()
         if len(selected)!=1:
@@ -93,7 +86,6 @@ class ShowHistoryDialog(QDialog, Ui_showHistory, PluginSettings):
         rowId = selected.data(Qt.UserRole).toInt()[0]
         logRow = self.logLayer.results[rowId]
         feat = self.logLayer.logFeature
-
 
     def displayDifferenceInTable(self):
         self.tableView.clear()
