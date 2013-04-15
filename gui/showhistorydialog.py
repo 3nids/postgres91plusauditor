@@ -23,16 +23,22 @@ class ShowHistoryDialog(QDialog, Ui_showHistory, PluginSettings):
         self.legendInterface = legendInterface
         self.layerId = layerId
         self.featureId = featureId
-        self.rejectLater.connect(self.reject, Qt.QueuedConnection)
 
+        self.rejectLater.connect(self.reject, Qt.QueuedConnection)
+        self.buttonDisplayMode(False)
+        self.layerComboManager = VectorLayerCombo(legendInterface, self.layerCombo, layerId,
+                                                  {"dataProvider": "postgres"})
+        
         self.logLayer = LogLayer()
+        self.logLayer.setProgressMax.connect(self.progressBar.setMaximum)
+        self.logLayer.setProgressMin.connect(self.progressBar.setMinimum)
+        self.logLayer.setProgressValue.connect(self.progressBar.setValue)
+
         self.differenceViewer = DifferenceViewer(self.differenceViewerWidget)
         self.loggedActionsTable = LoggedActionsTable(self.loggedActionsWidget)
-
         for col in columnVarSetting:
             self.setting(col).valueChanged.connect(self.displayLoggedActions)
 
-        self.layerComboManager = VectorLayerCombo(legendInterface, self.layerCombo, layerId, {"dataProvider":"postgres"})
         pkeyName = ""
         layer = self.layerComboManager.getLayer()
         if layer is not None:
@@ -41,7 +47,6 @@ class ShowHistoryDialog(QDialog, Ui_showHistory, PluginSettings):
                 pkeyName = layer.pendingFields()[pkeyIdx[0]].name()
         self.fieldComboManager = FieldCombo(self.pkeyCombo, self.layerComboManager, pkeyName)
         self.featureEdit.setText("%s" % featureId)
-
 
         #TODO: disable geometry checkbox if layer has no geom
 
@@ -59,24 +64,33 @@ class ShowHistoryDialog(QDialog, Ui_showHistory, PluginSettings):
                 return
         if self.featureId is not None:
             self.featureEdit.setEnabled(False)
-            self.searchButton.hide()
             f = QgsFeature()
             featReq = QgsFeatureRequest().setFilterFid(self.featureId).setFlags(QgsFeatureRequest.NoGeometry)
             if layer.getFeatures(featReq).nextFeature(f) is False:
                 self.rejectLater.emit()
                 return
 
-            self.searchHistory()
+    @pyqtSignature("on_stopButton_clicked()")
+    def on_stopButton_clicked(self):
+        self.logLayer.interrupt()
 
-    def searchHistory(self):
+    @pyqtSignature("on_searchButton_clicked()")
+    def on_searchButton_clicked(self):
         layer = self.layerComboManager.getLayer()
         pkeyName = self.fieldComboManager.getFieldName()
         featureId = self.featureEdit.text().toInt()[0]
         onlyGeometry = self.value("searchOnlyGeometry")
         if layer is None or pkeyName == "":
             return
+        self.buttonDisplayMode(True)
         self.logLayer.performSearch(layer, featureId, pkeyName, onlyGeometry)
+        self.buttonDisplayMode(False)
         self.displayLoggedActions()
+
+    def buttonDisplayMode(self, searchOn):
+        self.searchButton.setVisible(not searchOn)
+        self.stopButton.setVisible(searchOn)
+        self.progressBar.setVisible(searchOn)
 
     def displayLoggedActions(self, dummy=None):
         self.loggedActionsTable.displayColumns()
@@ -92,11 +106,3 @@ class ShowHistoryDialog(QDialog, Ui_showHistory, PluginSettings):
 
     def displayDifferenceInTable(self):
         self.tableView.clear()
-        
-
-
-
-
-
-
-

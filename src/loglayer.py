@@ -1,18 +1,18 @@
+from PyQt4.QtCore import QCoreApplication, QString, pyqtSignal, QObject
 from qgis.core import QgsMapLayerRegistry, QgsFeature, QgsFeatureRequest, QgsDataSourceURI
-from PyQt4.QtCore import QString
 import re
 
 from ..mysettings import MySettings
 
 # tuplets for settings, display name, and row-data property
 columnVarSetting    = ("displayColumnDate","displayColumnUser","displayColumnAction","displayColumnChangedGeometry","displayColumnChangedFields","displayColumnApplication","displayColumnClientIP","displayColumnClientPort")
-columnFancyName     = ("Date"             ,"User"             ,"Action"             ,"G"                           ,"Fields"                    ,"Application"             ,"Client IP"            ,"Client port"            )
-columnRowName       = ("dateStr"          ,"user"             ,"action"             ,"changedGeometry"             ,"changedFields"             ,"application"             ,"clientIP"             ,"clientPort"             )
+columnFancyName     = ("Date"             ,"User"             ,"Action"             ,"G"                           ,"Fields"                    ,"Application"             ,"Client IP"            ,"Client port")
+columnRowName       = ("dateStr"          ,"user"             ,"action"             ,"changedGeometry"             ,"changedFields"             ,"application"             ,"clientIP"             ,"clientPort")
 
 # regexp to parse data from hstore
-fieldRe = lambda(fieldName): re.compile( '("%s"|%s)\s*=\>\s*' % (fieldName,fieldName) )
+fieldRe = lambda(fieldName): re.compile('("%s"|%s)\s*=\>\s*' % (fieldName, fieldName))
 dataReWithQuote = re.compile('\s*".*?[^\\\\]"')
-dataReWithoutQuote = re.compile('.*?,')
+dataReWithoutQuote = re.compile('.*?, ')
 
 
 def getFieldValue(data, fieldName):
@@ -28,13 +28,19 @@ def getFieldValue(data, fieldName):
     return None
 
 
-class LogLayer():
+class LogLayer(QObject):
+    setProgressMax = pyqtSignal(int)
+    setProgressMin = pyqtSignal(int)
+    setProgressValue = pyqtSignal(int)
+
     def __init__(self):
+        QObject.__init__(self)
         self.settings = MySettings()
         self.results = LogResults()
+        self.continueSearch = True
 
     def isValid(self):
-        self.logLayer = QgsMapLayerRegistry.instance().mapLayer( self.settings.value("logLayer") )
+        self.logLayer = QgsMapLayerRegistry.instance().mapLayer(self.settings.value("logLayer"))
         return self.checkLayer(self.logLayer)
 
     def checkLayer(self, layer):
@@ -43,6 +49,9 @@ class LogLayer():
             # TODO check validity
 
         return True
+
+    def interrupt(self):
+        self.continueSearch = False
 
     def performSearch(self, layer, featureId, pkeyName, onlyGeometry=False):
         self.results.clear()
@@ -54,23 +63,32 @@ class LogLayer():
 
         layerFeature = QgsFeature()
         if featureId != 0:
-            featReq = QgsFeatureRequest().setFilterFid( featureId )
+            featReq = QgsFeatureRequest().setFilterFid(featureId)
             if not layer.hasGeometryType():
-                featReq.setFlags( QgsFeatureRequest.NoGeometry )
-            if layer.getFeatures( featReq ).nextFeature( layerFeature ) is False:
+                featReq.setFlags(QgsFeatureRequest.NoGeometry)
+            if layer.getFeatures(featReq).nextFeature(layerFeature) is False:
                 return None
         else:
-            layerFeature.setFields( layer.dataProvider().fields() )
+            layerFeature.setFields(layer.dataProvider().fields())
         self.results.setFeature(layerFeature)
 
+        self.continueSearch = True
         logFeature = QgsFeature()
-        featReq = QgsFeatureRequest().setFlags( QgsFeatureRequest.NoGeometry )
-        iterator = self.logLayer.getFeatures( featReq )
-        while iterator.nextFeature( logFeature ):
+        featReq = QgsFeatureRequest().setFlags(QgsFeatureRequest.NoGeometry)
+        iterator = self.logLayer.getFeatures(featReq)
+        self.setProgressMin.emit(0)
+        self.setProgressMax.emit(self.logLayer.featureCount())
+        k = 0
+        while iterator.nextFeature(logFeature):
+            self.setProgressValue.emit(k)
+            QCoreApplication.processEvents()
+            if not self.continueSearch:
+                break
             if logFeature.attribute("schema_name").toString() == dataUri.schema() and logFeature.attribute("table_name").toString() == dataUri.table():
                 row = LogResultRow(logFeature, layerFeature, pkeyName, geomColumn)
                 if featureId == 0 or row.logFeatureId == featureId:
                     self.results.addRow(row)
+            k += 1
 
 
 class LogResults(dict):
@@ -93,7 +111,7 @@ class LogResults(dict):
 class LogResultRow():
     def __init__(self, logFeature, layerFeature, pkeyName, geomColumn):
         self.fields = layerFeature.fields()
-        self.logFeature = QgsFeature( logFeature )
+        self.logFeature = QgsFeature(logFeature)
         self.geomColumn = geomColumn
         self.date = logFeature.attribute("action_tstamp_tx").toDateTime()
         self.dateMs = self.date.toMSecsSinceEpoch()

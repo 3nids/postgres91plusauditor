@@ -46,9 +46,9 @@ class LoggedActionsTable(QTableWidget):
             self.insertRow(r)
 
             for c in range(self.columnCount()):
-                crn = self.column(c).data(Qt.UserRole)
+                crn = self.horizontalHeaderItem(c).data(Qt.UserRole).toString()
                 dataStr = eval("row." + crn + "()")
-                if i == 0:
+                if crn == "dateStr":
                     item = LoggedActiontItem(dataStr)
                 else:
                     item = QTableWidgetItem(dataStr)
@@ -56,8 +56,8 @@ class LoggedActionsTable(QTableWidget):
                 item.setFlags(Qt.ItemIsEnabled | Qt.ItemIsSelectable)
                 self.tableViewTable.setItem(r, c, item)
                 c += 1
-        self.tableViewTable.resizeColumnsToContents()
-        self.tableViewTable.sortByColumn(0, Qt.DescendingOrder)
+        self.resizeColumnsToContents()
+        self.sortByColumn(0, Qt.DescendingOrder)
 
 
 class LoggedActiontItem(QTableWidgetItem):

@@ -13,15 +13,15 @@ pluginName = "postgres91plusauditor"
 
 mySettings = [
     # global settings
-    Bool(pluginName,"displayColumnDate"           , "global", True ),
-    Bool(pluginName,"displayColumnUser"           , "global", True ),
-    Bool(pluginName,"displayColumnAction"         , "global", True ),
-    Bool(pluginName,"displayColumnChangedFields"  , "global", True ),
-    Bool(pluginName,"displayColumnChangedGeometry", "global", True ),
-    Bool(pluginName,"displayColumnApplication"    , "global", False ),
-    Bool(pluginName,"displayColumnClientIP"       , "global", False ),
-    Bool(pluginName,"displayColumnClientPort"     , "global", False ),
-    Bool(pluginName,"searchOnlyGeometry"          , "global", False ),
+    Bool(pluginName,"displayColumnDate"           , "global", True),
+    Bool(pluginName,"displayColumnUser"           , "global", True),
+    Bool(pluginName,"displayColumnAction"         , "global", True),
+    Bool(pluginName,"displayColumnChangedFields"  , "global", True),
+    Bool(pluginName,"displayColumnChangedGeometry", "global", True),
+    Bool(pluginName,"displayColumnApplication"    , "global", False),
+    Bool(pluginName,"displayColumnClientIP"       , "global", False),
+    Bool(pluginName,"displayColumnClientPort"     , "global", False),
+    Bool(pluginName,"searchOnlyGeometry"          , "global", False),
 
     # project
     String(pluginName, "logLayer", "project"," ")
