@@ -38,10 +38,11 @@ class LogLayer(QObject):
         self.settings = MySettings()
         self.results = LogResults()
         self.continueSearch = True
+        self.layer = None
 
     def isValid(self):
-        self.logLayer = QgsMapLayerRegistry.instance().mapLayer(self.settings.value("logLayer"))
-        return self.checkLayer(self.logLayer)
+        self.layer = QgsMapLayerRegistry.instance().mapLayer(self.settings.value("logLayer"))
+        return self.checkLayer(self.layer)
 
     def checkLayer(self, layer):
         if layer is None:
@@ -71,13 +72,17 @@ class LogLayer(QObject):
         else:
             layerFeature.setFields(layer.dataProvider().fields())
         self.results.setFeature(layerFeature)
+        
+        if self.settings.value("redefineSubset"):
+            subset = "schema_name = %s and table_name = %s" % (dataUri.schema(), dataUri.table())
+            self.layer.setSubsetString(subset)
 
         self.continueSearch = True
         logFeature = QgsFeature()
         featReq = QgsFeatureRequest().setFlags(QgsFeatureRequest.NoGeometry)
-        iterator = self.logLayer.getFeatures(featReq)
+        iterator = self.layer.getFeatures(featReq)
         self.setProgressMin.emit(0)
-        self.setProgressMax.emit(self.logLayer.featureCount())
+        self.setProgressMax.emit(self.layer.featureCount())
         k = 0
         while iterator.nextFeature(logFeature):
             self.setProgressValue.emit(k)
@@ -89,6 +94,9 @@ class LogLayer(QObject):
                 if featureId == 0 or row.logFeatureId == featureId:
                     self.results.addRow(row)
             k += 1
+        if self.settings.value("redefineSubset"):
+            self.layer.setSubsetString("")
+
 
 
 class LogResults(dict):

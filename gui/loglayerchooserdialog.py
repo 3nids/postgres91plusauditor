@@ -12,8 +12,7 @@ class LogLayerChooserDialog(QDialog, Ui_LogLayerChooser, PluginSettings):
         self.setupUi(self)
         PluginSettings.__init__(self, pluginName, mySettings)
 
-        self.layerComboManager = VectorLayerCombo(legendInterface, self.logLayer, lambda: self.value("logLayer"), {"dataProvider":"postgres"})
-
+        self.layerComboManager = VectorLayerCombo(legendInterface, self.logLayer, lambda: self.value("logLayer"), {"dataProvider": "postgres"})
 
     def accept(self):
         layer = self.layerComboManager.getLayer()
@@ -21,3 +20,6 @@ class LogLayerChooserDialog(QDialog, Ui_LogLayerChooser, PluginSettings):
             QDialog.accept(self)
         else:
             self.logLayer.setCurrentIndex(0)
+
+
+    # TODO: if uncheck subset, clear layer subset

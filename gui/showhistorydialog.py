@@ -28,7 +28,7 @@ class ShowHistoryDialog(QDialog, Ui_showHistory, PluginSettings):
         self.buttonDisplayMode(False)
         self.layerComboManager = VectorLayerCombo(legendInterface, self.layerCombo, layerId,
                                                   {"dataProvider": "postgres"})
-        
+
         self.logLayer = LogLayer()
         self.logLayer.setProgressMax.connect(self.progressBar.setMaximum)
         self.logLayer.setProgressMin.connect(self.progressBar.setMinimum)
