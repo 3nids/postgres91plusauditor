@@ -1,7 +1,7 @@
 from PyQt4.QtCore import Qt
 from PyQt4.QtGui import QTableWidget,QTableWidgetItem,QAbstractItemView
 
-from ..mysettings import MySettings
+from ..src.mysettings import MySettings
 from ..src.loglayer import columnVarSetting, columnFancyName, columnRowName
 
 

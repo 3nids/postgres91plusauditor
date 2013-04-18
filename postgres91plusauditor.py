@@ -4,8 +4,6 @@ from PyQt4.QtGui import QAction, QIcon
 from gui.showhistorydialog import ShowHistoryDialog
 from gui.loglayerchooserdialog import LogLayerChooserDialog
 
-import resources
-
 actionName = "History audit"
 pluginName = "postgres91plusauditor"
 

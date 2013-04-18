@@ -2,10 +2,12 @@ from PyQt4.QtCore import *
 from PyQt4.QtGui import QDialog
 from qgis.core import QgsFeature, QgsFeatureRequest
 
-from ..mysettings import MySettings
 from ..qgistools.gui import VectorLayerCombo, FieldCombo
 from ..qgistools.settingmanager import SettingDialog
-from ..src.loglayer import LogLayer, columnVarSetting#, columnFancyName, columnRowName   
+
+from ..src.mysettings import MySettings
+from ..src.loglayer import LogLayer, columnVarSetting
+
 from ..ui.ui_showhistory import Ui_showHistory
 
 from loglayerchooserdialog import LogLayerChooserDialog
@@ -80,7 +82,7 @@ class ShowHistoryDialog(QDialog, Ui_showHistory, SettingDialog):
         layer = self.layerComboManager.getLayer()
         pkeyName = self.fieldComboManager.getFieldName()
         featureId = self.featureEdit.text().toInt()[0]
-        onlyGeometry = self.value("searchOnlyGeometry")
+        onlyGeometry = self.settings.value("searchOnlyGeometry")
         if layer is None or pkeyName == "":
             return
         self.buttonDisplayMode(True)
