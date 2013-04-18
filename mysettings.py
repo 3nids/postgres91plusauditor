@@ -6,33 +6,28 @@ Denis Rouzaud
 denis.rouzaud@gmail.com
 """
 
-from qgistools.pluginsettings import *
+from qgistools.settingmanager import *
 
 pluginName = "postgres91plusauditor"
 
 
-mySettings = [
-    # global settings
-    Bool(pluginName, "displayColumnDate"           , "global", True),
-    Bool(pluginName, "displayColumnUser"           , "global", True),
-    Bool(pluginName, "displayColumnAction"         , "global", True),
-    Bool(pluginName, "displayColumnChangedFields"  , "global", True),
-    Bool(pluginName, "displayColumnChangedGeometry", "global", True),
-    Bool(pluginName, "displayColumnApplication"    , "global", False),
-    Bool(pluginName, "displayColumnClientIP"       , "global", False),
-    Bool(pluginName, "displayColumnClientPort"     , "global", False),
-    Bool(pluginName, "searchOnlyGeometry"          , "global", False),
-    Bool(pluginName, "redefineSubset"              , "global", False),
-
-    # project
-    String(pluginName, "logLayer", "project", "")
-]
-
-
-class MySettings(PluginSettings):
+class MySettings(SettingManager):
     def __init__(self):
-        PluginSettings.__init__(self, pluginName, mySettings)
+        SettingManager.__init__(self, pluginName)
 
+        self.addSetting("displayColumnDate"           , "bool", "global", True)
+        self.addSetting("displayColumnUser"           , "bool", "global", True)
+        self.addSetting("displayColumnAction"         , "bool", "global", True)
+        self.addSetting("displayColumnChangedFields"  , "bool", "global", True)
+        self.addSetting("displayColumnChangedGeometry", "bool", "global", True)
+        self.addSetting("displayColumnApplication"    , "bool", "global", False)
+        self.addSetting("displayColumnClientIP"       , "bool", "global", False)
+        self.addSetting("displayColumnClientPort"     , "bool", "global", False)
+        self.addSetting("searchOnlyGeometry"          , "bool", "global", False)
+
+        # project
+        self.addSetting("redefineSubset", "bool", "project", False)
+        self.addSetting("logLayer", "string", "project", "")
 
 
 

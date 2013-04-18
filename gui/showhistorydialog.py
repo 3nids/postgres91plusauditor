@@ -2,9 +2,9 @@ from PyQt4.QtCore import *
 from PyQt4.QtGui import QDialog
 from qgis.core import QgsFeature, QgsFeatureRequest
 
-from ..mysettings import mySettings, pluginName
+from ..mysettings import MySettings
 from ..qgistools.gui import VectorLayerCombo, FieldCombo
-from ..qgistools.pluginsettings import PluginSettings
+from ..qgistools.settingmanager import SettingDialog
 from ..src.loglayer import LogLayer, columnVarSetting#, columnFancyName, columnRowName   
 from ..ui.ui_showhistory import Ui_showHistory
 
@@ -13,13 +13,14 @@ from differenceviewer import DifferenceViewer
 from loggedactionstable import LoggedActionsTable
 
 
-class ShowHistoryDialog(QDialog, Ui_showHistory, PluginSettings):
+class ShowHistoryDialog(QDialog, Ui_showHistory, SettingDialog):
     rejectLater = pyqtSignal()
 
     def __init__(self, legendInterface, layerId=None, featureId=None):
         QDialog.__init__(self)
         self.setupUi(self)
-        PluginSettings.__init__(self, pluginName, mySettings, False, True)  # column chooser, advanced search options
+        self.settings = MySettings()
+        SettingDialog.__init__(self, self.settings, False, True)  # column chooser, advanced search options
         self.legendInterface = legendInterface
         self.layerId = layerId
         self.featureId = featureId
@@ -37,7 +38,7 @@ class ShowHistoryDialog(QDialog, Ui_showHistory, PluginSettings):
         self.differenceViewer = DifferenceViewer(self.differenceViewerWidget)
         self.loggedActionsTable = LoggedActionsTable(self.loggedActionsWidget)
         for col in columnVarSetting:
-            self.setting(col).valueChanged.connect(self.displayLoggedActions)
+            self.settings.setting(col).valueChanged.connect(self.displayLoggedActions)
 
         pkeyName = ""
         layer = self.layerComboManager.getLayer()
@@ -51,7 +52,7 @@ class ShowHistoryDialog(QDialog, Ui_showHistory, PluginSettings):
         #TODO: disable geometry checkbox if layer has no geom
 
     def showEvent(self, e):
-        PluginSettings.showEvent(self, e)
+        SettingDialog.showEvent(self, e)
         while not self.logLayer.isValid():
             if not LogLayerChooserDialog(self.legendInterface).exec_():
                 self.rejectLater.emit()

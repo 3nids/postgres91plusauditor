@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/ui_showhistory.ui'
 #
-# Created: Mon Apr 15 16:42:25 2013
+# Created: Wed Apr 17 18:01:48 2013
 #      by: PyQt4 UI code generator 4.9.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -111,6 +111,7 @@ class Ui_showHistory(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.groupBox.sizePolicy().hasHeightForWidth())
         self.groupBox.setSizePolicy(sizePolicy)
+        self.groupBox.setCheckable(False)
         self.groupBox.setProperty("collapsed", True)
         self.groupBox.setObjectName(_fromUtf8("groupBox"))
         self.gridLayout_7 = QtGui.QGridLayout(self.groupBox)

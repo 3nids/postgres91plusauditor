@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/ui_loglayerchooser.ui'
 #
-# Created: Wed Apr 17 08:18:10 2013
+# Created: Wed Apr 17 18:01:48 2013
 #      by: PyQt4 UI code generator 4.9.1
 #
 # WARNING! All changes made in this file will be lost!

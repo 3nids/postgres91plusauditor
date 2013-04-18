@@ -47,6 +47,7 @@ class LoggedActionsTable(QTableWidget):
 
             for c in range(self.columnCount()):
                 crn = self.horizontalHeaderItem(c).data(Qt.UserRole).toString()
+                print crn
                 dataStr = eval("row." + crn + "()")
                 if crn == "dateStr":
                     item = LoggedActiontItem(dataStr)
