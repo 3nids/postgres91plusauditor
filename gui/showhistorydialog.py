@@ -4,6 +4,7 @@ from qgis.core import QgsFeature, QgsFeatureRequest
 
 from ..qgistools.gui import VectorLayerCombo, FieldCombo
 from ..qgistools.settingmanager import SettingDialog
+from ..qgistools.vectorlayer import primaryKey
 
 from ..src.mysettings import MySettings
 from ..src.loglayer import LogLayer, columnVarSetting
@@ -39,12 +40,8 @@ class ShowHistoryDialog(QDialog, Ui_showHistory, SettingDialog):
         pkeyName = ""
         self.layerComboManager = VectorLayerCombo(legendInterface, self.layerCombo, layerId,
                                                   {"dataProvider": "postgres"})
-        layer = self.layerComboManager.getLayer()
-        if layer is not None:
-            pkeyIdx = layer.dataProvider().pkAttributeIndexes()
-            if len(pkeyIdx) == 1:
-                pkeyName = layer.pendingFields()[pkeyIdx[0]].name()
-        self.fieldComboManager = FieldCombo(self.pkeyCombo, self.layerComboManager, pkeyName)
+        pkeyLambda = lambda: primaryKey(self.layerComboManager.getLayer())
+        self.fieldComboManager = FieldCombo(self.pkeyCombo, self.layerComboManager, pkeyLambda)
 
         # log layer
         self.logLayer = LogLayer()
