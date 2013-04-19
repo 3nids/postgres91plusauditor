@@ -7,7 +7,7 @@ import re
 # regexp to parse data from hstore
 fieldRe = lambda(fieldName): re.compile('("%s"|%s)\s*=\>\s*' % (fieldName, fieldName))
 dataReWithQuote = re.compile('\s*".*?[^\\\\]"')
-dataReWithoutQuote = re.compile('.*?, ')
+dataReWithoutQuote = re.compile('.*?,')
 
 
 class LogResultRow():
