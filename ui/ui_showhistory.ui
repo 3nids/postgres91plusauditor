@@ -175,19 +175,19 @@
    </item>
    <item row="4" column="0" colspan="4">
     <widget class="QSplitter" name="splitter">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
      <widget class="QWidget" name="historyPanel" native="true">
       <layout class="QGridLayout" name="gridLayout_4">
        <property name="margin">
-        <number>0</number>
+        <number>6</number>
        </property>
-       <item row="2" column="0">
+       <property name="spacing">
+        <number>3</number>
+       </property>
+       <item row="0" column="0">
         <widget class="QgsCollapsibleGroupBoxBasic" name="groupBox">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
          <property name="title">
           <string>Columns</string>
          </property>
@@ -197,18 +197,9 @@
          <property name="collapsed" stdset="0">
           <bool>true</bool>
          </property>
-         <layout class="QGridLayout" name="gridLayout_7">
-          <property name="margin">
-           <number>3</number>
-          </property>
+         <layout class="QGridLayout" name="gridLayout_2">
           <item row="0" column="0">
            <widget class="QScrollArea" name="scrollArea">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
             <property name="maximumSize">
              <size>
               <width>300</width>
@@ -229,12 +220,6 @@
                <width>298</width>
                <height>118</height>
               </rect>
-             </property>
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
              </property>
              <layout class="QGridLayout" name="gridLayout_9">
               <property name="margin">
@@ -321,17 +306,8 @@
          </layout>
         </widget>
        </item>
-       <item row="3" column="0">
-        <widget class="QWidget" name="loggedActionsWidget" native="true">
-         <layout class="QGridLayout" name="gridLayout_2">
-          <property name="horizontalSpacing">
-           <number>3</number>
-          </property>
-          <property name="margin">
-           <number>3</number>
-          </property>
-         </layout>
-        </widget>
+       <item row="1" column="0">
+        <widget class="QWidget" name="loggedActionsWidget" native="true"/>
        </item>
       </layout>
      </widget>
@@ -364,13 +340,7 @@
         </widget>
        </item>
        <item row="1" column="0" colspan="3">
-        <widget class="QWidget" name="differenceViewerWidget" native="true">
-         <layout class="QGridLayout" name="gridLayout_3">
-          <property name="margin">
-           <number>0</number>
-          </property>
-         </layout>
-        </widget>
+        <widget class="QWidget" name="differenceViewerWidget" native="true"/>
        </item>
       </layout>
      </widget>

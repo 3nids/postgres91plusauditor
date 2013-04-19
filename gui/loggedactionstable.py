@@ -1,5 +1,5 @@
 from PyQt4.QtCore import Qt
-from PyQt4.QtGui import QTableWidget,QTableWidgetItem,QAbstractItemView
+from PyQt4.QtGui import QTableWidget, QTableWidgetItem, QAbstractItemView, QSizePolicy
 
 from ..src.mysettings import MySettings
 from ..src.loglayer import columnVarSetting, columnFancyName, columnRowName
@@ -18,8 +18,11 @@ class LoggedActionsTable(QTableWidget):
         self.horizontalHeader().setMinimumSectionSize(15)
         self.verticalHeader().setVisible(False)
         self.verticalHeader().setDefaultSectionSize(25)
+        #self.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
 
         self.displayColumns()
+
+        self.adjustSize()
 
     def displayColumns(self):
         self.clear()

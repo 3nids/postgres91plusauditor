@@ -6,7 +6,7 @@ Denis Rouzaud
 denis.rouzaud@gmail.com
 """
 
-from qgistools.settingmanager import *
+from ..qgistools.settingmanager import *
 
 pluginName = "postgres91plusauditor"
 
@@ -28,9 +28,3 @@ class MySettings(SettingManager):
         # project
         self.addSetting("redefineSubset", "bool", "project", False)
         self.addSetting("logLayer", "string", "project", "")
-
-
-
-
-
-

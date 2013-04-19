@@ -7,6 +7,8 @@ from gui.loglayerchooserdialog import LogLayerChooserDialog
 actionName = "History audit"
 pluginName = "postgres91plusauditor"
 
+import resources
+
 # run manually qgis.utils.plugins["postgres91plusauditor"].showHistory("district20130415084007763",1)
 
 

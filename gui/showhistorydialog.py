@@ -1,5 +1,5 @@
 from PyQt4.QtCore import *
-from PyQt4.QtGui import QDialog
+from PyQt4.QtGui import QDialog, QGridLayout
 from qgis.core import QgsFeature, QgsFeatureRequest
 
 from ..qgistools.gui import VectorLayerCombo, FieldCombo
@@ -32,15 +32,23 @@ class ShowHistoryDialog(QDialog, Ui_showHistory, SettingDialog):
         self.layerComboManager = VectorLayerCombo(legendInterface, self.layerCombo, layerId,
                                                   {"dataProvider": "postgres"})
 
+        # log layer
         self.logLayer = LogLayer()
         self.logLayer.setProgressMax.connect(self.progressBar.setMaximum)
         self.logLayer.setProgressMin.connect(self.progressBar.setMinimum)
         self.logLayer.setProgressValue.connect(self.progressBar.setValue)
 
-        self.differenceViewer = DifferenceViewer(self.differenceViewerWidget)
+        # logged actions table
+        self.loggedActionsLayout = QGridLayout(self.loggedActionsWidget)
         self.loggedActionsTable = LoggedActionsTable(self.loggedActionsWidget)
+        self.loggedActionsLayout.addWidget(self.loggedActionsTable, 0, 0, 1, 1)
         for col in columnVarSetting:
             self.settings.setting(col).valueChanged.connect(self.displayLoggedActions)
+
+        # difference viewer
+        self.differenceLayout = QGridLayout(self.differenceViewerWidget)
+        self.differenceViewer = DifferenceViewer(self.differenceViewerWidget)
+        self.differenceLayout.addWidget(self.differenceViewer, 0, 0, 1, 1)
 
         pkeyName = ""
         layer = self.layerComboManager.getLayer()

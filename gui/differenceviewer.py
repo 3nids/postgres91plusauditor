@@ -1,4 +1,4 @@
-from PyQt4.QtGui import QTableWidget,QTableWidgetItem
+from PyQt4.QtGui import QTableWidget, QTableWidgetItem, QSizePolicy
 
 
 class DifferenceViewer(QTableWidget):
@@ -7,6 +7,11 @@ class DifferenceViewer(QTableWidget):
         for c,header in enumerate(("Field", "Current", "_date_")):
             self.insertColumn(c)
             self.setHorizontalHeaderItem(c, QTableWidgetItem(header))
+
+            self.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
+            self.adjustSize()
+
+
 
     def displayDifference(self, layerFeature, logRow):
         pass
