@@ -71,7 +71,7 @@ class LogResultRow():
         if geometry is None:
             return ""
         else:
-            return QString(u"\u2713")  # check sign
+            return QString(u"\u2713")  # i.e. check sign
 
     def data(self):
         out = dict()
