@@ -1,5 +1,5 @@
 from PyQt4.QtCore import Qt
-from PyQt4.QtGui import QTableWidget, QTableWidgetItem, QAbstractItemView, QSizePolicy
+from PyQt4.QtGui import QTableWidget, QTableWidgetItem, QAbstractItemView
 
 from ..src.mysettings import MySettings
 from ..src.loglayer import columnVarSetting, columnFancyName, columnRowName
@@ -31,11 +31,14 @@ class LoggedActionsTable(QTableWidget):
         for r in range(self.rowCount() - 1, -1, -1):
             self.removeRow(r)
         c = 0
-        for i,col in enumerate(columnVarSetting):
+        for i, col in enumerate(columnVarSetting):
             if self.settings.value(col):
                 self.insertColumn(c)
                 item = QTableWidgetItem(columnFancyName[i])
                 item.setData(Qt.UserRole, columnRowName[i])
+                font = item.font()
+                font.setPointSize(font.pointSize() - 2)
+                item.setFont(font)
                 self.setHorizontalHeaderItem(c, item)
                 c += 1
         self.horizontalHeader().setMinimumSectionSize(15)
@@ -50,15 +53,21 @@ class LoggedActionsTable(QTableWidget):
 
             for c in range(self.columnCount()):
                 crn = self.horizontalHeaderItem(c).data(Qt.UserRole).toString()
-                print crn
-                dataStr = eval("row." + crn + "()")
+                dataStr = eval("row.%s()" % crn)
                 if crn == "dateStr":
                     item = LoggedActiontItem(dataStr)
                 else:
                     item = QTableWidgetItem(dataStr)
                 item.setData(Qt.UserRole, row.dateMs)
                 item.setFlags(Qt.ItemIsEnabled | Qt.ItemIsSelectable)
-                self.tableViewTable.setItem(r, c, item)
+                if crn in ("user", "action", "changedGeometry"):
+                    item.setTextAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
+                else:
+                    item.setTextAlignment(Qt.AlignVCenter)
+                font = item.font()
+                font.setPointSize(font.pointSize() - 2)
+                item.setFont(font)
+                self.setItem(r, c, item)
                 c += 1
         self.resizeColumnsToContents()
         self.sortByColumn(0, Qt.DescendingOrder)

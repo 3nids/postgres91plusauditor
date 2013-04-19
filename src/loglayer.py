@@ -55,10 +55,12 @@ class LogLayer(QObject):
         else:
             layerFeature.setFields(layer.dataProvider().fields())
         self.results.setFeature(layerFeature)
-        
+
+        # set query subset for layer to drastically improve search speed
         if self.settings.value("redefineSubset"):
-            subset = "schema_name = %s and table_name = %s" % (dataUri.schema(), dataUri.table())
-            self.layer.setSubsetString(subset)
+            subset = "schema_name = '%s' and table_name = '%s'" % (dataUri.schema(), dataUri.table())
+            if not self.layer.setSubsetString(subset):
+                raise NameError("Subset could not be set.")
 
         self.continueSearch = True
         logFeature = QgsFeature()
@@ -72,7 +74,8 @@ class LogLayer(QObject):
             QCoreApplication.processEvents()
             if not self.continueSearch:
                 break
-            if logFeature.attribute("schema_name").toString() == dataUri.schema() and logFeature.attribute("table_name").toString() == dataUri.table():
+            if logFeature.attribute("schema_name").toString() == dataUri.schema() and \
+               logFeature.attribute("table_name").toString() == dataUri.table():
                 row = LogResultRow(logFeature, layerFeature, pkeyName, geomColumn)
                 if featureId == 0 or row.logFeatureId == featureId:
                     self.results.addRow(row)

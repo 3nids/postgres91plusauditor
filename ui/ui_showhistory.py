@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/ui_showhistory.ui'
 #
-# Created: Fri Apr 19 08:02:35 2013
+# Created: Fri Apr 19 09:16:40 2013
 #      by: PyQt4 UI code generator 4.9.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -108,10 +108,17 @@ class Ui_showHistory(object):
         self.gridLayout_4.setMargin(0)
         self.gridLayout_4.setObjectName(_fromUtf8("gridLayout_4"))
         self.groupBox = QgsCollapsibleGroupBoxBasic(self.historyPanel)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Maximum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.groupBox.sizePolicy().hasHeightForWidth())
+        self.groupBox.setSizePolicy(sizePolicy)
         self.groupBox.setCheckable(False)
         self.groupBox.setProperty("collapsed", True)
         self.groupBox.setObjectName(_fromUtf8("groupBox"))
         self.gridLayout_2 = QtGui.QGridLayout(self.groupBox)
+        self.gridLayout_2.setMargin(3)
+        self.gridLayout_2.setSpacing(3)
         self.gridLayout_2.setObjectName(_fromUtf8("gridLayout_2"))
         self.scrollArea = QtGui.QScrollArea(self.groupBox)
         self.scrollArea.setMaximumSize(QtCore.QSize(300, 120))
@@ -119,7 +126,7 @@ class Ui_showHistory(object):
         self.scrollArea.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
         self.scrollArea.setObjectName(_fromUtf8("scrollArea"))
         self.scrollAreaWidgetContents = QtGui.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 298, 118))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 298, 112))
         self.scrollAreaWidgetContents.setObjectName(_fromUtf8("scrollAreaWidgetContents"))
         self.gridLayout_9 = QtGui.QGridLayout(self.scrollAreaWidgetContents)
         self.gridLayout_9.setMargin(3)
@@ -166,14 +173,14 @@ class Ui_showHistory(object):
         self.gridLayout_5.setMargin(0)
         self.gridLayout_5.setMargin(0)
         self.gridLayout_5.setObjectName(_fromUtf8("gridLayout_5"))
-        spacerItem2 = QtGui.QSpacerItem(20, 20, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Minimum)
-        self.gridLayout_5.addItem(spacerItem2, 0, 1, 1, 1)
         self.pushButton_2 = QtGui.QPushButton(self.featurePanel)
         self.pushButton_2.setObjectName(_fromUtf8("pushButton_2"))
         self.gridLayout_5.addWidget(self.pushButton_2, 0, 2, 1, 1)
+        spacerItem2 = QtGui.QSpacerItem(20, 20, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Minimum)
+        self.gridLayout_5.addItem(spacerItem2, 0, 1, 1, 1)
         self.differenceViewerWidget = QtGui.QWidget(self.featurePanel)
         self.differenceViewerWidget.setObjectName(_fromUtf8("differenceViewerWidget"))
-        self.gridLayout_5.addWidget(self.differenceViewerWidget, 1, 0, 1, 3)
+        self.gridLayout_5.addWidget(self.differenceViewerWidget, 1, 1, 1, 2)
         self.gridLayout_6.addWidget(self.splitter, 4, 0, 1, 4)
 
         self.retranslateUi(showHistory)
