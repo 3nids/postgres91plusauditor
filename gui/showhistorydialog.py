@@ -29,8 +29,19 @@ class ShowHistoryDialog(QDialog, Ui_showHistory, SettingDialog):
 
         self.rejectLater.connect(self.reject, Qt.QueuedConnection)
         self.buttonDisplayMode(False)
+
+        self.featureEdit.setText("%s" % featureId)
+
+        # setup layer - field combo, with primary key selector as field
+        pkeyName = ""
         self.layerComboManager = VectorLayerCombo(legendInterface, self.layerCombo, layerId,
                                                   {"dataProvider": "postgres"})
+        layer = self.layerComboManager.getLayer()
+        if layer is not None:
+            pkeyIdx = layer.dataProvider().pkAttributeIndexes()
+            if len(pkeyIdx) == 1:
+                pkeyName = layer.pendingFields()[pkeyIdx[0]].name()
+        self.fieldComboManager = FieldCombo(self.pkeyCombo, self.layerComboManager, pkeyName)
 
         # log layer
         self.logLayer = LogLayer()
@@ -44,20 +55,12 @@ class ShowHistoryDialog(QDialog, Ui_showHistory, SettingDialog):
         self.loggedActionsLayout.addWidget(self.loggedActionsTable, 0, 0, 1, 1)
         for col in columnVarSetting:
             self.settings.setting(col).valueChanged.connect(self.displayLoggedActions)
+        self.loggedActionsTable.itemClicked.connect(self.displayDifference)
 
         # difference viewer
         self.differenceLayout = QGridLayout(self.differenceViewerWidget)
         self.differenceViewer = DifferenceViewer(self.differenceViewerWidget)
         self.differenceLayout.addWidget(self.differenceViewer, 0, 0, 1, 1)
-
-        pkeyName = ""
-        layer = self.layerComboManager.getLayer()
-        if layer is not None:
-            pkeyIdx = layer.dataProvider().pkAttributeIndexes()
-            if len(pkeyIdx) == 1:
-                pkeyName = layer.pendingFields()[pkeyIdx[0]].name()
-        self.fieldComboManager = FieldCombo(self.pkeyCombo, self.layerComboManager, pkeyName)
-        self.featureEdit.setText("%s" % featureId)
 
         #TODO: disable geometry checkbox if layer has no geom
 
@@ -107,13 +110,8 @@ class ShowHistoryDialog(QDialog, Ui_showHistory, SettingDialog):
         self.loggedActionsTable.displayColumns()
         self.loggedActionsTable.displayRows(self.logLayer.results)
 
-    def updateDifferenceDisplay(self):
-        selected = self.resultsTable.selectedItems()
-        if len(selected) != 1:
-            self.differenceViewer.clearContents()
-        rowId = selected.data(Qt.UserRole).toInt()[0]
+    def displayDifference(self, item):
+        rowId = item.data(Qt.UserRole).toLongLong()[0]
         logRow = self.logLayer.results[rowId]
-        feat = self.logLayer.logFeature
-
-    def displayDifferenceInTable(self):
-        self.tableView.clear()
+        feat = self.logLayer.layerFeature
+        print logRow, feat

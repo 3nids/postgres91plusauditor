@@ -3,7 +3,7 @@ from qgis.core import QgsMapLayerRegistry, QgsFeature, QgsFeatureRequest, QgsDat
 
 
 from mysettings import MySettings
-from logresults import LogResults, LogResultRow
+from logresultrow import LogResultRow
 
 # tuplets for settings, display name, and row-data property
 columnVarSetting    = ("displayColumnDate", "displayColumnUser", "displayColumnAction", "displayColumnChangedGeometry", "displayColumnChangedFields", "displayColumnApplication", "displayColumnClientIP", "displayColumnClientPort")
@@ -19,9 +19,10 @@ class LogLayer(QObject):
     def __init__(self):
         QObject.__init__(self)
         self.settings = MySettings()
-        self.results = LogResults()
+        self.results = dict()
         self.continueSearch = True
         self.layer = None
+        self.layerFeature = QgsFeature()
 
     def isValid(self):
         self.layer = QgsMapLayerRegistry.instance().mapLayer(self.settings.value("logLayer"))
@@ -45,16 +46,15 @@ class LogLayer(QObject):
         dataUri = QgsDataSourceURI(layer.dataProvider().dataSourceUri())
         geomColumn = dataUri.geometryColumn()
 
-        layerFeature = QgsFeature()
+        self.layerFeature = QgsFeature()
         if featureId != 0:
             featReq = QgsFeatureRequest().setFilterFid(featureId)
             if not layer.hasGeometryType():
                 featReq.setFlags(QgsFeatureRequest.NoGeometry)
-            if layer.getFeatures(featReq).nextFeature(layerFeature) is False:
+            if layer.getFeatures(featReq).nextFeature(self.layerFeature) is False:
                 return None
         else:
-            layerFeature.setFields(layer.dataProvider().fields())
-        self.results.setFeature(layerFeature)
+            self.layerFeature.setFields(layer.dataProvider().fields())
 
         # set query subset for layer to drastically improve search speed
         if self.settings.value("redefineSubset"):
@@ -78,7 +78,7 @@ class LogLayer(QObject):
                logFeature.attribute("table_name").toString() == dataUri.table():
                 row = LogResultRow(logFeature, layerFeature, pkeyName, geomColumn)
                 if featureId == 0 or row.logFeatureId == featureId:
-                    self.results.addRow(row)
+                    self.results[row.dateMs] = row
             k += 1
         if self.settings.value("redefineSubset"):
             self.layer.setSubsetString("")

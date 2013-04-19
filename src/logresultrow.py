@@ -10,23 +10,6 @@ dataReWithQuote = re.compile('\s*".*?[^\\\\]"')
 dataReWithoutQuote = re.compile('.*?, ')
 
 
-class LogResults(dict):
-    def __init__(self):
-        self.layerFeature = QgsFeature()
-
-    def geometry(self):
-        self.layerFeature.geometry()
-
-    def clear(self):
-        dict.clear(self)
-
-    def setFeature(self, layerFeature):
-        self.layerFeature = layerFeature
-
-    def addRow(self, row):
-        self[row.dateMs] = row
-
-
 class LogResultRow():
     def __init__(self, logFeature, layerFeature, pkeyName, geomColumn):
         self.fields = layerFeature.fields()
