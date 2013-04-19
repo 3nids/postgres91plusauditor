@@ -68,7 +68,7 @@ class LoggedActionsTable(QTableWidget):
                 font.setPointSize(font.pointSize() - 2)
                 item.setFont(font)
                 self.setItem(r, c, item)
-                c += 1
+
         self.resizeColumnsToContents()
         self.sortByColumn(0, Qt.DescendingOrder)
 

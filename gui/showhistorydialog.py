@@ -37,7 +37,6 @@ class ShowHistoryDialog(QDialog, Ui_showHistory, SettingDialog):
         self.featureEdit.setText("%s" % featureId)
 
         # setup layer - field combo, with primary key selector as field
-        pkeyName = ""
         self.layerComboManager = VectorLayerCombo(legendInterface, self.layerCombo, layerId,
                                                   {"dataProvider": "postgres"})
         pkeyLambda = lambda: primaryKey(self.layerComboManager.getLayer())
