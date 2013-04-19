@@ -38,25 +38,29 @@ class LogLayer(QObject):
     def interrupt(self):
         self.continueSearch = False
 
-    def performSearch(self, layer, featureId, pkeyName, onlyGeometry=False):
+    def performSearch(self, featureLayer, featureId, pkeyName, onlyGeometry=False):
         self.results.clear()
         if not self.isValid():
-            return None
+            return
 
-        dataUri = QgsDataSourceURI(layer.dataProvider().dataSourceUri())
+        dataUri = QgsDataSourceURI(featureLayer.dataProvider().dataSourceUri())
         geomColumn = dataUri.geometryColumn()
 
+        # initiate the layer feature (feature at given ID, or an empty feature otherwise)
         self.layerFeature = QgsFeature()
+        noGeometry = False
         if featureId != 0:
             featReq = QgsFeatureRequest().setFilterFid(featureId)
-            if not layer.hasGeometryType():
+            if not featureLayer.hasGeometryType():
+                noGeometry = True
                 featReq.setFlags(QgsFeatureRequest.NoGeometry)
-            if layer.getFeatures(featReq).nextFeature(self.layerFeature) is False:
-                return None
+            if featureLayer.getFeatures(featReq).nextFeature(self.layerFeature) is False:
+                self.layerFeature.setFields(featureLayer.dataProvider().fields())
         else:
-            self.layerFeature.setFields(layer.dataProvider().fields())
+            self.layerFeature.setFields(featureLayer.dataProvider().fields())
 
         # set query subset for layer to drastically improve search speed
+        # todo: if a subset already exists, should give a warning
         if self.settings.value("redefineSubset"):
             subset = "schema_name = '%s' and table_name = '%s'" % (dataUri.schema(), dataUri.table())
             if not self.layer.setSubsetString(subset):

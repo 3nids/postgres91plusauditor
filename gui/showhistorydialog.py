@@ -16,7 +16,8 @@ from loggedactionstable import LoggedActionsTable
 
 
 class ShowHistoryDialog(QDialog, Ui_showHistory, SettingDialog):
-    rejectLater = pyqtSignal()
+    rejectShowEvent = pyqtSignal()
+    performSearchAtShowEvent = pyqtSignal()
 
     def __init__(self, legendInterface, layerId=None, featureId=None):
         QDialog.__init__(self)
@@ -27,7 +28,9 @@ class ShowHistoryDialog(QDialog, Ui_showHistory, SettingDialog):
         self.layerId = layerId
         self.featureId = featureId
 
-        self.rejectLater.connect(self.reject, Qt.QueuedConnection)
+        self.rejectShowEvent.connect(self.reject, Qt.QueuedConnection)
+        self.performSearchAtShowEvent.connect(self.on_searchButton_clicked, Qt.QueuedConnection)
+        
         self.buttonDisplayMode(False)
 
         self.featureEdit.setText("%s" % featureId)
@@ -62,27 +65,30 @@ class ShowHistoryDialog(QDialog, Ui_showHistory, SettingDialog):
         self.differenceViewer = DifferenceViewer(self.differenceViewerWidget)
         self.differenceLayout.addWidget(self.differenceViewer, 0, 0, 1, 1)
 
+        self.adjustSize()
+
         #TODO: disable geometry checkbox if layer has no geom
 
     def showEvent(self, e):
         SettingDialog.showEvent(self, e)
         while not self.logLayer.isValid():
             if not LogLayerChooserDialog(self.legendInterface).exec_():
-                self.rejectLater.emit()
+                self.rejectShowEvent.emit()
                 return
         if self.layerId is not None:
             self.layerCombo.setEnabled(False)
             layer = self.layerComboManager.getLayer()
             if layer is None:
-                self.rejectLater.emit()
+                self.rejectShowEvent.emit()
                 return
         if self.featureId is not None:
             self.featureEdit.setEnabled(False)
             f = QgsFeature()
             featReq = QgsFeatureRequest().setFilterFid(self.featureId).setFlags(QgsFeatureRequest.NoGeometry)
             if layer.getFeatures(featReq).nextFeature(f) is False:
-                self.rejectLater.emit()
+                self.rejectShowEvent.emit()
                 return
+            self.performSearchAtShowEvent.emit()
 
     @pyqtSignature("on_stopButton_clicked()")
     def on_stopButton_clicked(self):
