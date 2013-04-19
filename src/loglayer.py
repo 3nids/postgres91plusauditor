@@ -76,7 +76,7 @@ class LogLayer(QObject):
                 break
             if logFeature.attribute("schema_name").toString() == dataUri.schema() and \
                logFeature.attribute("table_name").toString() == dataUri.table():
-                row = LogResultRow(logFeature, layerFeature, pkeyName, geomColumn)
+                row = LogResultRow(logFeature, self.layerFeature, pkeyName, geomColumn)
                 if featureId == 0 or row.logFeatureId == featureId:
                     self.results[row.dateMs] = row
             k += 1

@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/ui_showhistory.ui'
 #
-# Created: Fri Apr 19 10:31:55 2013
+# Created: Fri Apr 19 11:45:58 2013
 #      by: PyQt4 UI code generator 4.9.1
 #
 # WARNING! All changes made in this file will be lost!

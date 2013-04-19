@@ -1,4 +1,4 @@
-from PyQt4.QtCore import *
+from PyQt4.QtCore import Qt, pyqtSignal, pyqtSignature
 from PyQt4.QtGui import QDialog, QGridLayout
 from qgis.core import QgsFeature, QgsFeatureRequest
 
@@ -113,5 +113,4 @@ class ShowHistoryDialog(QDialog, Ui_showHistory, SettingDialog):
     def displayDifference(self, item):
         rowId = item.data(Qt.UserRole).toLongLong()[0]
         logRow = self.logLayer.results[rowId]
-        feat = self.logLayer.layerFeature
-        print logRow, feat
+        self.differenceViewer.display(self.logLayer.layerFeature, logRow)
