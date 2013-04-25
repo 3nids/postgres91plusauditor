@@ -23,7 +23,6 @@ class LogLayer(QObject):
         self.continueSearch = True
         self.layer = None
         self.layerFeature = QgsFeature()
-        self.hasGeometry = True
 
     def isValid(self):
         self.layer = QgsMapLayerRegistry.instance().mapLayer(self.settings.value("logLayer"))
@@ -47,10 +46,8 @@ class LogLayer(QObject):
         dataUri = QgsDataSourceURI(featureLayer.dataProvider().dataSourceUri())
         if featureLayer.hasGeometryType():
             geomColumn = dataUri.geometryColumn()
-            self.hasGeometry = True
         else:
             geomColumn = None
-            self.hasGeometry = False
 
         # initiate the layer feature (feature at given ID, or an empty feature otherwise)
         self.layerFeature = QgsFeature()

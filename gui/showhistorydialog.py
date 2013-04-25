@@ -1,6 +1,7 @@
 from PyQt4.QtCore import Qt, pyqtSignal, pyqtSignature
 from PyQt4.QtGui import QDialog, QGridLayout
 from qgis.core import QgsFeature, QgsFeatureRequest
+from qgis.gui import QgsRubberBand
 
 from ..qgistools.gui import VectorLayerCombo, FieldCombo
 from ..qgistools.settingmanager import SettingDialog
@@ -20,14 +21,19 @@ class ShowHistoryDialog(QDialog, Ui_showHistory, SettingDialog):
     rejectShowEvent = pyqtSignal()
     performSearchAtShowEvent = pyqtSignal()
 
-    def __init__(self, legendInterface, layerId=None, featureId=None):
+    def __init__(self, iface, layerId=None, featureId=None):
         QDialog.__init__(self)
         self.setupUi(self)
         self.settings = MySettings()
         SettingDialog.__init__(self, self.settings, False, True)  # column chooser, advanced search options
-        self.legendInterface = legendInterface
+        self.legendInterface = iface.legendInterface()
         self.layerId = layerId
         self.featureId = featureId
+
+        self.layer = None
+        self.rubber = QgsRubberBand(iface.mapCanvas())
+
+        self.panShowGeometry.clicked.connect(self.displayGeomDifference)
 
         self.rejectShowEvent.connect(self.reject, Qt.QueuedConnection)
         self.performSearchAtShowEvent.connect(self.on_searchButton_clicked, Qt.QueuedConnection)
@@ -37,7 +43,7 @@ class ShowHistoryDialog(QDialog, Ui_showHistory, SettingDialog):
         self.featureEdit.setText("%s" % featureId)
 
         # setup layer - field combo, with primary key selector as field
-        self.layerComboManager = VectorLayerCombo(legendInterface, self.layerCombo, layerId,
+        self.layerComboManager = VectorLayerCombo(self.legendInterface, self.layerCombo, layerId,
                                                   {"dataProvider": "postgres"})
         pkeyLambda = lambda: primaryKey(self.layerComboManager.getLayer())
         self.fieldComboManager = FieldCombo(self.pkeyCombo, self.layerComboManager, pkeyLambda)
@@ -92,16 +98,16 @@ class ShowHistoryDialog(QDialog, Ui_showHistory, SettingDialog):
 
     @pyqtSignature("on_searchButton_clicked()")
     def on_searchButton_clicked(self):
-        layer = self.layerComboManager.getLayer()
+        self.layer = self.layerComboManager.getLayer()
         pkeyName = self.fieldComboManager.getFieldName()
         featureId = self.featureEdit.text().toInt()[0]
         onlyGeometry = self.settings.value("searchOnlyGeometry")
-        if layer is None or pkeyName == "":
+        if self.layer is None or pkeyName == "":
             return
         self.buttonDisplayMode(True)
-        self.logLayer.performSearch(layer, featureId, pkeyName, onlyGeometry)
+        self.logLayer.performSearch(self.layer, featureId, pkeyName, onlyGeometry)
         self.buttonDisplayMode(False)
-        self.panShowGeometry.setEnabled(self.logLayer.hasGeometry)
+        self.panShowGeometry.setEnabled(self.layer.hasGeometryType())
         self.displayLoggedActions()
 
     def buttonDisplayMode(self, searchOn):
@@ -110,14 +116,26 @@ class ShowHistoryDialog(QDialog, Ui_showHistory, SettingDialog):
         self.progressBar.setVisible(searchOn)
 
     def displayLoggedActions(self, dummy=None):
-        self.loggedActionsTable.displayColumns(self.logLayer.hasGeometry)
+        self.loggedActionsTable.displayColumns(self.layer.hasGeometryType())
         self.loggedActionsTable.displayRows(self.logLayer.results)
 
     def displayDifference(self, item):
         rowId = item.data(Qt.UserRole).toLongLong()[0]
         logRow = self.logLayer.results[rowId]
         self.differenceViewer.display(self.logLayer.layerFeature, logRow)
-        # pan to difference
-        if self.logLayer.hasGeometry and self.panShowGeometry.isChecked():
-            # todo
-            pass
+        self.displayGeomDifference()
+
+    def displayGeomDifference(self):
+        self.rubber.reset()
+        item = self.loggedActionsTable.selectedItems()
+        if len(item) == 0:
+            return
+        rowId = item[0].data(Qt.UserRole).toLongLong()[0]
+        logRow = self.logLayer.results[rowId]
+
+        if self.layer.hasGeometryType() and self.panShowGeometry.isChecked():
+            geom = logRow.geometry()
+            print geom.exportToWkt()
+            self.rubber.setToGeometry(geom, self.layer)
+
+

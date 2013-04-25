@@ -49,7 +49,7 @@ class Postgres91plusAuditor():
     def showHistory(self, layerId=None, featureId=None):
         if layerId is False:
             layerId = None
-        ShowHistoryDialog(self.iface.legendInterface(), layerId, featureId).exec_()
+        ShowHistoryDialog(self.iface, layerId, featureId).exec_()
 
     def addLayersActions(self):
         for layerid, layer in QgsMapLayerRegistry.instance().mapLayers().iteritems():
