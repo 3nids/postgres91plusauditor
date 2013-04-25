@@ -24,7 +24,7 @@ class LoggedActionsTable(QTableWidget):
 
         self.adjustSize()
 
-    def displayColumns(self):
+    def displayColumns(self, geomColumn=True):
         self.clear()
         for c in range(self.columnCount() - 1, -1, -1):
             self.removeColumn(c)
@@ -33,6 +33,8 @@ class LoggedActionsTable(QTableWidget):
         c = 0
         for i, col in enumerate(columnVarSetting):
             if self.settings.value(col):
+                if columnRowName[c] == "changedGeometry" and geomColumn is not True:
+                    continue
                 self.insertColumn(c)
                 item = QTableWidgetItem(columnFancyName[i])
                 item.setData(Qt.UserRole, columnRowName[i])

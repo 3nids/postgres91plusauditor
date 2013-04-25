@@ -9,7 +9,7 @@ pluginName = "postgres91plusauditor"
 
 import resources
 
-# run manually qgis.utils.plugins["postgres91plusauditor"].showHistory("district20130415084007763",1)
+# run manually qgis.utils.plugins["postgres91plusauditor"].showHistory("district20130425093453834",1)
 
 
 class Postgres91plusAuditor():

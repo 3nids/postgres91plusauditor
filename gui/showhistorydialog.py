@@ -101,6 +101,7 @@ class ShowHistoryDialog(QDialog, Ui_showHistory, SettingDialog):
         self.buttonDisplayMode(True)
         self.logLayer.performSearch(layer, featureId, pkeyName, onlyGeometry)
         self.buttonDisplayMode(False)
+        self.panShowGeometry.setEnabled(self.logLayer.hasGeometry)
         self.displayLoggedActions()
 
     def buttonDisplayMode(self, searchOn):
@@ -109,10 +110,14 @@ class ShowHistoryDialog(QDialog, Ui_showHistory, SettingDialog):
         self.progressBar.setVisible(searchOn)
 
     def displayLoggedActions(self, dummy=None):
-        self.loggedActionsTable.displayColumns()
+        self.loggedActionsTable.displayColumns(self.logLayer.hasGeometry)
         self.loggedActionsTable.displayRows(self.logLayer.results)
 
     def displayDifference(self, item):
         rowId = item.data(Qt.UserRole).toLongLong()[0]
         logRow = self.logLayer.results[rowId]
         self.differenceViewer.display(self.logLayer.layerFeature, logRow)
+        # pan to difference
+        if self.logLayer.hasGeometry and self.panShowGeometry.isChecked():
+            # todo
+            pass
