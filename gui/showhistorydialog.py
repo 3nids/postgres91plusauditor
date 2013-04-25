@@ -71,6 +71,9 @@ class ShowHistoryDialog(QDialog, Ui_showHistory, SettingDialog):
 
         #TODO: disable geometry checkbox if layer has no geom
 
+    def closeEvent(self, e):
+        self.rubber.reset()
+
     def showEvent(self, e):
         SettingDialog.showEvent(self, e)
         while not self.logLayer.isValid():
