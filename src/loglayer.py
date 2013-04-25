@@ -57,7 +57,8 @@ class LogLayer(QObject):
             if featureLayer.getFeatures(featReq).nextFeature(self.layerFeature) is False:
                 self.layerFeature.setFields(featureLayer.dataProvider().fields())
         else:
-            self.layerFeature.setFields(featureLayer.dataProvider().fields())
+            fields = featureLayer.dataProvider().fields()
+            self.layerFeature.setFields(fields)
 
         # set query subset for layer to drastically improve search speed
         # todo: if a subset already exists, should give a warning
