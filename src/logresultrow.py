@@ -42,13 +42,13 @@ class LogResultRow():
     def action(self):
         action = self.logFeature.attribute("action").toString()
         if action == "I":
-            return QString(u"\u002B") # plus sign
+            #return QString(u"\u002B") # plus sign
             return "insert"
         if action == "U":
-            return QString(u"\u2713") # check sign
+            #return QString(u"\u2713") # check sign
             return "update"
         if action == "D":
-            return QString(u"\u2A2F") # cross sign
+            #return QString(u"\u2A2F") # cross sign
             return "delete"
         raise NameError("Invalid action %s" % action)
 

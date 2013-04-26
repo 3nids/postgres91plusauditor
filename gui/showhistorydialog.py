@@ -60,7 +60,7 @@ class ShowHistoryDialog(QDialog, Ui_showHistory, SettingDialog):
         self.loggedActionsLayout.addWidget(self.loggedActionsTable, 0, 0, 1, 1)
         for col in columnVarSetting:
             self.settings.setting(col).valueChanged.connect(self.displayLoggedActions)
-        self.loggedActionsTable.itemClicked.connect(self.displayDifference)
+        self.loggedActionsTable.itemSelectionChanged.connect(self.displayDifference)
 
         # difference viewer
         self.differenceLayout = QGridLayout(self.differenceViewerWidget)
@@ -132,7 +132,11 @@ class ShowHistoryDialog(QDialog, Ui_showHistory, SettingDialog):
         self.loggedActionsTable.displayColumns(self.layer.hasGeometryType())
         self.loggedActionsTable.displayRows(self.logLayer.results)
 
-    def displayDifference(self, item):
+    def displayDifference(self):
+        self.differenceViewer.clear()
+        item = self.loggedActionsTable.selectedItems()
+        if len(item) == 0:
+            return
         rowId = item.data(Qt.UserRole).toLongLong()[0]
         logRow = self.logLayer.results[rowId]
         self.differenceViewer.display(self.logLayer.layerFeature, logRow)
@@ -149,5 +153,8 @@ class ShowHistoryDialog(QDialog, Ui_showHistory, SettingDialog):
         if self.layer.hasGeometryType() and self.panShowGeometry.isChecked():
             geom = logRow.geometry()
             self.rubber.setToGeometry(geom, self.layer)
+
+            # todo pan
+            #self.mapRenderer.layerToMapCoordinates(self.layer, )
 
 

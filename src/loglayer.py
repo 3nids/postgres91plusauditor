@@ -82,12 +82,8 @@ class LogLayer(QObject):
             if not searchBeforeDate.isNull():
                 subset += " and action_tstamp_tx <= '%s'" % searchBeforeDate.toString("yyyy-MM-dd hh:mm:ss")
 
-            print subset, searchAfterDate
-
             if not self.layer.setSubsetString(subset):
                 raise NameError("Subset could not be set.")
-
-            print self.layer.subsetString()
 
         self.continueSearch = True
         logFeature = QgsFeature()
@@ -101,6 +97,7 @@ class LogLayer(QObject):
             QCoreApplication.processEvents()
             if not self.continueSearch:
                 break
+            # this condition is redundant if layer subset string is used
             if logFeature.attribute("schema_name").toString() == dataUri.schema() and \
                logFeature.attribute("table_name").toString() == dataUri.table() and \
                (searchInserts and logFeature.attribute("action") == 'I' or
@@ -118,7 +115,3 @@ class LogLayer(QObject):
             k += 1
         if self.settings.value("redefineSubset"):
             self.layer.setSubsetString("")
-
-
-
-
