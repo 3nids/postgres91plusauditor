@@ -307,9 +307,7 @@
         </spacer>
        </item>
        <item row="0" column="0" colspan="3">
-        <widget class="QWidget" name="differenceViewerWidget" native="true">
-         <zorder>pushButton_2</zorder>
-        </widget>
+        <widget class="QWidget" name="differenceViewerWidget" native="true"/>
        </item>
       </layout>
      </widget>
@@ -334,7 +332,7 @@
        <number>6</number>
       </property>
       <item row="0" column="2">
-       <widget class="QCheckBox" name="deleteCheckBox">
+       <widget class="QCheckBox" name="searchDeletes">
         <property name="text">
          <string>Delete</string>
         </property>
@@ -344,21 +342,21 @@
        </widget>
       </item>
       <item row="1" column="4">
-       <widget class="QCheckBox" name="beforeCheckBox">
+       <widget class="QCheckBox" name="searchBefore">
         <property name="text">
          <string>before</string>
         </property>
        </widget>
       </item>
       <item row="1" column="5">
-       <widget class="QDateTimeEdit" name="beforeDateTimeEdit">
+       <widget class="QDateTimeEdit" name="searchBeforeDate">
         <property name="calendarPopup">
          <bool>true</bool>
         </property>
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="QCheckBox" name="updateCheckBox">
+       <widget class="QCheckBox" name="searchUpdates">
         <property name="text">
          <string>Updates</string>
         </property>
@@ -368,7 +366,7 @@
        </widget>
       </item>
       <item row="0" column="4">
-       <widget class="QCheckBox" name="afterCheckbox">
+       <widget class="QCheckBox" name="searchAfter">
         <property name="text">
          <string>after</string>
         </property>
@@ -388,7 +386,7 @@
        </widget>
       </item>
       <item row="0" column="0">
-       <widget class="QCheckBox" name="insertCheckBox">
+       <widget class="QCheckBox" name="searchInserts">
         <property name="text">
          <string>Insert</string>
         </property>
@@ -398,7 +396,7 @@
        </widget>
       </item>
       <item row="0" column="5">
-       <widget class="QDateTimeEdit" name="afterDateTimeEdit">
+       <widget class="QDateTimeEdit" name="searchAfterDate">
         <property name="buttonSymbols">
          <enum>QAbstractSpinBox::UpDownArrows</enum>
         </property>

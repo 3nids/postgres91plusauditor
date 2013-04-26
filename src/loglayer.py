@@ -1,4 +1,4 @@
-from PyQt4.QtCore import QCoreApplication, pyqtSignal, QObject
+from PyQt4.QtCore import QCoreApplication, pyqtSignal, QObject, QDateTime
 from qgis.core import QgsMapLayerRegistry, QgsFeature, QgsFeatureRequest, QgsDataSourceURI
 
 
@@ -8,7 +8,7 @@ from logresultrow import LogResultRow
 # tuplets for settings, display name, and row-data property
 columnVarSetting    = ("displayColumnDate", "displayColumnUser", "displayColumnAction", "displayColumnChangedGeometry", "displayColumnChangedFields", "displayColumnApplication", "displayColumnClientIP", "displayColumnClientPort")
 columnFancyName     = ("Date"             , "User"             , "Action"             , "G"                           , "Fields"                    , "Application"             , "Client IP"            , "Client port")
-columnRowName       = ("dateStr"          , "user"             , "action"             , "changedGeometry"             , "changedFields"             , "application"             , "clientIP"             , "clientPort")
+columnRowName       = ("dateStr"          , "user"             , "action"             , "changedGeometryStr"          , "changedFields"             , "application"             , "clientIP"             , "clientPort")
 
 
 class LogLayer(QObject):
@@ -38,7 +38,8 @@ class LogLayer(QObject):
     def interrupt(self):
         self.continueSearch = False
 
-    def performSearch(self, featureLayer, featureId, pkeyName, onlyGeometry=False):
+    def performSearch(self, featureLayer, featureId, pkeyName, searchInserts, searchUpdates, searchDeletes,
+                      searchOnlyGeometry, searchAfterDate, searchBeforeDate):
         self.results.clear()
         if not self.isValid():
             return
@@ -67,8 +68,26 @@ class LogLayer(QObject):
         # todo: if a subset already exists, should give a warning
         if self.settings.value("redefineSubset"):
             subset = "schema_name = '%s' and table_name = '%s'" % (dataUri.schema(), dataUri.table())
+            if not searchInserts or not searchUpdates or not searchDeletes:
+                subset += "and ("
+                if searchInserts:
+                    subset += " action = 'I' or"
+                if searchUpdates:
+                    subset += " action = 'U' or"
+                if searchDeletes:
+                    subset += " action = 'D' or"
+                subset = subset[:-3] + ")"
+            if not searchAfterDate.isNull():
+                subset += " and action_tstamp_tx >= '%s'" % searchAfterDate.toString("yyyy-MM-dd hh:mm:ss")
+            if not searchBeforeDate.isNull():
+                subset += " and action_tstamp_tx <= '%s'" % searchBeforeDate.toString("yyyy-MM-dd hh:mm:ss")
+
+            print subset, searchAfterDate
+
             if not self.layer.setSubsetString(subset):
                 raise NameError("Subset could not be set.")
+
+            print self.layer.subsetString()
 
         self.continueSearch = True
         logFeature = QgsFeature()
@@ -83,10 +102,19 @@ class LogLayer(QObject):
             if not self.continueSearch:
                 break
             if logFeature.attribute("schema_name").toString() == dataUri.schema() and \
-               logFeature.attribute("table_name").toString() == dataUri.table():
+               logFeature.attribute("table_name").toString() == dataUri.table() and \
+               (searchInserts and logFeature.attribute("action") == 'I' or
+                searchUpdates and logFeature.attribute("action") == 'U' or
+                searchDeletes and logFeature.attribute("action") == 'D') and \
+               (searchAfterDate.isNull() or logFeature.attribute("action_tstamp_tx").toDateTime() >= searchAfterDate.toString("yyyy-MM-dd hh:mm:ss")) and \
+               (searchBeforeDate.isNull() or logFeature.attribute("action_tstamp_tx").toDateTime() <= searchBeforeDate.toString("yyyy-MM-dd hh:mm:ss")):
                 row = LogResultRow(logFeature, self.layerFeature, pkeyName, geomColumn)
-                if featureId == 0 or row.logFeatureId == featureId:
-                    self.results[row.dateMs] = row
+                if featureId != 0 and row.logFeatureId != featureId:
+                    continue
+                if searchOnlyGeometry and not row.changedGeometry():
+                    continue
+
+                self.results[row.dateMs] = row
             k += 1
         if self.settings.value("redefineSubset"):
             self.layer.setSubsetString("")

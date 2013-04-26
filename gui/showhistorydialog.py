@@ -1,4 +1,4 @@
-from PyQt4.QtCore import Qt, pyqtSignal, pyqtSignature
+from PyQt4.QtCore import Qt, pyqtSignal, pyqtSignature, QDateTime
 from PyQt4.QtGui import QDialog, QGridLayout
 from qgis.core import QgsFeature, QgsFeatureRequest
 from qgis.gui import QgsRubberBand
@@ -103,12 +103,22 @@ class ShowHistoryDialog(QDialog, Ui_showHistory, SettingDialog):
     def on_searchButton_clicked(self):
         self.layer = self.layerComboManager.getLayer()
         pkeyName = self.fieldComboManager.getFieldName()
-        featureId = self.featureEdit.text().toInt()[0]
-        onlyGeometry = self.settings.value("searchOnlyGeometry")
         if self.layer is None or pkeyName == "":
             return
+        featureId = self.featureEdit.text().toInt()[0]
+        searchOnlyGeometry = self.searchOnlyGeometry.isChecked()
+        searchInserts = self.searchInserts.isChecked()
+        searchUpdates = self.searchUpdates.isChecked()
+        searchDeletes = self.searchDeletes.isChecked()
+        searchBeforeDate = QDateTime()
+        if self.searchBefore.isChecked():
+            searchBeforeDate = self.searchAfterDate.dateTime()
+        searchAfterDate = QDateTime()
+        if self.searchAfter.isChecked():
+            searchAfterDate = self.searchAfterDate.dateTime()
         self.buttonDisplayMode(True)
-        self.logLayer.performSearch(self.layer, featureId, pkeyName, onlyGeometry)
+        self.logLayer.performSearch(self.layer, featureId, pkeyName, searchInserts, searchUpdates, searchDeletes,
+                                    searchOnlyGeometry, searchAfterDate, searchBeforeDate)
         self.buttonDisplayMode(False)
         self.panShowGeometry.setEnabled(self.layer.hasGeometryType())
         self.displayLoggedActions()
@@ -138,7 +148,6 @@ class ShowHistoryDialog(QDialog, Ui_showHistory, SettingDialog):
 
         if self.layer.hasGeometryType() and self.panShowGeometry.isChecked():
             geom = logRow.geometry()
-            print geom.exportToWkt()
             self.rubber.setToGeometry(geom, self.layer)
 
 
