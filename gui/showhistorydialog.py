@@ -3,7 +3,7 @@ from PyQt4.QtGui import QDialog, QGridLayout
 from qgis.core import QgsFeature, QgsFeatureRequest
 from qgis.gui import QgsRubberBand
 
-from ..qgistools.gui import VectorLayerCombo, FieldCombo
+from ..qgistools.gui.layercombomanager import VectorLayerCombo, FieldCombo
 from ..qgistools.settingmanager import SettingDialog
 from ..qgistools.vectorlayer import primaryKey
 
@@ -45,7 +45,8 @@ class ShowHistoryDialog(QDialog, Ui_showHistory, SettingDialog):
 
         # setup layer - field combo, with primary key selector as field
         self.layerComboManager = VectorLayerCombo(self.legendInterface, self.layerCombo, layerId,
-                                                  {"dataProvider": "postgres"})
+                                                  {"dataProvider": "postgres", "finishInit": False})
+        self.layerComboManager.finishInit()
         pkeyLambda = lambda: primaryKey(self.layerComboManager.getLayer())
         self.fieldComboManager = FieldCombo(self.pkeyCombo, self.layerComboManager, pkeyLambda)
 
@@ -95,6 +96,11 @@ class ShowHistoryDialog(QDialog, Ui_showHistory, SettingDialog):
                 self.rejectShowEvent.emit()
                 return
             self.performSearchAtShowEvent.emit()
+
+    @pyqtSignature("on_layerCombo_currentIndexChanged(int)")
+    def on_layerCombo_currentIndexChanged(self, i):
+        self.layer = self.layerComboManager.getLayer()
+        self.panShowGeometry.setEnabled(self.layer is not None and self.layer.hasGeometryType())
 
     @pyqtSignature("on_stopButton_clicked()")
     def on_stopButton_clicked(self):
@@ -154,7 +160,6 @@ class ShowHistoryDialog(QDialog, Ui_showHistory, SettingDialog):
         if self.layer.hasGeometryType() and self.panShowGeometry.isChecked():
             geom = logRow.geometry()
             self.rubber.setToGeometry(geom, self.layer)
-
             panTo = self.mapCanvas.mapRenderer().layerExtentToOutputExtent(self.layer, geom.boundingBox())
             panTo.scale(1.5)
             self.mapCanvas.setExtent(panTo)
