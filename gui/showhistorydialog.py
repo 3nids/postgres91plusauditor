@@ -32,6 +32,7 @@ class ShowHistoryDialog(QDialog, Ui_showHistory, SettingDialog):
 
         self.layer = None
         self.rubber = QgsRubberBand(iface.mapCanvas())
+        self.mapCanvas = iface.mapCanvas()
 
         self.panShowGeometry.clicked.connect(self.displayGeomDifference)
 
@@ -137,7 +138,7 @@ class ShowHistoryDialog(QDialog, Ui_showHistory, SettingDialog):
         item = self.loggedActionsTable.selectedItems()
         if len(item) == 0:
             return
-        rowId = item.data(Qt.UserRole).toLongLong()[0]
+        rowId = item[0].data(Qt.UserRole).toLongLong()[0]
         logRow = self.logLayer.results[rowId]
         self.differenceViewer.display(self.logLayer.layerFeature, logRow)
         self.displayGeomDifference()
@@ -154,7 +155,10 @@ class ShowHistoryDialog(QDialog, Ui_showHistory, SettingDialog):
             geom = logRow.geometry()
             self.rubber.setToGeometry(geom, self.layer)
 
-            # todo pan
-            #self.mapRenderer.layerToMapCoordinates(self.layer, )
+            panTo = self.mapCanvas.mapRenderer().layerExtentToOutputExtent(self.layer, geom.boundingBox())
+            panTo.scale(1.5)
+            self.mapCanvas.setExtent(panTo)
+            self.mapCanvas.refresh()
+
 
 
