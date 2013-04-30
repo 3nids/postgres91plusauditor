@@ -6,7 +6,7 @@ Denis Rouzaud
 denis.rouzaud@gmail.com
 """
 
-from ..qgistools.settingmanager import *
+from ..qgissettingmanager import *
 
 pluginName = "postgres91plusauditor"
 

@@ -1,7 +1,7 @@
 from PyQt4.QtGui import QDialog
 
-from ..qgistools.settingmanager import SettingDialog
-from ..qgistools.layercombomanager import VectorLayerCombo
+from ..qgissettingmanager import SettingDialog
+from ..qgiscombomanager import VectorLayerCombo
 
 from ..src.mysettings import MySettings
 from ..src.loglayer import LogLayer
