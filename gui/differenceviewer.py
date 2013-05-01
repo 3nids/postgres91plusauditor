@@ -20,8 +20,7 @@ class DifferenceViewer(QTableWidget):
     def display(self, layerFeature, logRow):
         self.clearContents()
         self.setHorizontalHeaderItem(2, QTableWidgetItem(logRow.dateStr()))
-        while self.rowCount() > 0:
-            self.removeRow(0)
+        self.clearRows()
 
         for r, field in enumerate(layerFeature.fields()):
             self.insertRow(r)
@@ -41,3 +40,7 @@ class DifferenceViewer(QTableWidget):
             item = QTableWidgetItem(logValue)
             item.setFlags(Qt.ItemIsEnabled)
             self.setItem(r, 2, item)
+
+    def clearRows(self):
+        while self.rowCount() > 0:
+            self.removeRow(0)

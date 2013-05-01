@@ -136,13 +136,13 @@ class ShowHistoryDialog(QDialog, Ui_showHistory, SettingDialog):
         self.progressBar.setVisible(searchOn)
 
     def displayLoggedActions(self):
-        self.differenceViewer.clear()
+        self.differenceViewer.clearRows()
         self.loggedActionsTable.data = self.logLayer.results
         self.loggedActionsTable.displayColumns()
         self.loggedActionsTable.displayRows()
 
     def displayDifference(self):
-        self.differenceViewer.clear()
+        self.differenceViewer.clearRows()
         item = self.loggedActionsTable.selectedItems()
         if len(item) == 0:
             return
