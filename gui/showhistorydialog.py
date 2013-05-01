@@ -60,9 +60,8 @@ class ShowHistoryDialog(QDialog, Ui_showHistory, SettingDialog):
         self.loggedActionsLayout = QGridLayout(self.loggedActionsWidget)
         self.loggedActionsTable = LoggedActionsTable(self.loggedActionsWidget)
         self.loggedActionsLayout.addWidget(self.loggedActionsTable, 0, 0, 1, 1)
-        for col in columnVarSetting:
-            self.settings.setting(col).valueChanged.connect(self.displayLoggedActions)
         self.loggedActionsTable.itemSelectionChanged.connect(self.displayDifference)
+        self.columnChooserButton.clicked.connect(self.loggedActionsTable.columnChooser)
 
         # difference viewer
         self.differenceLayout = QGridLayout(self.differenceViewerWidget)
@@ -109,6 +108,7 @@ class ShowHistoryDialog(QDialog, Ui_showHistory, SettingDialog):
     @pyqtSignature("on_searchButton_clicked()")
     def on_searchButton_clicked(self):
         self.layer = self.layerComboManager.getLayer()
+        self.loggedActionsTable.geomColumn = self.layer.hasGeometryType()
         pkeyName = self.fieldComboManager.getFieldName()
         if self.layer is None or pkeyName == "":
             return
@@ -135,9 +135,11 @@ class ShowHistoryDialog(QDialog, Ui_showHistory, SettingDialog):
         self.stopButton.setVisible(searchOn)
         self.progressBar.setVisible(searchOn)
 
-    def displayLoggedActions(self, dummy=None):
-        self.loggedActionsTable.displayColumns(self.layer.hasGeometryType())
-        self.loggedActionsTable.displayRows(self.logLayer.results)
+    def displayLoggedActions(self):
+        self.differenceViewer.clear()
+        self.loggedActionsTable.data = self.logLayer.results
+        self.loggedActionsTable.displayColumns()
+        self.loggedActionsTable.displayRows()
 
     def displayDifference(self):
         self.differenceViewer.clear()

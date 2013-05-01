@@ -6,9 +6,9 @@ from mysettings import MySettings
 from logresultrow import LogResultRow
 
 # tuplets for settings, display name, and row-data property
-columnVarSetting    = ("displayColumnDate", "displayColumnUser", "displayColumnAction", "displayColumnChangedGeometry", "displayColumnChangedFields", "displayColumnApplication", "displayColumnClientIP", "displayColumnClientPort")
-columnFancyName     = ("Date"             , "User"             , "Action"             , "G"                           , "Fields"                    , "Application"             , "Client IP"            , "Client port")
-columnRowName       = ("dateStr"          , "user"             , "action"             , "changedGeometryStr"          , "changedFields"             , "application"             , "clientIP"             , "clientPort")
+columnVarSetting    = ("Date"   , "User", "Action", "Changed geometry"  , "Changed fields", "Application", "Client IP", "Client Port")
+columnFancyName     = ("Date"   , "User", "Action", "G"                 , "Fields"        , "Application", "Client IP", "Client port")
+columnRowName       = ("dateStr", "user", "action", "changedGeometryStr", "changedFields" , "application", "clientIP" , "clientPort")
 
 
 class LogLayer(QObject):

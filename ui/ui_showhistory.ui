@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
+ <author>Denis Rouzaud</author>
  <class>showHistory</class>
  <widget class="QDialog" name="showHistory">
   <property name="geometry">
@@ -103,7 +104,14 @@
        </widget>
       </item>
       <item row="0" column="8">
-       <widget class="QComboBox" name="pkeyCombo"/>
+       <widget class="QComboBox" name="pkeyCombo">
+        <property name="minimumSize">
+         <size>
+          <width>40</width>
+          <height>0</height>
+         </size>
+        </property>
+       </widget>
       </item>
       <item row="0" column="5">
        <spacer name="horizontalSpacer_4">
@@ -119,198 +127,6 @@
        </spacer>
       </item>
      </layout>
-    </widget>
-   </item>
-   <item row="3" column="0" colspan="5">
-    <widget class="QSplitter" name="splitter">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <widget class="QWidget" name="historyPanel" native="true">
-      <layout class="QGridLayout" name="gridLayout_4">
-       <property name="margin">
-        <number>6</number>
-       </property>
-       <property name="spacing">
-        <number>3</number>
-       </property>
-       <item row="0" column="0">
-        <widget class="QgsCollapsibleGroupBoxBasic" name="groupBox">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="title">
-          <string>Columns</string>
-         </property>
-         <property name="checkable">
-          <bool>false</bool>
-         </property>
-         <property name="collapsed" stdset="0">
-          <bool>true</bool>
-         </property>
-         <layout class="QGridLayout" name="gridLayout_2">
-          <property name="margin">
-           <number>3</number>
-          </property>
-          <property name="spacing">
-           <number>3</number>
-          </property>
-          <item row="0" column="0">
-           <widget class="QScrollArea" name="scrollArea">
-            <property name="maximumSize">
-             <size>
-              <width>300</width>
-              <height>120</height>
-             </size>
-            </property>
-            <property name="widgetResizable">
-             <bool>true</bool>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-            </property>
-            <widget class="QWidget" name="scrollAreaWidgetContents">
-             <property name="geometry">
-              <rect>
-               <x>0</x>
-               <y>0</y>
-               <width>298</width>
-               <height>112</height>
-              </rect>
-             </property>
-             <layout class="QGridLayout" name="gridLayout_9">
-              <property name="margin">
-               <number>3</number>
-              </property>
-              <item row="2" column="1">
-               <widget class="QCheckBox" name="displayColumnChangedFields">
-                <property name="text">
-                 <string>changed fields</string>
-                </property>
-                <property name="checked">
-                 <bool>true</bool>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="1">
-               <widget class="QCheckBox" name="displayColumnChangedGeometry">
-                <property name="text">
-                 <string>changed geometry</string>
-                </property>
-                <property name="checked">
-                 <bool>true</bool>
-                </property>
-               </widget>
-              </item>
-              <item row="3" column="1">
-               <widget class="QCheckBox" name="displayColumnClientIP">
-                <property name="text">
-                 <string>client IP</string>
-                </property>
-               </widget>
-              </item>
-              <item row="4" column="0">
-               <widget class="QCheckBox" name="displayColumnApplication">
-                <property name="text">
-                 <string>application</string>
-                </property>
-                <property name="checked">
-                 <bool>true</bool>
-                </property>
-               </widget>
-              </item>
-              <item row="3" column="0">
-               <widget class="QCheckBox" name="displayColumnAction">
-                <property name="text">
-                 <string>action</string>
-                </property>
-                <property name="checked">
-                 <bool>true</bool>
-                </property>
-               </widget>
-              </item>
-              <item row="4" column="1">
-               <widget class="QCheckBox" name="displayColumnClientPort">
-                <property name="text">
-                 <string>client port</string>
-                </property>
-               </widget>
-              </item>
-              <item row="2" column="0">
-               <widget class="QCheckBox" name="displayColumnUser">
-                <property name="text">
-                 <string>user</string>
-                </property>
-                <property name="checked">
-                 <bool>true</bool>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="0">
-               <widget class="QCheckBox" name="displayColumnDate">
-                <property name="text">
-                 <string>date</string>
-                </property>
-                <property name="checked">
-                 <bool>true</bool>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </widget>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item row="1" column="0">
-        <widget class="QWidget" name="loggedActionsWidget" native="true"/>
-       </item>
-       <item row="2" column="0">
-        <widget class="QCheckBox" name="panShowGeometry">
-         <property name="text">
-          <string>Pan and show geometry</string>
-         </property>
-         <property name="checked">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-     <widget class="QWidget" name="featurePanel" native="true">
-      <layout class="QGridLayout" name="gridLayout_5">
-       <property name="margin">
-        <number>0</number>
-       </property>
-       <item row="1" column="2">
-        <widget class="QPushButton" name="pushButton_2">
-         <property name="text">
-          <string>Set feature</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0">
-        <spacer name="horizontalSpacer_3">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>40</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="0" column="0" colspan="3">
-        <widget class="QWidget" name="differenceViewerWidget" native="true"/>
-       </item>
-      </layout>
-     </widget>
     </widget>
    </item>
    <item row="1" column="0" colspan="3">
@@ -331,6 +147,19 @@
       <property name="margin">
        <number>6</number>
       </property>
+      <item row="1" column="0" colspan="3">
+       <widget class="QCheckBox" name="searchOnlyGeometry">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>Search only for geometry changes</string>
+        </property>
+       </widget>
+      </item>
       <item row="0" column="2">
        <widget class="QCheckBox" name="searchDeletes">
         <property name="text">
@@ -369,19 +198,6 @@
        <widget class="QCheckBox" name="searchAfter">
         <property name="text">
          <string>after</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0" colspan="3">
-       <widget class="QCheckBox" name="searchOnlyGeometry">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>Search only for geometry changes</string>
         </property>
        </widget>
       </item>
@@ -429,6 +245,73 @@
        </spacer>
       </item>
      </layout>
+    </widget>
+   </item>
+   <item row="3" column="0" colspan="5">
+    <widget class="QSplitter" name="splitter">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <widget class="QWidget" name="historyPanel" native="true">
+      <layout class="QGridLayout" name="gridLayout_4">
+       <property name="margin">
+        <number>6</number>
+       </property>
+       <property name="spacing">
+        <number>3</number>
+       </property>
+       <item row="1" column="1">
+        <widget class="QToolButton" name="columnChooserButton">
+         <property name="text">
+          <string>...</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QCheckBox" name="panShowGeometry">
+         <property name="text">
+          <string>Pan and show geometry</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0" colspan="2">
+        <widget class="QWidget" name="loggedActionsWidget" native="true"/>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="featurePanel" native="true">
+      <layout class="QGridLayout" name="gridLayout_5">
+       <property name="margin">
+        <number>0</number>
+       </property>
+       <item row="1" column="2">
+        <widget class="QPushButton" name="pushButton_2">
+         <property name="text">
+          <string>Set feature</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <spacer name="horizontalSpacer_3">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="0" column="0" colspan="3">
+        <widget class="QWidget" name="differenceViewerWidget" native="true"/>
+       </item>
+      </layout>
+     </widget>
     </widget>
    </item>
   </layout>

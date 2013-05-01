@@ -24,8 +24,10 @@ class MySettings(SettingManager):
         self.addSetting("displayColumnClientIP", "bool", "global", False)
         self.addSetting("displayColumnClientPort", "bool", "global", False)
 
-        self.addSetting("searchOnlyGeometry", "bool", "global", False)
         self.addSetting("panShowGeometry", "bool", "global", True)
+
+        self.addSetting("columns", "stringlist", "global",
+                        ("Date", "User", "Action", "Changed geometry", "Changed fields"))
 
         # project
         self.addSetting("redefineSubset", "bool", "project", False)

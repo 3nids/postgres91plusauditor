@@ -4,11 +4,15 @@ from PyQt4.QtGui import QTableWidget, QTableWidgetItem, QAbstractItemView
 from ..src.mysettings import MySettings
 from ..src.loglayer import columnVarSetting, columnFancyName, columnRowName
 
+from columnchooserdialog import ColumnChooserDialog
+
 
 class LoggedActionsTable(QTableWidget):
     def __init__(self, parent):
         QTableWidget.__init__(self, parent)
         self.settings = MySettings()
+
+        self.geomColumn = True
 
         self.setSortingEnabled(True)
         self.setSelectionMode(QAbstractItemView.SingleSelection)
@@ -19,21 +23,28 @@ class LoggedActionsTable(QTableWidget):
         self.verticalHeader().setVisible(False)
         self.verticalHeader().setDefaultSectionSize(25)
         #self.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
+        self.data = []
 
         self.displayColumns()
 
         self.adjustSize()
 
-    def displayColumns(self, geomColumn=True):
+    def columnChooser(self):
+        ColumnChooserDialog().exec_()
+        self.displayColumns()
+        self.displayRows()
+
+    def displayColumns(self):
         self.clear()
         for c in range(self.columnCount() - 1, -1, -1):
             self.removeColumn(c)
         for r in range(self.rowCount() - 1, -1, -1):
             self.removeRow(r)
+        columns = self.settings.value("columns")
         c = 0
         for i, col in enumerate(columnVarSetting):
-            if self.settings.value(col):
-                if columnRowName[c] == "changedGeometry" and geomColumn is not True:
+            if col in columns:
+                if columnRowName[c] == "changedGeometry" and not self.geomColumn:
                     continue
                 self.insertColumn(c)
                 item = QTableWidgetItem(columnFancyName[i])
@@ -45,11 +56,11 @@ class LoggedActionsTable(QTableWidget):
                 c += 1
         self.horizontalHeader().setMinimumSectionSize(15)
 
-    def displayRows(self, rows):
+    def displayRows(self):
         self.clearContents()
         for r in range(self.rowCount() - 1, -1, -1):
             self.removeRow(r)
-        for row in rows.values():
+        for row in self.data.values():
             r = self.rowCount()
             self.insertRow(r)
 
