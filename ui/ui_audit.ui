@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <author>Denis Rouzaud</author>
- <class>showHistory</class>
- <widget class="QDialog" name="showHistory">
+ <class>audit</class>
+ <widget class="QDialog" name="audit">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -288,9 +288,9 @@
         <number>0</number>
        </property>
        <item row="1" column="2">
-        <widget class="QPushButton" name="pushButton_2">
+        <widget class="QPushButton" name="restoreButton">
          <property name="text">
-          <string>Set feature</string>
+          <string>Restore feature</string>
          </property>
         </widget>
        </item>

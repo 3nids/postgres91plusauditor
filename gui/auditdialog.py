@@ -8,16 +8,16 @@ from ..qgissettingmanager import SettingDialog
 from ..qgistools.vectorlayer import primaryKey
 
 from ..src.mysettings import MySettings
-from ..src.loglayer import LogLayer, columnVarSetting
+from ..src.loglayer import LogLayer
 
-from ..ui.ui_showhistory import Ui_showHistory
+from ..ui.ui_audit import Ui_audit
 
 from loglayerchooserdialog import LogLayerChooserDialog
 from differenceviewer import DifferenceViewer
 from loggedactionstable import LoggedActionsTable
 
 
-class ShowHistoryDialog(QDialog, Ui_showHistory, SettingDialog):
+class AuditDialog(QDialog, Ui_audit, SettingDialog):
     rejectShowEvent = pyqtSignal()
     performSearchAtShowEvent = pyqtSignal()
 

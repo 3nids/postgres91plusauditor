@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ui/ui_showhistory.ui'
+# Form implementation generated from reading ui file 'ui/ui_audit.ui'
 #
-# Created: Wed May  1 16:34:58 2013
+# Created: Wed May  1 17:01:10 2013
 #      by: PyQt4 UI code generator 4.9.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -14,15 +14,15 @@ try:
 except AttributeError:
     _fromUtf8 = lambda s: s
 
-class Ui_showHistory(object):
-    def setupUi(self, showHistory):
-        showHistory.setObjectName(_fromUtf8("showHistory"))
-        showHistory.resize(810, 568)
-        self.gridLayout_6 = QtGui.QGridLayout(showHistory)
+class Ui_audit(object):
+    def setupUi(self, audit):
+        audit.setObjectName(_fromUtf8("audit"))
+        audit.resize(810, 568)
+        self.gridLayout_6 = QtGui.QGridLayout(audit)
         self.gridLayout_6.setObjectName(_fromUtf8("gridLayout_6"))
         spacerItem = QtGui.QSpacerItem(30, 20, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Minimum)
         self.gridLayout_6.addItem(spacerItem, 1, 3, 1, 1)
-        self.widget_2 = QtGui.QWidget(showHistory)
+        self.widget_2 = QtGui.QWidget(audit)
         self.widget_2.setObjectName(_fromUtf8("widget_2"))
         self.gridLayout_3 = QtGui.QGridLayout(self.widget_2)
         self.gridLayout_3.setMargin(0)
@@ -40,7 +40,7 @@ class Ui_showHistory(object):
         self.progressBar.setObjectName(_fromUtf8("progressBar"))
         self.gridLayout_3.addWidget(self.progressBar, 1, 1, 1, 2)
         self.gridLayout_6.addWidget(self.widget_2, 1, 4, 1, 1)
-        self.widget = QtGui.QWidget(showHistory)
+        self.widget = QtGui.QWidget(audit)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Maximum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -73,7 +73,7 @@ class Ui_showHistory(object):
         spacerItem1 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
         self.gridLayout.addItem(spacerItem1, 0, 5, 1, 1)
         self.gridLayout_6.addWidget(self.widget, 0, 0, 1, 5)
-        self.groupBox_2 = QgsCollapsibleGroupBoxBasic(showHistory)
+        self.groupBox_2 = QgsCollapsibleGroupBoxBasic(audit)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Maximum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -123,7 +123,7 @@ class Ui_showHistory(object):
         spacerItem2 = QtGui.QSpacerItem(30, 20, QtGui.QSizePolicy.Maximum, QtGui.QSizePolicy.Minimum)
         self.gridLayout_8.addItem(spacerItem2, 0, 3, 1, 1)
         self.gridLayout_6.addWidget(self.groupBox_2, 1, 0, 1, 3)
-        self.splitter = QtGui.QSplitter(showHistory)
+        self.splitter = QtGui.QSplitter(audit)
         self.splitter.setOrientation(QtCore.Qt.Horizontal)
         self.splitter.setObjectName(_fromUtf8("splitter"))
         self.historyPanel = QtGui.QWidget(self.splitter)
@@ -149,9 +149,9 @@ class Ui_showHistory(object):
         self.gridLayout_5.setMargin(0)
         self.gridLayout_5.setMargin(0)
         self.gridLayout_5.setObjectName(_fromUtf8("gridLayout_5"))
-        self.pushButton_2 = QtGui.QPushButton(self.featurePanel)
-        self.pushButton_2.setObjectName(_fromUtf8("pushButton_2"))
-        self.gridLayout_5.addWidget(self.pushButton_2, 1, 2, 1, 1)
+        self.restoreButton = QtGui.QPushButton(self.featurePanel)
+        self.restoreButton.setObjectName(_fromUtf8("restoreButton"))
+        self.gridLayout_5.addWidget(self.restoreButton, 1, 2, 1, 1)
         spacerItem3 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
         self.gridLayout_5.addItem(spacerItem3, 1, 0, 1, 1)
         self.differenceViewerWidget = QtGui.QWidget(self.featurePanel)
@@ -159,25 +159,25 @@ class Ui_showHistory(object):
         self.gridLayout_5.addWidget(self.differenceViewerWidget, 0, 0, 1, 3)
         self.gridLayout_6.addWidget(self.splitter, 3, 0, 1, 5)
 
-        self.retranslateUi(showHistory)
-        QtCore.QMetaObject.connectSlotsByName(showHistory)
+        self.retranslateUi(audit)
+        QtCore.QMetaObject.connectSlotsByName(audit)
 
-    def retranslateUi(self, showHistory):
-        showHistory.setWindowTitle(QtGui.QApplication.translate("showHistory", "Postgres 91 plus Auditor :: search history", None, QtGui.QApplication.UnicodeUTF8))
-        self.stopButton.setText(QtGui.QApplication.translate("showHistory", "stop", None, QtGui.QApplication.UnicodeUTF8))
-        self.searchButton.setText(QtGui.QApplication.translate("showHistory", "search", None, QtGui.QApplication.UnicodeUTF8))
-        self.label.setText(QtGui.QApplication.translate("showHistory", "Layer", None, QtGui.QApplication.UnicodeUTF8))
-        self.label_2.setText(QtGui.QApplication.translate("showHistory", "Feature", None, QtGui.QApplication.UnicodeUTF8))
-        self.label_3.setText(QtGui.QApplication.translate("showHistory", "Primary key", None, QtGui.QApplication.UnicodeUTF8))
-        self.groupBox_2.setTitle(QtGui.QApplication.translate("showHistory", "Advanced search", None, QtGui.QApplication.UnicodeUTF8))
-        self.searchOnlyGeometry.setText(QtGui.QApplication.translate("showHistory", "Search only for geometry changes", None, QtGui.QApplication.UnicodeUTF8))
-        self.searchDeletes.setText(QtGui.QApplication.translate("showHistory", "Delete", None, QtGui.QApplication.UnicodeUTF8))
-        self.searchBefore.setText(QtGui.QApplication.translate("showHistory", "before", None, QtGui.QApplication.UnicodeUTF8))
-        self.searchUpdates.setText(QtGui.QApplication.translate("showHistory", "Updates", None, QtGui.QApplication.UnicodeUTF8))
-        self.searchAfter.setText(QtGui.QApplication.translate("showHistory", "after", None, QtGui.QApplication.UnicodeUTF8))
-        self.searchInserts.setText(QtGui.QApplication.translate("showHistory", "Insert", None, QtGui.QApplication.UnicodeUTF8))
-        self.columnChooserButton.setText(QtGui.QApplication.translate("showHistory", "...", None, QtGui.QApplication.UnicodeUTF8))
-        self.panShowGeometry.setText(QtGui.QApplication.translate("showHistory", "Pan and show geometry", None, QtGui.QApplication.UnicodeUTF8))
-        self.pushButton_2.setText(QtGui.QApplication.translate("showHistory", "Set feature", None, QtGui.QApplication.UnicodeUTF8))
+    def retranslateUi(self, audit):
+        audit.setWindowTitle(QtGui.QApplication.translate("audit", "Postgres 91 plus Auditor :: search history", None, QtGui.QApplication.UnicodeUTF8))
+        self.stopButton.setText(QtGui.QApplication.translate("audit", "stop", None, QtGui.QApplication.UnicodeUTF8))
+        self.searchButton.setText(QtGui.QApplication.translate("audit", "search", None, QtGui.QApplication.UnicodeUTF8))
+        self.label.setText(QtGui.QApplication.translate("audit", "Layer", None, QtGui.QApplication.UnicodeUTF8))
+        self.label_2.setText(QtGui.QApplication.translate("audit", "Feature", None, QtGui.QApplication.UnicodeUTF8))
+        self.label_3.setText(QtGui.QApplication.translate("audit", "Primary key", None, QtGui.QApplication.UnicodeUTF8))
+        self.groupBox_2.setTitle(QtGui.QApplication.translate("audit", "Advanced search", None, QtGui.QApplication.UnicodeUTF8))
+        self.searchOnlyGeometry.setText(QtGui.QApplication.translate("audit", "Search only for geometry changes", None, QtGui.QApplication.UnicodeUTF8))
+        self.searchDeletes.setText(QtGui.QApplication.translate("audit", "Delete", None, QtGui.QApplication.UnicodeUTF8))
+        self.searchBefore.setText(QtGui.QApplication.translate("audit", "before", None, QtGui.QApplication.UnicodeUTF8))
+        self.searchUpdates.setText(QtGui.QApplication.translate("audit", "Updates", None, QtGui.QApplication.UnicodeUTF8))
+        self.searchAfter.setText(QtGui.QApplication.translate("audit", "after", None, QtGui.QApplication.UnicodeUTF8))
+        self.searchInserts.setText(QtGui.QApplication.translate("audit", "Insert", None, QtGui.QApplication.UnicodeUTF8))
+        self.columnChooserButton.setText(QtGui.QApplication.translate("audit", "...", None, QtGui.QApplication.UnicodeUTF8))
+        self.panShowGeometry.setText(QtGui.QApplication.translate("audit", "Pan and show geometry", None, QtGui.QApplication.UnicodeUTF8))
+        self.restoreButton.setText(QtGui.QApplication.translate("audit", "Restore feature", None, QtGui.QApplication.UnicodeUTF8))
 
 from qgis.gui import QgsCollapsibleGroupBoxBasic
