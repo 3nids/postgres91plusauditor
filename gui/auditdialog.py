@@ -7,8 +7,8 @@ from ..qgiscombomanager import VectorLayerCombo, FieldCombo
 from ..qgissettingmanager import SettingDialog
 from ..qgistools.vectorlayer import primaryKey
 
-from ..src.mysettings import MySettings
-from ..src.loglayer import LogLayer
+from ..core.mysettings import MySettings
+from ..core.loglayer import LogLayer
 
 from ..ui.ui_audit import Ui_audit
 

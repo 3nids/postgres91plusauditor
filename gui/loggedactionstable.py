@@ -1,8 +1,8 @@
 from PyQt4.QtCore import Qt
 from PyQt4.QtGui import QTableWidget, QTableWidgetItem, QAbstractItemView
 
-from ..src.mysettings import MySettings
-from ..src.loglayer import columnVarSetting, columnFancyName, columnRowName
+from ..core.mysettings import MySettings
+from ..core.loglayer import columnVarSetting, columnFancyName, columnRowName
 
 from columnchooserdialog import ColumnChooserDialog
 

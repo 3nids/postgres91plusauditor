@@ -5,7 +5,7 @@ from qgis.gui import QgsRubberBand
 
 from ..qgissettingmanager import SettingDialog
 
-from ..src.mysettings import MySettings
+from ..core.mysettings import MySettings
 
 from ..ui.ui_columnchooser import Ui_columnChooser
 

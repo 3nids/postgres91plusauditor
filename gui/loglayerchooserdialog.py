@@ -3,8 +3,8 @@ from PyQt4.QtGui import QDialog
 from ..qgissettingmanager import SettingDialog
 from ..qgiscombomanager import VectorLayerCombo
 
-from ..src.mysettings import MySettings
-from ..src.loglayer import LogLayer
+from ..core.mysettings import MySettings
+from ..core.loglayer import LogLayer
 
 from ..ui.ui_loglayerchooser import Ui_LogLayerChooser
 
