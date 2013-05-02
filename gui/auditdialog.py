@@ -27,21 +27,21 @@ class AuditDialog(QDialog, Ui_audit, SettingDialog):
         self.settings = MySettings()
         SettingDialog.__init__(self, self.settings, False, True)  # column chooser, advanced search options
         self.legendInterface = iface.legendInterface()
+
+        #init variables
         self.layerId = layerId
         self.featureId = featureId
-
         self.layer = None
         self.rubber = QgsRubberBand(iface.mapCanvas())
         self.mapCanvas = iface.mapCanvas()
 
+        # connect "pan and show geometry" check box to draw in rubber band
         self.panShowGeometry.clicked.connect(self.displayGeomDifference)
 
+        # reject properly showEvent if checking fails
         self.rejectShowEvent.connect(self.reject, Qt.QueuedConnection)
+        # start search directly at the end of showEvent if enough params
         self.performSearchAtShowEvent.connect(self.on_searchButton_clicked, Qt.QueuedConnection)
-        
-        self.buttonDisplayMode(False)
-
-        self.featureEdit.setText("%s" % featureId)
 
         # setup layer - field combo, with primary key selector as field
         self.layerComboManager = VectorLayerCombo(self.legendInterface, self.layerCombo, layerId,
@@ -68,6 +68,10 @@ class AuditDialog(QDialog, Ui_audit, SettingDialog):
         self.differenceViewer = DifferenceViewer(self.differenceViewerWidget)
         self.differenceLayout.addWidget(self.differenceViewer, 0, 0, 1, 1)
 
+        # finish ui
+        self.buttonDisplayMode(False)
+        self.restoreButton.setEnabled(False)
+        self.featureEdit.setText("%s" % featureId)
         self.adjustSize()
 
         #TODO: disable geometry checkbox if layer has no geom
@@ -143,9 +147,11 @@ class AuditDialog(QDialog, Ui_audit, SettingDialog):
 
     def displayDifference(self):
         self.differenceViewer.clearRows()
+        self.restoreButton.setEnabled(False)
         item = self.loggedActionsTable.selectedItems()
         if len(item) == 0:
             return
+        self.restoreButton.setEnabled(True)
         rowId = item[0].data(Qt.UserRole).toLongLong()[0]
         logRow = self.logLayer.results[rowId]
         self.differenceViewer.display(self.logLayer.layerFeature, logRow)
@@ -166,6 +172,17 @@ class AuditDialog(QDialog, Ui_audit, SettingDialog):
             panTo.scale(1.5)
             self.mapCanvas.setExtent(panTo)
             self.mapCanvas.refresh()
+
+    @pyqtSignature("on_restireButtonclicked()")
+    def on_restireButtonclicked(self):
+        item = self.loggedActionsTable.selectedItems()
+        if len(item) == 0:
+            return
+        rowId = item[0].data(Qt.UserRole).toLongLong()[0]
+        logRow = self.logLayer.results[rowId]
+        logRow.restore()
+
+
 
 
 
