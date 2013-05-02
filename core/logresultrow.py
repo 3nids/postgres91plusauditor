@@ -3,7 +3,8 @@ from PyQt4.QtCore import QString
 from qgis.core import QgsFeature, QgsGeometry
 
 import re
-import binascii
+
+from geometrytools import GeometryTools
 
 # regexp to parse data from hstore
 fieldRe = lambda(fieldName): re.compile('("%s"|%s)\s*=\>\s*' % (fieldName, fieldName))
@@ -86,17 +87,10 @@ class LogResultRow():
             return ""
 
     def geometry(self):
-        SRID_FLAG = 0x20000000
-
-        geom = QgsGeometry()
         if self.geomColumn is None:
-            return geom
-        wkb = "%s" % self.getFieldValue(self.logData, self.geomColumn)
-        geomType = int("0x" + self.decodeBinary(wkb[2:10]), 0)
-        if geomType & SRID_FLAG:
-            wkb = wkb[:2] + self.encodeBinary(geomType ^ SRID_FLAG) + wkb[18:]
-        geom.fromWkb(binascii.a2b_hex(wkb))
-        return geom
+            return QgsGeometry()
+        ewkb = "%s" % self.getFieldValue(self.logData, self.geomColumn)
+        return GeometryTools().ewkb2gqgis(ewkb)
 
     def data(self):
         out = dict()
@@ -104,17 +98,3 @@ class LogResultRow():
             out[field.name()] = self.getFieldValue(self.logData, field.name())
         return out
 
-    def encodeBinary(self, value):
-        # https://github.com/elpaso/quickwkt/blob/master/QuickWKT.py#L132
-        wkb = binascii.a2b_hex("%08x" % value)
-        wkb = wkb[::-1]
-        wkb = binascii.b2a_hex(wkb)
-        return wkb
-
-    def decodeBinary(self, wkb):
-        """Decode the binary wkb and return as a hex string"""
-        print wkb
-        value = binascii.a2b_hex(wkb)
-        value = value[::-1]
-        value = binascii.b2a_hex(value)
-        return value
