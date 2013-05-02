@@ -24,13 +24,18 @@ class LogResultRow():
     def getFieldValue(self, data, fieldName):
         p = fieldRe(fieldName).search(data)
         if p:
+            value = ""
             data = data[p.end():]
             p = dataReWithQuote.match(data)
             if p:
-                return data[p.start()+1:p.end()-1]
-            p = dataReWithoutQuote.match(data)
-            if p:
-                return data[p.start():p.end()-1]
+                value = data[p.start()+1:p.end()-1]
+            else:
+                p = dataReWithoutQuote.match(data)
+                if p:
+                    value = data[p.start():p.end()-1]
+            if value == "NULL":
+                value = ""
+            return value
         return None
 
     def dateStr(self):
