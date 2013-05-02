@@ -13,6 +13,7 @@ from ..core.featurelayer import primaryKey
 from ..ui.ui_audit import Ui_audit
 
 from loglayerchooserdialog import LogLayerChooserDialog
+from columnchooserdialog import ColumnChooserDialog
 from differenceviewer import DifferenceViewer
 from loggedactionstable import LoggedActionsTable
 
@@ -34,6 +35,7 @@ class AuditDialog(QDialog, Ui_audit, SettingDialog):
         self.layer = None
         self.rubber = QgsRubberBand(iface.mapCanvas())
         self.mapCanvas = iface.mapCanvas()
+        self.resuts = dict()
 
         # connect "pan and show geometry" check box to draw in rubber band
         self.panShowGeometry.clicked.connect(self.displayGeomDifference)
@@ -61,7 +63,6 @@ class AuditDialog(QDialog, Ui_audit, SettingDialog):
         self.loggedActionsTable = LoggedActionsTable(self.loggedActionsWidget)
         self.loggedActionsLayout.addWidget(self.loggedActionsTable, 0, 0, 1, 1)
         self.loggedActionsTable.itemSelectionChanged.connect(self.displayDifference)
-        self.columnChooserButton.clicked.connect(self.loggedActionsTable.columnChooser)
 
         # difference viewer
         self.differenceLayout = QGridLayout(self.differenceViewerWidget)
@@ -73,8 +74,6 @@ class AuditDialog(QDialog, Ui_audit, SettingDialog):
         self.restoreButton.setEnabled(False)
         self.featureEdit.setText("%s" % featureId)
         self.adjustSize()
-
-        #TODO: disable geometry checkbox if layer has no geom
 
     def closeEvent(self, e):
         self.rubber.reset()
@@ -117,10 +116,6 @@ class AuditDialog(QDialog, Ui_audit, SettingDialog):
         if self.layer is None or pkeyName == "":
             return
         featureId = self.featureEdit.text().toInt()[0]
-        searchOnlyGeometry = self.searchOnlyGeometry.isChecked()
-        searchInserts = self.searchInserts.isChecked()
-        searchUpdates = self.searchUpdates.isChecked()
-        searchDeletes = self.searchDeletes.isChecked()
         searchBeforeDate = QDateTime()
         if self.searchBefore.isChecked():
             searchBeforeDate = self.searchAfterDate.dateTime()
@@ -128,8 +123,10 @@ class AuditDialog(QDialog, Ui_audit, SettingDialog):
         if self.searchAfter.isChecked():
             searchAfterDate = self.searchAfterDate.dateTime()
         self.buttonDisplayMode(True)
-        self.logLayer.performSearch(self.layer, featureId, pkeyName, searchInserts, searchUpdates, searchDeletes,
-                                    searchOnlyGeometry, searchAfterDate, searchBeforeDate)
+        self.results = self.logLayer.performSearch(self.layer, featureId, pkeyName,
+                                                   self.searchInserts.isChecked(), self.searchUpdates.isChecked(),
+                                                   self.searchDeletes.isChecked(), self.searchOnlyGeometry.isChecked(),
+                                                   searchAfterDate, searchBeforeDate)
         self.buttonDisplayMode(False)
         self.panShowGeometry.setEnabled(self.layer.hasGeometryType())
         self.displayLoggedActions()
@@ -141,9 +138,8 @@ class AuditDialog(QDialog, Ui_audit, SettingDialog):
 
     def displayLoggedActions(self):
         self.differenceViewer.clearRows()
-        self.loggedActionsTable.data = self.logLayer.results
         self.loggedActionsTable.displayColumns()
-        self.loggedActionsTable.displayRows()
+        self.loggedActionsTable.displayRows(self.results)
 
     def displayDifference(self):
         self.differenceViewer.clearRows()
@@ -153,8 +149,8 @@ class AuditDialog(QDialog, Ui_audit, SettingDialog):
             return
         self.restoreButton.setEnabled(True)
         rowId = item[0].data(Qt.UserRole).toLongLong()[0]
-        logRow = self.logLayer.results[rowId]
-        self.differenceViewer.display(self.logLayer.layerFeature, logRow)
+        logRow = self.results[rowId]
+        self.differenceViewer.display(logRow)
         self.displayGeomDifference()
 
     def displayGeomDifference(self):
@@ -163,7 +159,7 @@ class AuditDialog(QDialog, Ui_audit, SettingDialog):
         if len(item) == 0:
             return
         rowId = item[0].data(Qt.UserRole).toLongLong()[0]
-        logRow = self.logLayer.results[rowId]
+        logRow = self.results[rowId]
 
         if self.layer.hasGeometryType() and self.panShowGeometry.isChecked():
             geom = logRow.geometry()
@@ -173,13 +169,19 @@ class AuditDialog(QDialog, Ui_audit, SettingDialog):
             self.mapCanvas.setExtent(panTo)
             self.mapCanvas.refresh()
 
-    @pyqtSignature("on_restireButtonclicked()")
-    def on_restireButtonclicked(self):
+    @pyqtSignature("on_columnChooserButton_clicked()")
+    def on_columnChooserButton_clicked(self):
+        ColumnChooserDialog().exec_()
+        self.loggedActionsTable.displayColumns()
+        self.loggedActionsTable.displayRows(self.results)
+
+    @pyqtSignature("on_restoreButton_clicked()")
+    def on_restoreButton_clicked(self):
         item = self.loggedActionsTable.selectedItems()
         if len(item) == 0:
             return
         rowId = item[0].data(Qt.UserRole).toLongLong()[0]
-        logRow = self.logLayer.results[rowId]
+        logRow = self.results[rowId]
         logRow.restore()
 
 

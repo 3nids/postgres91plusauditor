@@ -4,8 +4,6 @@ from PyQt4.QtGui import QTableWidget, QTableWidgetItem, QAbstractItemView
 from ..core.mysettings import MySettings
 from ..core.loglayer import columnVarSetting, columnFancyName, columnRowName
 
-from columnchooserdialog import ColumnChooserDialog
-
 
 class LoggedActionsTable(QTableWidget):
     def __init__(self, parent):
@@ -23,16 +21,10 @@ class LoggedActionsTable(QTableWidget):
         self.verticalHeader().setVisible(False)
         self.verticalHeader().setDefaultSectionSize(25)
         #self.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
-        self.data = []
 
         self.displayColumns()
 
         self.adjustSize()
-
-    def columnChooser(self):
-        ColumnChooserDialog().exec_()
-        self.displayColumns()
-        self.displayRows()
 
     def displayColumns(self):
         self.clear()
@@ -56,11 +48,11 @@ class LoggedActionsTable(QTableWidget):
                 c += 1
         self.horizontalHeader().setMinimumSectionSize(15)
 
-    def displayRows(self):
+    def displayRows(self, data):
         self.clearContents()
         for r in range(self.rowCount() - 1, -1, -1):
             self.removeRow(r)
-        for row in self.data.values():
+        for row in data.values():
             r = self.rowCount()
             self.insertRow(r)
 

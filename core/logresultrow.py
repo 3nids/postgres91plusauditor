@@ -1,6 +1,6 @@
 
 from PyQt4.QtCore import QString
-from qgis.core import QgsFeature, QgsGeometry
+from qgis.core import QgsFeature, QgsGeometry, QgsFeatureRequest
 
 import re
 
@@ -11,16 +11,19 @@ fieldRe = lambda(fieldName): re.compile('("%s"|%s)\s*=\>\s*' % (fieldName, field
 dataReWithQuote = re.compile('\s*".*?[^\\\\]"')
 dataReWithoutQuote = re.compile('.*?,')
 
+geometryTools = GeometryTools()
+
 
 class LogResultRow():
-    def __init__(self, logFeature, layerFeature, pkeyName, geomColumn):
-        self.fields = layerFeature.fields()
+    def __init__(self, logFeature, featureLayer, pkeyName, geomColumn):
+        self.featureLayer = featureLayer
+        self.fields = featureLayer.dataProvider().fields()
         self.logFeature = QgsFeature(logFeature)
         self.geomColumn = geomColumn
         self.date = logFeature.attribute("action_tstamp_tx").toDateTime()
         self.dateMs = self.date.toMSecsSinceEpoch()
         self.logData = self.logFeature.attribute("row_data").toString()
-        self.logFeatureId = self.getFieldValue(self.logData, pkeyName).toInt()[0]
+        self.layerFeatureId = self.getFieldValue(self.logData, pkeyName).toInt()[0]
 
     def getFieldValue(self, data, fieldName):
         p = fieldRe(fieldName).search(data)
@@ -90,13 +93,23 @@ class LogResultRow():
         if self.geomColumn is None:
             return QgsGeometry()
         ewkb = "%s" % self.getFieldValue(self.logData, self.geomColumn)
-        return GeometryTools().ewkb2gqgis(ewkb)
+        return geometryTools.ewkb2gqgis(ewkb)
 
     def data(self):
         out = dict()
         for field in self.fields:
             out[field.name()] = self.getFieldValue(self.logData, field.name())
         return out
+
+    def getLayerFeature(self):
+        layerFeature = QgsFeature()
+        featReq = QgsFeatureRequest().setFilterFid(self.layerFeatureId)
+        if not self.featureLayer.hasGeometryType():
+            featReq.setFlags(QgsFeatureRequest.NoGeometry)
+        if self.featureLayer.getFeatures(featReq).nextFeature(layerFeature):
+            return layerFeature
+        else:
+            return None
 
     def restoreFeature(self):
         pass

@@ -19,10 +19,8 @@ class LogLayer(QObject):
     def __init__(self):
         QObject.__init__(self)
         self.settings = MySettings()
-        self.results = dict()
         self.continueSearch = True
         self.layer = None
-        self.layerFeature = QgsFeature()
 
     def isValid(self):
         self.layer = QgsMapLayerRegistry.instance().mapLayer(self.settings.value("logLayer"))
@@ -40,7 +38,7 @@ class LogLayer(QObject):
 
     def performSearch(self, featureLayer, featureId, pkeyName, searchInserts, searchUpdates, searchDeletes,
                       searchOnlyGeometry, searchAfterDate, searchBeforeDate):
-        self.results.clear()
+        results = dict()
         if not self.isValid():
             return
 
@@ -51,18 +49,17 @@ class LogLayer(QObject):
             geomColumn = None
 
         # initiate the layer feature (feature at given ID, or an empty feature otherwise)
-        self.layerFeature = QgsFeature()
-        noGeometry = False
+        layerFeature = QgsFeature()
         if featureId != 0:
             featReq = QgsFeatureRequest().setFilterFid(featureId)
             if not featureLayer.hasGeometryType():
-                noGeometry = True
                 featReq.setFlags(QgsFeatureRequest.NoGeometry)
-            if featureLayer.getFeatures(featReq).nextFeature(self.layerFeature) is False:
-                self.layerFeature.setFields(featureLayer.dataProvider().fields())
+            if featureLayer.getFeatures(featReq).nextFeature(layerFeature) is False:
+                fields = featureLayer.dataProvider().fields()
+                layerFeature.setFields(fields)
         else:
             fields = featureLayer.dataProvider().fields()
-            self.layerFeature.setFields(fields)
+            layerFeature.setFields(fields)
 
         # set query subset for layer to drastically improve search speed
         # todo: if a subset already exists, should give a warning
@@ -105,13 +102,14 @@ class LogLayer(QObject):
                 searchDeletes and logFeature.attribute("action") == 'D') and \
                (searchAfterDate.isNull() or logFeature.attribute("action_tstamp_tx").toDateTime() >= searchAfterDate.toString("yyyy-MM-dd hh:mm:ss")) and \
                (searchBeforeDate.isNull() or logFeature.attribute("action_tstamp_tx").toDateTime() <= searchBeforeDate.toString("yyyy-MM-dd hh:mm:ss")):
-                row = LogResultRow(logFeature, self.layerFeature, pkeyName, geomColumn)
-                if featureId != 0 and row.logFeatureId != featureId:
+                row = LogResultRow(logFeature, featureLayer, pkeyName, geomColumn)
+                if featureId != 0 and row.layerFeatureId != featureId:
                     continue
                 if searchOnlyGeometry and not row.changedGeometry():
                     continue
 
-                self.results[row.dateMs] = row
+                results[row.dateMs] = row
             k += 1
         if self.settings.value("redefineSubset"):
             self.layer.setSubsetString("")
+        return results

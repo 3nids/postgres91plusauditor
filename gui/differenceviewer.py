@@ -17,28 +17,36 @@ class DifferenceViewer(QTableWidget):
             self.setHorizontalHeaderItem(c, QTableWidgetItem(header))
         self.adjustSize()
 
-    def display(self, layerFeature, logRow):
+    def display(self, logRow):
         self.clearContents()
         self.setHorizontalHeaderItem(2, QTableWidgetItem(logRow.dateStr()))
         self.clearRows()
 
+        layerFeature = logRow.getLayerFeature()
+        if layerFeature is None:
+            nc = 2
+        else:
+            nc = 3
+
         items = [0, 0, 0]
-        for r, field in enumerate(layerFeature.fields()):
+        items = items[:nc]
+        for r, field in enumerate(logRow.fields):
             self.insertRow(r)
 
             currentValue = layerFeature.attribute(field.name()).toString()
             logValue = logRow.getFieldValue(logRow.logData, field.name())
 
             items[0] = QTableWidgetItem(field.name())
-            items[1] = QTableWidgetItem(currentValue)
-            items[2] = QTableWidgetItem(logValue)
+            if layerFeature is not None:
+                items[1] = QTableWidgetItem(currentValue)
+            items[nc-1] = QTableWidgetItem(logValue)
 
-            if currentValue != logValue:
-                for c, item in enumerate(items):
-                    self.reduceFontSize(item)
-                    item.setFlags(Qt.ItemIsEnabled)
+            for c, item in enumerate(items):
+                self.reduceFontSize(item)
+                item.setFlags(Qt.ItemIsEnabled)
+                if currentValue != logValue:
                     item.setBackground(QBrush(QColor(250, 250, 210)))
-                    self.setItem(r, c, item)
+                self.setItem(r, c, item)
 
         self.adjustSize()
         self.resizeColumnsToContents()
