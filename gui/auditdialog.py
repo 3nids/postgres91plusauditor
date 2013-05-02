@@ -5,10 +5,10 @@ from qgis.gui import QgsRubberBand
 
 from ..qgiscombomanager import VectorLayerCombo, FieldCombo
 from ..qgissettingmanager import SettingDialog
-from ..qgistools.vectorlayer import primaryKey
 
 from ..core.mysettings import MySettings
 from ..core.loglayer import LogLayer
+from ..core.featurelayer import primaryKey
 
 from ..ui.ui_audit import Ui_audit
 
