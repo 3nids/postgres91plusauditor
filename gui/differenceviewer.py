@@ -26,25 +26,19 @@ class DifferenceViewer(QTableWidget):
         for r, field in enumerate(layerFeature.fields()):
             self.insertRow(r)
 
-            items[0] = QTableWidgetItem(field.name())
-            items[0].setFlags(Qt.ItemIsEnabled)
-            self.setItem(r, 0, items[0])
-
             currentValue = layerFeature.attribute(field.name()).toString()
-            items[1] = QTableWidgetItem(currentValue)
-            items[1].setFlags(Qt.ItemIsEnabled)
-            self.setItem(r, 1, items[1])
-
             logValue = logRow.getFieldValue(logRow.logData, field.name())
-            if logValue is None:
-                logValue = ""
+
+            items[0] = QTableWidgetItem(field.name())
+            items[1] = QTableWidgetItem(currentValue)
             items[2] = QTableWidgetItem(logValue)
-            items[2].setFlags(Qt.ItemIsEnabled)
-            self.setItem(r, 2, items[2])
 
             if currentValue != logValue:
-                for item in items:
-                    item.setBackground(QBrush(QColor(240, 128, 128)))
+                for c, item in enumerate(items):
+                    self.reduceFontSize(item)
+                    item.setFlags(Qt.ItemIsEnabled)
+                    item.setBackground(QBrush(QColor(250, 250, 210)))
+                    self.setItem(r, c, item)
 
         self.adjustSize()
         self.resizeColumnsToContents()
@@ -52,3 +46,9 @@ class DifferenceViewer(QTableWidget):
     def clearRows(self):
         while self.rowCount() > 0:
             self.removeRow(0)
+
+    def reduceFontSize(self, item):
+        font = item.font()
+        font.setPointSize(font.pointSize() - 2)
+        item.setFont(font)
+        return item
