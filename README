@@ -1,0 +1,3 @@
+Postgres 91 plus Auditor is [QGIS](http://www.qgis.org) plugin providing a user intergace for rollbacks on postgis layers usign the [Audit Trigger 91 plus](http://wiki.postgresql.org/wiki/Audit_trigger_91plus)
+
+
