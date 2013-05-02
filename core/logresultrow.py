@@ -98,3 +98,6 @@ class LogResultRow():
             out[field.name()] = self.getFieldValue(self.logData, field.name())
         return out
 
+    def restoreFeature(self):
+        pass
+

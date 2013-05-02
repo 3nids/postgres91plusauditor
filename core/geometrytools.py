@@ -12,9 +12,8 @@ class GeometryTools():
         geomType = int("0x" + self.decodeBinary(ewkb[2:10]), 0)
         if geomType & SRID_FLAG:
             ewkb = ewkb[:2] + self.encodeBinary(geomType ^ SRID_FLAG) + ewkb[18:]
-        geom.fromWkb(binascii.a2b_hex(wkb))
+        geom.fromWkb(binascii.a2b_hex(ewkb))
         return geom
-
 
     def encodeBinary(self, value):
         # https://github.com/elpaso/quickwkt/blob/master/QuickWKT.py#L132
