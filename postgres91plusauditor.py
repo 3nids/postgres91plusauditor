@@ -26,7 +26,7 @@ class Postgres91plusAuditor():
         self.iface.addPluginToMenu("&Postgres 91 plus Auditor", self.connectLayerAction)
         # show history action
         self.auditAction = QAction(QIcon(":/plugins/postgres91plusauditor/icons/qaudit-64.png"),
-                                         "Audit logged actions", self.iface.mainWindow())
+                                   "Audit logged actions", self.iface.mainWindow())
         self.auditAction.triggered.connect(self.audit)
         self.iface.addToolBarIcon(self.auditAction)
         self.iface.addPluginToMenu("&Postgres 91 plus Auditor", self.auditAction)
@@ -49,7 +49,7 @@ class Postgres91plusAuditor():
     def audit(self, layerId=None, featureId=None):
         if layerId is False:
             layerId = None
-        AuditDialog(self.iface, layerId, featureId).exec_()
+        AuditDialog(self.iface, layerId, featureId).show()
 
     def addLayersActions(self):
         for layerid, layer in QgsMapLayerRegistry.instance().mapLayers().iteritems():

@@ -147,9 +147,10 @@ class AuditDialog(QDialog, Ui_audit, SettingDialog):
         item = self.loggedActionsTable.selectedItems()
         if len(item) == 0:
             return
-        self.restoreButton.setEnabled(True)
         rowId = item[0].data(Qt.UserRole).toLongLong()[0]
         logRow = self.results[rowId]
+        if logRow.featureLayer.isEditable():
+            self.restoreButton.setEnabled(True)
         self.differenceViewer.display(logRow)
         self.displayGeomDifference()
 
@@ -182,7 +183,11 @@ class AuditDialog(QDialog, Ui_audit, SettingDialog):
             return
         rowId = item[0].data(Qt.UserRole).toLongLong()[0]
         logRow = self.results[rowId]
-        logRow.restore()
+        if not logRow.featureLayer.isEditable():
+            # todo alert
+            return
+        logRow.restoreFeature()
+        self.mapCanvas.refresh()
 
 
 

@@ -30,21 +30,22 @@ class DifferenceViewer(QTableWidget):
 
         items = [0, 0, 0]
         items = items[:nc]
+        currentValue = None
         for r, field in enumerate(logRow.fields):
             self.insertRow(r)
 
-            currentValue = layerFeature.attribute(field.name()).toString()
             logValue = logRow.getFieldValue(logRow.logData, field.name())
 
             items[0] = QTableWidgetItem(field.name())
             if layerFeature is not None:
+                currentValue = layerFeature.attribute(field.name()).toString()
                 items[1] = QTableWidgetItem(currentValue)
             items[nc-1] = QTableWidgetItem(logValue)
 
             for c, item in enumerate(items):
                 self.reduceFontSize(item)
                 item.setFlags(Qt.ItemIsEnabled)
-                if currentValue != logValue:
+                if layerFeature is not None and currentValue != logValue:
                     item.setBackground(QBrush(QColor(250, 250, 210)))
                 self.setItem(r, c, item)
 
