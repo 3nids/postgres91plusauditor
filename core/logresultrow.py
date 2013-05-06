@@ -1,5 +1,5 @@
 
-from PyQt4.QtCore import QString
+from PyQt4.QtCore import QString, QVariant
 from qgis.core import QgsFeature, QgsGeometry, QgsFeatureRequest
 
 import re
@@ -112,29 +112,27 @@ class LogResultRow():
             return None
 
     def restoreFeature(self):
-        currentFeature = self.getLayerFeature()
         if not self.featureLayer.isEditable():
             return False
 
-        buffer = self.featureLayer.editBuffer()
+        currentFeature = self.getLayerFeature()
+        editBuffer = self.featureLayer.editBuffer()
         if currentFeature is not None:
-            print "update feature"
             fid = currentFeature.id()
             for idx, field in enumerate(self.fields):
                 value = self.getFieldValue(self.logData, field.name())
                 if value == "":
                     value = None
-                buffer.changeAttributeValue(fid, idx, value)
+                editBuffer.changeAttributeValue(fid, idx, value)
             if self.featureLayer.hasGeometryType():
-                buffer.changeGeometry(fid, self.geometry())
+                editBuffer.changeGeometry(fid, self.geometry())
         else:
-            print "recreate feature"
             newFeature = QgsFeature()
             newFeature.setFields(self.fields)
             for field in self.fields:
                 value = self.getFieldValue(self.logData, field.name())
-                newFeature[field.name()] = value
+                newFeature[field.name()] = QVariant(value)
             if self.featureLayer.hasGeometryType():
                 newFeature.setGeometry(self.geometry())
-            buffer.addFeature(newFeature)
+            editBuffer.addFeature(newFeature)
 
