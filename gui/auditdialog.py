@@ -3,7 +3,7 @@ from PyQt4.QtGui import QDialog, QGridLayout
 from qgis.core import QgsFeature, QgsFeatureRequest
 from qgis.gui import QgsRubberBand
 
-from ..qgiscombomanager import VectorLayerCombo, FieldCombo
+from ..qgiscombomanager import VectorLayerCombo
 from ..qgissettingmanager import SettingDialog
 
 from ..core.mysettings import MySettings
