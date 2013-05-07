@@ -77,7 +77,8 @@ class AuditDialog(QDialog, Ui_audit, SettingDialog):
         # finish ui
         self.buttonDisplayMode(False)
         self.restoreButton.setEnabled(False)
-        self.featureEdit.setText("%s" % featureId)
+        if featureId is not None:
+            self.featureEdit.setText("%s" % featureId)
         self.adjustSize()
 
     def closeEvent(self, e):
