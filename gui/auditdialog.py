@@ -117,10 +117,10 @@ class AuditDialog(QDialog, Ui_audit, SettingDialog):
     @pyqtSignature("on_searchButton_clicked()")
     def on_searchButton_clicked(self):
         self.layer = self.layerComboManager.getLayer()
-        self.loggedActionsTable.geomColumn = self.layer.hasGeometryType()
         pkeyName = self.fieldComboManager.getFieldName()
         if self.layer is None or pkeyName == "":
             return
+        self.loggedActionsTable.geomColumn = self.layer.hasGeometryType()
         featureId = self.featureEdit.text().toInt()[0]
         searchBeforeDate = QDateTime()
         if self.searchBefore.isChecked():
