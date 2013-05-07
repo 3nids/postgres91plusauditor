@@ -69,6 +69,11 @@ class AuditDialog(QDialog, Ui_audit, SettingDialog):
         self.differenceViewer = DifferenceViewer(self.differenceViewerWidget)
         self.differenceLayout.addWidget(self.differenceViewer, 0, 0, 1, 1)
 
+        # set dates
+        now = QDateTime.currentDateTime()
+        self.searchBeforeDate.setDateTime(now)
+        self.searchAfterDate.setDateTime(now.addDays(-7))
+
         # finish ui
         self.buttonDisplayMode(False)
         self.restoreButton.setEnabled(False)
