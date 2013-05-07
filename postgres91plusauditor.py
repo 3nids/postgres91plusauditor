@@ -49,7 +49,8 @@ class Postgres91plusAuditor():
     def audit(self, layerId=None, featureId=None):
         if layerId is False:
             layerId = None
-        AuditDialog(self.iface, layerId, featureId).show()
+        self. auditDlg = AuditDialog(self.iface, layerId, featureId)
+        self.auditDlg.show()
 
     def addLayersActions(self):
         for layerid, layer in QgsMapLayerRegistry.instance().mapLayers().iteritems():

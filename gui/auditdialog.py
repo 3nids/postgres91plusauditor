@@ -49,8 +49,6 @@ class AuditDialog(QDialog, Ui_audit, SettingDialog):
         self.layerComboManager = VectorLayerCombo(self.legendInterface, self.layerCombo, layerId,
                                                   {"dataProvider": "postgres", "finishInit": False})
         self.layerComboManager.finishInit()
-        pkeyLambda = lambda: primaryKey(self.layerComboManager.getLayer())
-        self.fieldComboManager = FieldCombo(self.pkeyCombo, self.layerComboManager, pkeyLambda)
 
         # log layer
         self.logLayer = LogLayer()
@@ -117,8 +115,8 @@ class AuditDialog(QDialog, Ui_audit, SettingDialog):
     @pyqtSignature("on_searchButton_clicked()")
     def on_searchButton_clicked(self):
         self.layer = self.layerComboManager.getLayer()
-        pkeyName = self.fieldComboManager.getFieldName()
-        if self.layer is None or pkeyName == "":
+        pkeyName = primaryKey(self.layer)
+        if self.layer is None or pkeyName is None:
             return
         self.loggedActionsTable.geomColumn = self.layer.hasGeometryType()
         featureId = self.featureEdit.text().toInt()[0]

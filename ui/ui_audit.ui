@@ -15,55 +15,6 @@
    <string>Postgres 91 plus Auditor :: search history</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_6">
-   <item row="1" column="3">
-    <spacer name="horizontalSpacer">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="sizeType">
-      <enum>QSizePolicy::Minimum</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>30</width>
-       <height>20</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
-   <item row="1" column="4">
-    <widget class="QWidget" name="widget_2" native="true">
-     <layout class="QGridLayout" name="gridLayout_3">
-      <property name="margin">
-       <number>0</number>
-      </property>
-      <item row="0" column="2">
-       <widget class="QPushButton" name="stopButton">
-        <property name="text">
-         <string>stop</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QPushButton" name="searchButton">
-        <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
-        </property>
-        <property name="text">
-         <string>search</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1" colspan="2">
-       <widget class="QProgressBar" name="progressBar">
-        <property name="value">
-         <number>24</number>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
    <item row="0" column="0" colspan="5">
     <widget class="QWidget" name="widget" native="true">
      <property name="sizePolicy">
@@ -76,42 +27,8 @@
       <property name="margin">
        <number>0</number>
       </property>
-      <item row="0" column="1">
-       <widget class="QComboBox" name="layerCombo"/>
-      </item>
       <item row="0" column="3" colspan="2">
        <widget class="QLineEdit" name="featureEdit"/>
-      </item>
-      <item row="0" column="0">
-       <widget class="QLabel" name="label">
-        <property name="text">
-         <string>Layer</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="2">
-       <widget class="QLabel" name="label_2">
-        <property name="text">
-         <string>Feature</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="6">
-       <widget class="QLabel" name="label_3">
-        <property name="text">
-         <string>Primary key</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="8">
-       <widget class="QComboBox" name="pkeyCombo">
-        <property name="minimumSize">
-         <size>
-          <width>40</width>
-          <height>0</height>
-         </size>
-        </property>
-       </widget>
       </item>
       <item row="0" column="5">
        <spacer name="horizontalSpacer_4">
@@ -125,6 +42,47 @@
          </size>
         </property>
        </spacer>
+      </item>
+      <item row="0" column="2">
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>Feature</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="8">
+       <widget class="QPushButton" name="searchButton">
+        <property name="layoutDirection">
+         <enum>Qt::LeftToRight</enum>
+        </property>
+        <property name="text">
+         <string>search</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="7">
+       <widget class="QPushButton" name="stopButton">
+        <property name="text">
+         <string>stop</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QComboBox" name="layerCombo"/>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Layer</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="6">
+       <widget class="QProgressBar" name="progressBar">
+        <property name="value">
+         <number>24</number>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>
@@ -313,6 +271,22 @@
       </layout>
      </widget>
     </widget>
+   </item>
+   <item row="1" column="3" colspan="2">
+    <spacer name="horizontalSpacer">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::Minimum</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>30</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
    </item>
   </layout>
  </widget>
