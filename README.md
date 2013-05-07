@@ -25,9 +25,16 @@ The option **Redefine layer subset to increase performance** is recommended. Whi
 
 # Use the plugin
 
-You can start looking for any changes by clicking the plugin icon ![](https://github.com/3nids/postgres91plusauditor/blob/master/icons/qaudit-64.png). Choose a layer and eventually specify a feature ID.
+You can start looking for any changes by clicking the plugin icon ![](https://raw.github.com/3nids/postgres91plusauditor/master/icons/qaudit-64.png). Choose a layer and eventually specify a feature ID.
+Restrictions can be set to search insert/update/delete action, only geometry changes or by date.
 
-The primary key should be automatically set
+You can also search for a specific feature changes, by right-clicking on the feature edit form and choosing _History audit_.
+
+Once logged actions have been found, click on a row to see the differences with current feature if it exists.
+
+If the corresponding layer is in editing mode, the feature can be reset.
+
+
 
 
 
