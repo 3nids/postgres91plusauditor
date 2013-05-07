@@ -1,6 +1,6 @@
 [general]
 name=Postgres 91 plus Auditor
-description=Postgres Auditor 91 plus is a QGIS plugin providing an interface to rollback changes on postgis layers using the Audit Trigger 91 plus
+description=Postgres 91 plus Auditor is a QGIS plugin providing an interface to rollback changes on postgis layers using the Audit Trigger 91 plus
 version=0.1
 qgisMinimumVersion=1.9
 author=Denis Rouzaud
@@ -10,6 +10,6 @@ experimental=True
 
 icon=icons/qaudit-64.png
 tags=history,audit,log,undo,rollback
-homepage=https://github.com/3nids/postgresauditor91plus/wiki
+homepage=http://3nids.github.io/postgres91plusauditor/
 tracker=https://github.com/3nids/postgresauditor91plus/issues
 repository=https://github.com/3nids/postgresauditor91plus/
