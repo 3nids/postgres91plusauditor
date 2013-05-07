@@ -36,7 +36,7 @@ class LoggedActionsTable(QTableWidget):
         c = 0
         for i, col in enumerate(columnVarSetting):
             if col in columns:
-                if columnRowName[c] == "changedGeometry" and not self.geomColumn:
+                if columnRowName[i] == "changedGeometryStr" and not self.geomColumn:
                     continue
                 self.insertColumn(c)
                 item = QTableWidgetItem(columnFancyName[i])
