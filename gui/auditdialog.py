@@ -184,7 +184,6 @@ class AuditDialog(QDialog, Ui_audit, SettingDialog):
         rowId = item[0].data(Qt.UserRole).toLongLong()[0]
         logRow = self.results[rowId]
         if not logRow.featureLayer.isEditable():
-            # todo alert
             return
         logRow.restoreFeature()
         self.mapCanvas.refresh()

@@ -27,6 +27,3 @@ class LogLayerChooserDialog(QDialog, Ui_LogLayerChooser, SettingDialog):
             QDialog.accept(self)
         else:
             self.logLayer.setCurrentIndex(0)
-
-
-    # TODO: if uncheck subset, clear layer subset

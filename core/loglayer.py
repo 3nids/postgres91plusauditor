@@ -30,7 +30,6 @@ class LogLayer(QObject):
         if layer is None:
             return False
             # TODO check validity
-
         return True
 
     def interrupt(self):
