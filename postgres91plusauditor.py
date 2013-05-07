@@ -1,5 +1,6 @@
-from qgis.core import *
-from PyQt4.QtGui import QAction, QIcon
+from qgis.core import QgsMapLayerRegistry, QgsAction
+from PyQt4.QtCore import QUrl
+from PyQt4.QtGui import QAction, QIcon, QDesktopServices
 
 from gui.auditdialog import AuditDialog
 from gui.loglayerchooserdialog import LogLayerChooserDialog
@@ -30,6 +31,11 @@ class Postgres91plusAuditor():
         self.auditAction.triggered.connect(self.audit)
         self.iface.addToolBarIcon(self.auditAction)
         self.iface.addPluginToMenu("&Postgres 91 plus Auditor", self.auditAction)
+        # help action
+        self.helpAction = QAction(QIcon(":/plugins/postgres91plusauditor/icons/help.png"),
+                                  "Help", self.iface.mainWindow())
+        self.helpAction.triggered.connect(lambda: QDesktopServices.openUrl(QUrl("http://3nids.github.io/postgres91plusauditor/")))
+        self.iface.addPluginToMenu("&Postgres 91 plus Auditor", self.helpAction)
 
     def unload(self):
         self.iface.removePluginMenu("&Postgres 91 plus Auditor", self.connectLayerAction)

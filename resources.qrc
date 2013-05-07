@@ -5,4 +5,7 @@
     <qresource prefix="/plugins/postgres91plusauditor" >
         <file>icons/qaudit-64.png</file>
     </qresource>
+    <qresource prefix="/plugins/postgres91plusauditor" >
+        <file>icons/help.png</file>
+    </qresource>
 </RCC>
