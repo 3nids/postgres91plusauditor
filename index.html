@@ -1,0 +1,85 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Postgres91plusauditor by 3nids</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/main.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  </head>
+  <body>
+
+      <header>
+        <h1>Postgres91plusauditor</h1>
+        <p>Postgres Auditor 91 plus is a QGIS plugin providing an interface to rollback changes on postgis layers using the Audit Trigger 91 plus</p>
+      </header>
+
+      <div id="banner">
+        <span id="logo"></span>
+
+        <a href="https://github.com/3nids/postgres91plusauditor" class="button fork"><strong>View On GitHub</strong></a>
+        <div class="downloads">
+          <span>Downloads:</span>
+          <ul>
+            <li><a href="https://github.com/3nids/postgres91plusauditor/zipball/master" class="button">ZIP</a></li>
+            <li><a href="https://github.com/3nids/postgres91plusauditor/tarball/master" class="button">TAR</a></li>
+          </ul>
+        </div>
+      </div><!-- end banner -->
+
+    <div class="wrapper">
+      <nav>
+        <ul></ul>
+      </nav>
+      <section>
+        <h1>About</h1>
+
+<p>Postgres 91 plus Auditor is <a href="http://www.qgis.org">QGIS</a> plugin providing an interface to rollback on postgis layers using the <a href="http://wiki.postgresql.org/wiki/Audit_trigger_91plus">Audit Trigger 91 plus</a></p>
+
+<h1>The Audit Trigger 91 plus</h1>
+
+<p>The <a href="http://wiki.postgresql.org/wiki/Audit_trigger_91plus">Audit Trigger 91 plus</a> is a generic trigger function used for recording changes to tables into an audit log table. It records quite a bit more detail than the <a href="http://wiki.postgresql.org/wiki/Audit_trigger">older</a> Audit trigger and does so in a more structured manner.</p>
+
+<p>The trigger should be up-to-date on Postgres website but the trigger code lives on <a href="https://github.com/2ndQuadrant/audit-trigger">github</a>.</p>
+
+<p>Follow the setps described on Postgres wiki to install and use the trigger.</p>
+
+<h1>Rolling-back</h1>
+
+<p>The plugin allows you to rollback individual features. It is more aimed at correcting editing errors than viewing a whole dataset at a previous state.
+You can restore or recreate a feature from any logged action. The rollback will not erase the logged actions but rather create a new state. In other words, the rollbacks is considered as an update and a new row will therefore be added to the logged actions table.
+Hence, even a rollback can be rollbacked.</p>
+
+<h1>Plugin setup</h1>
+
+<p>Once ou have enabled the trigger, just add the <em>logged_actions</em> table as a no geometry layer. Then, <em>define the logged actions layer</em> from the plugin menu.</p>
+
+<p>The option <strong>Redefine layer subset to increase performance</strong> is recommended. While looking for actions, instead of looping over all rows it will redefine a SQL layer subset which is drastically faster.</p>
+
+<h1>Use the plugin</h1>
+
+<p>You can start looking for any changes by clicking the plugin icon <img src="https://raw.github.com/3nids/postgres91plusauditor/master/icons/qaudit-20.png" alt="icon">. Choose a layer and eventually specify a feature ID.
+Restrictions can be set to search insert/update/delete action, only geometry changes or by date.</p>
+
+<p>You can also search for a specific feature changes, by right-clicking on the feature edit form and choosing <em>History audit</em>.</p>
+
+<p>Once logged actions have been found, click on a row to see the differences with current feature if it exists.</p>
+
+<p>If the corresponding layer is in editing mode, the feature can be reset.</p>
+      </section>
+      <footer>
+        <p>Project maintained by <a href="https://github.com/3nids">3nids</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="http://twitter.com/#!/michigangraham">mattgraham</a></small></p>
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    
+  </body>
+</html>
