@@ -12,22 +12,30 @@ class DifferenceViewer(QTableWidget):
         self.verticalHeader().setVisible(False)
         self.verticalHeader().setDefaultSectionSize(25)
         #self.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
-        for c, header in enumerate(("Field", "Current", "")):
+        self.columns()
+
+    def columns(self, nc=2, dateTitle=""):
+        while self.columnCount() > 0:
+            self.removeColumn(0)
+        if nc == 2:
+            headers = ("Field", dateTitle)
+        else:
+            headers = ("Field", "Current", dateTitle)
+        for c, header in enumerate(headers):
             self.insertColumn(c)
             self.setHorizontalHeaderItem(c, QTableWidgetItem(header))
         self.adjustSize()
 
     def display(self, logRow):
-        self.clearContents()
-        self.setHorizontalHeaderItem(2, QTableWidgetItem(logRow.dateStr()))
         self.clearRows()
 
         layerFeature = logRow.getLayerFeature()
+        # if a feature exists (it has been modified but not deleted), display difference
         if layerFeature is None:
             nc = 2
         else:
             nc = 3
-
+        self.columns(nc, logRow.dateStr())
         items = [0, 0, 0]
         items = items[:nc]
         currentValue = None
@@ -49,10 +57,11 @@ class DifferenceViewer(QTableWidget):
                     item.setBackground(QBrush(QColor(250, 250, 210)))
                 self.setItem(r, c, item)
 
-        self.adjustSize()
         self.resizeColumnsToContents()
+        self.adjustSize()
 
     def clearRows(self):
+        self.clearContents()
         while self.rowCount() > 0:
             self.removeRow(0)
 
