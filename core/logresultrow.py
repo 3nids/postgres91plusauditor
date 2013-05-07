@@ -129,6 +129,7 @@ class LogResultRow():
         else:
             newFeature = QgsFeature()
             newFeature.setFields(self.fields)
+            newFeature.initAttributes(self.fields.size())
             for field in self.fields:
                 value = self.getFieldValue(self.logData, field.name())
                 newFeature[field.name()] = QVariant(value)
