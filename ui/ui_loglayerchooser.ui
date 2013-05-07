@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>331</width>
+    <width>359</width>
     <height>106</height>
    </rect>
   </property>
@@ -40,7 +40,7 @@
    <item row="1" column="0" colspan="2">
     <widget class="QCheckBox" name="redefineSubset">
      <property name="text">
-      <string>Redefine layer subset to search faster</string>
+      <string>Redefine layer subset to increase performance</string>
      </property>
     </widget>
    </item>

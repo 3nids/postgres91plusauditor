@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ui/ui_loglayerchooser.ui'
+# Form implementation generated from reading ui file 'ui_loglayerchooser.ui'
 #
-# Created: Wed Apr 17 18:01:48 2013
+# Created: Tue May  7 07:48:37 2013
 #      by: PyQt4 UI code generator 4.9.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -17,7 +17,7 @@ except AttributeError:
 class Ui_LogLayerChooser(object):
     def setupUi(self, LogLayerChooser):
         LogLayerChooser.setObjectName(_fromUtf8("LogLayerChooser"))
-        LogLayerChooser.resize(331, 106)
+        LogLayerChooser.resize(359, 106)
         LogLayerChooser.setAcceptDrops(False)
         self.gridLayout = QtGui.QGridLayout(LogLayerChooser)
         self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
@@ -44,5 +44,5 @@ class Ui_LogLayerChooser(object):
     def retranslateUi(self, LogLayerChooser):
         LogLayerChooser.setWindowTitle(QtGui.QApplication.translate("LogLayerChooser", "Postgres 91 plus Auditor :: logged action layer chooser", None, QtGui.QApplication.UnicodeUTF8))
         self.label.setText(QtGui.QApplication.translate("LogLayerChooser", "Logged action layer", None, QtGui.QApplication.UnicodeUTF8))
-        self.redefineSubset.setText(QtGui.QApplication.translate("LogLayerChooser", "Redefine layer subset to search faster", None, QtGui.QApplication.UnicodeUTF8))
+        self.redefineSubset.setText(QtGui.QApplication.translate("LogLayerChooser", "Redefine layer subset to increase performance", None, QtGui.QApplication.UnicodeUTF8))
 
