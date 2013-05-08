@@ -40,6 +40,7 @@ class Postgres91plusAuditor():
     def unload(self):
         self.iface.removePluginMenu("&Postgres 91 plus Auditor", self.connectLayerAction)
         self.iface.removePluginMenu("&Postgres 91 plus Auditor", self.auditAction)
+        self.iface.removePluginMenu("&Postgres 91 plus Auditor", self.helpAction)
         self.iface.removeToolBarIcon(self.auditAction)
         for layerid, layer in QgsMapLayerRegistry.instance().mapLayers().iteritems():
             if layer.dataProvider().name() == "postgres":
@@ -50,12 +51,12 @@ class Postgres91plusAuditor():
                         actions.removeAction(i)
 
     def showLogLayerChooser(self):
-        LogLayerChooserDialog(self.iface.legendInterface()).exec_()
+        LogLayerChooserDialog().exec_()
 
     def audit(self, layerId=None, featureId=None):
         if layerId is False:
             layerId = None
-        self. auditDlg = AuditDialog(self.iface, layerId, featureId)
+        self.auditDlg = AuditDialog(self.iface, layerId, featureId)
         self.auditDlg.show()
 
     def addLayersActions(self):

@@ -27,7 +27,6 @@ class AuditDialog(QDialog, Ui_audit, SettingDialog):
         self.setupUi(self)
         self.settings = MySettings()
         SettingDialog.__init__(self, self.settings, False, True)  # column chooser, advanced search options
-        self.legendInterface = iface.legendInterface()
 
         #init variables
         self.layerId = layerId
@@ -46,7 +45,7 @@ class AuditDialog(QDialog, Ui_audit, SettingDialog):
         self.performSearchAtShowEvent.connect(self.on_searchButton_clicked, Qt.QueuedConnection)
 
         # setup layer - field combo, with primary key selector as field
-        self.layerComboManager = VectorLayerCombo(self.legendInterface, self.layerCombo, layerId,
+        self.layerComboManager = VectorLayerCombo(self.layerCombo, layerId,
                                                   {"dataProvider": "postgres", "finishInit": False})
         self.layerComboManager.finishInit()
 
@@ -85,7 +84,7 @@ class AuditDialog(QDialog, Ui_audit, SettingDialog):
     def showEvent(self, e):
         SettingDialog.showEvent(self, e)
         while not self.logLayer.isValid():
-            if not LogLayerChooserDialog(self.legendInterface).exec_():
+            if not LogLayerChooserDialog().exec_():
                 self.rejectShowEvent.emit()
                 return
         if self.layerId is not None:
@@ -94,14 +93,18 @@ class AuditDialog(QDialog, Ui_audit, SettingDialog):
             if layer is None:
                 self.rejectShowEvent.emit()
                 return
-        if self.featureId is not None:
-            self.featureEdit.setEnabled(False)
-            f = QgsFeature()
-            featReq = QgsFeatureRequest().setFilterFid(self.featureId).setFlags(QgsFeatureRequest.NoGeometry)
-            if layer.getFeatures(featReq).nextFeature(f) is False:
-                self.rejectShowEvent.emit()
-                return
-            self.performSearchAtShowEvent.emit()
+            if self.featureId is not None:
+                self.featureEdit.setEnabled(False)
+                f = QgsFeature()
+                featReq = QgsFeatureRequest().setFilterFid(self.featureId).setFlags(QgsFeatureRequest.NoGeometry)
+                if layer.getFeatures(featReq).nextFeature(f) is False:
+                    self.rejectShowEvent.emit()
+                    return
+                self.performSearchAtShowEvent.emit()
+        else:
+            layer = self.mapCanvas.currentLayer()
+            self.layerComboManager.setLayer(layer)
+
 
     @pyqtSignature("on_layerCombo_currentIndexChanged(int)")
     def on_layerCombo_currentIndexChanged(self, i):

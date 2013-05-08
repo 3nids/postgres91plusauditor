@@ -11,13 +11,13 @@ from ..ui.ui_loglayerchooser import Ui_LogLayerChooser
 
 class LogLayerChooserDialog(QDialog, Ui_LogLayerChooser, SettingDialog):
 
-    def __init__(self, legendInterface):
+    def __init__(self):
         QDialog.__init__(self)
         self.setupUi(self)
         self.settings = MySettings()
         SettingDialog.__init__(self, self.settings)
 
-        self.layerComboManager = VectorLayerCombo(legendInterface, self.logLayer,
+        self.layerComboManager = VectorLayerCombo(self.logLayer,
                                                   lambda: self.settings.value("logLayer"),
                                                   {"dataProvider": "postgres"})
 

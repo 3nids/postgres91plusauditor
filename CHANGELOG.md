@@ -1,5 +1,8 @@
 
+## Version 0.3
 
+* Preselect current layer when opening dialog
+* Fix help icon and unload
 
 ## Version 0.2 07.05.2013 _experimental_
 
