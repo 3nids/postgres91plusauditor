@@ -34,6 +34,11 @@ Once logged actions have been found, click on a row to see the differences with 
 
 If the corresponding layer is in editing mode, the feature can be reset.
 
+# Screenshots
+
+![screenshot 1](https://raw.github.com/3nids/postgres91plusauditor/master/doc/screenshot-1.png)
+![screenshot 2](https://raw.github.com/3nids/postgres91plusauditor/master/doc/screenshot-2.png)
+
 
 
 
