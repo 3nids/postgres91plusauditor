@@ -10,6 +10,7 @@ from geometrytools import GeometryTools
 fieldRe = lambda(fieldName): re.compile('("%s"|%s)\s*=\>\s*' % (fieldName, fieldName))
 dataReWithQuote = re.compile('\s*".*?[^\\\\]*?"')
 dataReWithoutQuote = re.compile('.*?,')
+dataReWithoutQuoteEndOfString = re.compile('.*?$')
 
 geometryTools = GeometryTools()
 
@@ -37,6 +38,10 @@ class LogResultRow():
                 p = dataReWithoutQuote.match(data)
                 if p:
                     value = data[p.start():p.end()-1]
+                else:
+                    p = dataReWithoutQuoteEndOfString.match(data)
+                    if p:
+                        value = data[p.start():p.end()]
             return value
         return None
 
