@@ -20,7 +20,7 @@ class LogResultRow():
         self.fields = featureLayer.dataProvider().fields()
         self.logFeature = QgsFeature(logFeature)
         self.geomColumn = geomColumn
-        self.date = logFeature.attribute("action_tstamp_tx").toDateTime()
+        self.date = logFeature.attribute("action_tstamp_clk").toDateTime()
         self.dateMs = self.date.toMSecsSinceEpoch()
         self.logData = self.logFeature.attribute("row_data").toString()
         self.layerFeatureId = self.getFieldValue(self.logData, pkeyName).toInt()[0]

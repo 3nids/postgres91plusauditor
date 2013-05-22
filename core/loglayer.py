@@ -74,9 +74,9 @@ class LogLayer(QObject):
                     subset += " action = 'D' or"
                 subset = subset[:-3] + ")"
             if not searchAfterDate.isNull():
-                subset += " and action_tstamp_tx >= '%s'" % searchAfterDate.toString("yyyy-MM-dd hh:mm:ss")
+                subset += " and action_tstamp_clk >= '%s'" % searchAfterDate.toString("yyyy-MM-dd hh:mm:ss")
             if not searchBeforeDate.isNull():
-                subset += " and action_tstamp_tx <= '%s'" % searchBeforeDate.toString("yyyy-MM-dd hh:mm:ss")
+                subset += " and action_tstamp_clk <= '%s'" % searchBeforeDate.toString("yyyy-MM-dd hh:mm:ss")
 
             if not self.layer.setSubsetString(subset):
                 raise NameError("Subset could not be set.")
@@ -99,8 +99,8 @@ class LogLayer(QObject):
                (searchInserts and logFeature.attribute("action") == 'I' or
                 searchUpdates and logFeature.attribute("action") == 'U' or
                 searchDeletes and logFeature.attribute("action") == 'D') and \
-               (searchAfterDate.isNull() or logFeature.attribute("action_tstamp_tx").toDateTime() >= searchAfterDate.toString("yyyy-MM-dd hh:mm:ss")) and \
-               (searchBeforeDate.isNull() or logFeature.attribute("action_tstamp_tx").toDateTime() <= searchBeforeDate.toString("yyyy-MM-dd hh:mm:ss")):
+               (searchAfterDate.isNull() or logFeature.attribute("action_tstamp_clk").toDateTime() >= searchAfterDate.toString("yyyy-MM-dd hh:mm:ss")) and \
+               (searchBeforeDate.isNull() or logFeature.attribute("action_tstamp_clk").toDateTime() <= searchBeforeDate.toString("yyyy-MM-dd hh:mm:ss")):
                 row = LogResultRow(logFeature, featureLayer, pkeyName, geomColumn)
                 if featureId != 0 and row.layerFeatureId != featureId:
                     continue
