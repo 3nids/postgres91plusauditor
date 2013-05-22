@@ -99,8 +99,8 @@ class LogLayer(QObject):
                (searchInserts and logFeature.attribute("action") == 'I' or
                 searchUpdates and logFeature.attribute("action") == 'U' or
                 searchDeletes and logFeature.attribute("action") == 'D') and \
-               (searchAfterDate.isNull() or logFeature.attribute("action_tstamp_clk").toDateTime() >= searchAfterDate.toString("yyyy-MM-dd hh:mm:ss")) and \
-               (searchBeforeDate.isNull() or logFeature.attribute("action_tstamp_clk").toDateTime() <= searchBeforeDate.toString("yyyy-MM-dd hh:mm:ss")):
+               (searchAfterDate.isNull() or logFeature.attribute("action_tstamp_clk").toDateTime() >= searchAfterDate) and \
+               (searchBeforeDate.isNull() or logFeature.attribute("action_tstamp_clk").toDateTime() <= searchBeforeDate):
                 row = LogResultRow(logFeature, featureLayer, pkeyName, geomColumn)
                 if featureId != 0 and row.layerFeatureId != featureId:
                     continue
