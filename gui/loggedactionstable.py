@@ -65,7 +65,7 @@ class LoggedActionsTable(QTableWidget):
                     item = QTableWidgetItem(dataStr)
                 item.setData(Qt.UserRole, row.dateMs)
                 item.setFlags(Qt.ItemIsEnabled | Qt.ItemIsSelectable)
-                if crn in ("user", "action", "changedGeometry"):
+                if crn in ("user", "action", "changedGeometryStr"):
                     item.setTextAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
                 else:
                     item.setTextAlignment(Qt.AlignVCenter)
