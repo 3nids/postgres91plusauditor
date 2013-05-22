@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>LogLayerChooser</class>
- <widget class="QDialog" name="LogLayerChooser">
+ <class>LoggedActionsTableChooser</class>
+ <widget class="QDialog" name="LoggedActionsTableChooser">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -14,13 +14,13 @@
    <bool>false</bool>
   </property>
   <property name="windowTitle">
-   <string>Postgres 91 plus Auditor :: logged action layer chooser</string>
+   <string>Postgres 91 plus Auditor :: logged action table chooser</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>Logged action layer</string>
+      <string>Logged action table</string>
      </property>
     </widget>
    </item>
@@ -51,7 +51,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
-   <receiver>LogLayerChooser</receiver>
+   <receiver>LoggedActionsTableChooser</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -67,7 +67,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>LogLayerChooser</receiver>
+   <receiver>LoggedActionsTableChooser</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">

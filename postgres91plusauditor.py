@@ -3,7 +3,7 @@ from PyQt4.QtCore import QUrl
 from PyQt4.QtGui import QAction, QIcon, QDesktopServices
 
 from gui.auditdialog import AuditDialog
-from gui.loglayerchooserdialog import LogLayerChooserDialog
+from gui.loggedactionstablechooserdialog import LoggedActionsTableChooserDialog
 
 actionName = "History audit"
 pluginName = "postgres91plusauditor"
@@ -22,7 +22,7 @@ class Postgres91plusAuditor():
     def initGui(self):
         # log layer chooser
         self.connectLayerAction = QAction(QIcon(":/plugins/postgres91plusauditor/icons/connect.png"),
-                                          "Define logged actions layer", self.iface.mainWindow())
+                                          "Define logged actions table", self.iface.mainWindow())
         self.connectLayerAction.triggered.connect(self.showLogLayerChooser)
         self.iface.addPluginToMenu("&Postgres 91 plus Auditor", self.connectLayerAction)
         # show history action
@@ -51,7 +51,7 @@ class Postgres91plusAuditor():
                         actions.removeAction(i)
 
     def showLogLayerChooser(self):
-        LogLayerChooserDialog().exec_()
+        LoggedActionsTableChooserDialog().exec_()
 
     def audit(self, layerId=None, featureId=None):
         if layerId is False:

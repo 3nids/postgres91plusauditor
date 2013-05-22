@@ -6,10 +6,10 @@ from ..qgiscombomanager import VectorLayerCombo
 from ..core.mysettings import MySettings
 from ..core.loglayer import LogLayer
 
-from ..ui.ui_loglayerchooser import Ui_LogLayerChooser
+from ..ui.ui_loggedactionstablechooser import Ui_LoggedActionsTableChooser
 
 
-class LogLayerChooserDialog(QDialog, Ui_LogLayerChooser, SettingDialog):
+class LoggedActionsTableChooserDialog(QDialog, Ui_LoggedActionsTableChooser, SettingDialog):
 
     def __init__(self):
         QDialog.__init__(self)
@@ -19,7 +19,7 @@ class LogLayerChooserDialog(QDialog, Ui_LogLayerChooser, SettingDialog):
 
         self.layerComboManager = VectorLayerCombo(self.logLayer,
                                                   lambda: self.settings.value("logLayer"),
-                                                  {"dataProvider": "postgres"})
+                                                  {"dataProvider": "postgres", "hasGeometry": False})
 
     def accept(self):
         layer = self.layerComboManager.getLayer()

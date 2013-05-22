@@ -12,7 +12,7 @@ from ..core.featurelayer import primaryKey
 
 from ..ui.ui_audit import Ui_audit
 
-from loglayerchooserdialog import LogLayerChooserDialog
+from loggedactionstablechooserdialog import LoggedActionsTableChooserDialog
 from columnchooserdialog import ColumnChooserDialog
 from differenceviewer import DifferenceViewer
 from loggedactionstable import LoggedActionsTable
@@ -84,7 +84,7 @@ class AuditDialog(QDialog, Ui_audit, SettingDialog):
     def showEvent(self, e):
         SettingDialog.showEvent(self, e)
         while not self.logLayer.isValid():
-            if not LogLayerChooserDialog().exec_():
+            if not LoggedActionsTableChooserDialog().exec_():
                 self.rejectShowEvent.emit()
                 return
         if self.layerId is not None:
