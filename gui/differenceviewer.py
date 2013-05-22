@@ -46,7 +46,12 @@ class DifferenceViewer(QTableWidget):
 
             items[0] = QTableWidgetItem(field.name())
             if layerFeature is not None:
-                currentValue = layerFeature.attribute(field.name()).toString()
+                currentValue = layerFeature.attribute(field.name())
+                print currentValue, type(currentValue)
+                if currentValue.isNull():
+                    currentValue = "NULL"
+                else:
+                    currentValue = currentValue.toString()
                 items[1] = QTableWidgetItem(currentValue)
             items[nc-1] = QTableWidgetItem(logValue)
 

@@ -37,8 +37,6 @@ class LogResultRow():
                 p = dataReWithoutQuote.match(data)
                 if p:
                     value = data[p.start():p.end()-1]
-            if value == "NULL":
-                value = ""
             return value
         return None
 
@@ -121,8 +119,6 @@ class LogResultRow():
             fid = currentFeature.id()
             for idx, field in enumerate(self.fields):
                 value = self.getFieldValue(self.logData, field.name())
-                if value == "":
-                    value = None
                 editBuffer.changeAttributeValue(fid, idx, value)
             if self.featureLayer.hasGeometryType():
                 editBuffer.changeGeometry(fid, self.geometry())
