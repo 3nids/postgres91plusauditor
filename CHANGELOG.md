@@ -1,4 +1,9 @@
 
+## Version 0.4
+
+* replace 'layer' by 'table' in logged actions chooser
+* only display no geometry tables in the combo box in the chooser
+
 ## Version 0.3
 
 * Preselect current layer when opening dialog
