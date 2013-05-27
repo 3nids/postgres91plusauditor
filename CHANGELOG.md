@@ -1,4 +1,8 @@
 
+### Version 0.7 27.05.2013 _experimental_
+
+* fix #5 exclude 'logged actions table' from 'search history' layers
+
 ### Version 0.6 22.05.2013 _experimental_
 
 * fix #4 fix search after/before date
