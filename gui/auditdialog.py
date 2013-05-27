@@ -46,7 +46,8 @@ class AuditDialog(QDialog, Ui_audit, SettingDialog):
 
         # setup layer - field combo, with primary key selector as field
         self.layerComboManager = VectorLayerCombo(self.layerCombo, layerId,
-                                                  {"dataProvider": "postgres", "finishInit": False})
+                                                  {"dataProvider": "postgres", "finishInit": False,
+                                                   "skipLayers": [lambda: self.settings.value("logLayer")]})
         self.layerComboManager.finishInit()
 
         # log layer
