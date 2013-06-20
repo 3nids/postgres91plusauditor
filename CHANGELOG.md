@@ -1,4 +1,9 @@
 
+### Versio 1.0 20.06.2013
+
+* Stable release
+* Updated for new API
+
 ### Version 0.7 27.05.2013 _experimental_
 
 * fix #5 exclude 'logged actions table' from 'search history' layers
