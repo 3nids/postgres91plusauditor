@@ -1,5 +1,5 @@
 
-from PyQt4.QtCore import QString, QVariant
+from PyQt4.QtCore import QDateTime, Qt
 from qgis.core import QgsFeature, QgsGeometry, QgsFeatureRequest
 
 import re
@@ -21,12 +21,15 @@ class LogResultRow():
         self.fields = featureLayer.dataProvider().fields()
         self.logFeature = QgsFeature(logFeature)
         self.geomColumn = geomColumn
-        self.date = logFeature.attribute("action_tstamp_clk").toDateTime()
+        self.date = QDateTime().fromString(logFeature["action_tstamp_clk"], Qt.ISODate)
+        print logFeature["action_tstamp_clk"], self.date,  self.date.toMSecsSinceEpoch()
         self.dateMs = self.date.toMSecsSinceEpoch()
-        self.logData = self.logFeature.attribute("row_data").toString()
-        self.layerFeatureId = self.getFieldValue(self.logData, pkeyName).toInt()[0]
+        self.logData = self.logFeature["row_data"]
+        self.layerFeatureId = int(self.getFieldValue(self.logData, pkeyName))
 
     def getFieldValue(self, data, fieldName):
+        if data is None:
+            return None
         p = fieldRe(fieldName).search(data)
         if p:
             value = ""
@@ -49,32 +52,32 @@ class LogResultRow():
         return self.date.toString("ddd dd MMM yyyy hh:mm")
 
     def user(self):
-        return self.logFeature.attribute("session_user_name").toString()
+        return self.logFeature["session_user_name"]
 
     def action(self):
-        action = self.logFeature.attribute("action").toString()
+        action = self.logFeature["action"]
         if action == "I":
-            #return QString(u"\u002B") # plus sign
+            #return u"\u002B" # plus sign
             return "insert"
         if action == "U":
-            #return QString(u"\u2713") # check sign
+            #return u"\u2713" # check sign
             return "update"
         if action == "D":
-            #return QString(u"\u2A2F") # cross sign
+            #return u"\u2A2F" # cross sign
             return "delete"
         raise NameError("Invalid action %s" % action)
 
     def application(self):
-        return self.logFeature.attribute("application_name").toString()
+        return self.logFeature["application_name"]
 
     def clientIP(self):
-        return self.logFeature.attribute("client_addr").toString()
+        return self.logFeature["client_addr"]
 
     def clientPort(self):
-        return self.logFeature.attribute("client_port").toString()
+        return self.logFeature["client_port"]
 
     def changedFields(self):
-        data = self.logFeature.attribute("changed_fields").toString()
+        data = self.logFeature["changed_fields"]
         columns = ""
         for field in self.fields:
             if self.getFieldValue(data, field.name()) is not None:
@@ -82,13 +85,13 @@ class LogResultRow():
         return columns[:-2]
 
     def changedGeometry(self):
-        data = self.logFeature.attribute("changed_fields").toString()
+        data = self.logFeature["changed_fields"]
         geometry = self.getFieldValue(data, self.geomColumn)
         return geometry is not None
 
     def changedGeometryStr(self):
         if self.changedGeometry():
-            return QString(u"\u2713")  # i.e. check sign
+            return u"\u2713"  # i.e. check sign
         else:
             return ""
 

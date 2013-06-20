@@ -1,4 +1,4 @@
-from PyQt4.QtCore import QCoreApplication, pyqtSignal, QObject, QDateTime
+from PyQt4.QtCore import QCoreApplication, pyqtSignal, QObject, QDateTime, Qt
 from qgis.core import QgsMapLayerRegistry, QgsFeature, QgsFeatureRequest, QgsDataSourceURI
 
 
@@ -94,13 +94,14 @@ class LogLayer(QObject):
             if not self.continueSearch:
                 break
             # this condition is redundant if layer subset string is used
-            if logFeature.attribute("schema_name").toString() == dataUri.schema() and \
-               logFeature.attribute("table_name").toString() == dataUri.table() and \
-               (searchInserts and logFeature.attribute("action") == 'I' or
-                searchUpdates and logFeature.attribute("action") == 'U' or
-                searchDeletes and logFeature.attribute("action") == 'D') and \
-               (searchAfterDate.isNull() or logFeature.attribute("action_tstamp_clk").toDateTime() >= searchAfterDate) and \
-               (searchBeforeDate.isNull() or logFeature.attribute("action_tstamp_clk").toDateTime() <= searchBeforeDate):
+            dateAction = QDateTime().fromString(logFeature["action_tstamp_clk"], Qt.ISODate)
+            if logFeature["schema_name"] == dataUri.schema() and \
+               logFeature["table_name"] == dataUri.table() and \
+               (searchInserts and logFeature["action"] == 'I' or
+                searchUpdates and logFeature["action"] == 'U' or
+                searchDeletes and logFeature["action"] == 'D') and \
+               (searchAfterDate.isNull() or dateAction >= searchAfterDate) and \
+               (searchBeforeDate.isNull() or dateAction <= searchBeforeDate):
                 row = LogResultRow(logFeature, featureLayer, pkeyName, geomColumn)
                 if featureId != 0 and row.layerFeatureId != featureId:
                     continue

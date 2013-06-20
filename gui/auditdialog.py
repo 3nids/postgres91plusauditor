@@ -123,7 +123,7 @@ class AuditDialog(QDialog, Ui_audit, SettingDialog):
         if self.layer is None or pkeyName is None:
             return
         self.loggedActionsTable.geomColumn = self.layer.hasGeometryType()
-        featureId = self.featureEdit.text().toInt()[0]
+        featureId = int(self.featureEdit.text() or 0)
         searchBeforeDate = QDateTime()
         if self.searchBefore.isChecked():
             searchBeforeDate = self.searchAfterDate.dateTime()
@@ -155,7 +155,7 @@ class AuditDialog(QDialog, Ui_audit, SettingDialog):
         item = self.loggedActionsTable.selectedItems()
         if len(item) == 0:
             return
-        rowId = item[0].data(Qt.UserRole).toLongLong()[0]
+        rowId = item[0].data(Qt.UserRole)
         logRow = self.results[rowId]
         if logRow.featureLayer.isEditable():
             self.restoreButton.setEnabled(True)
@@ -167,7 +167,7 @@ class AuditDialog(QDialog, Ui_audit, SettingDialog):
         item = self.loggedActionsTable.selectedItems()
         if len(item) == 0:
             return
-        rowId = item[0].data(Qt.UserRole).toLongLong()[0]
+        rowId = item[0].data(Qt.UserRole)
         logRow = self.results[rowId]
 
         if self.layer.hasGeometryType() and self.panShowGeometry.isChecked():
@@ -189,7 +189,7 @@ class AuditDialog(QDialog, Ui_audit, SettingDialog):
         item = self.loggedActionsTable.selectedItems()
         if len(item) == 0:
             return
-        rowId = item[0].data(Qt.UserRole).toLongLong()[0]
+        rowId = item[0].data(Qt.UserRole)
         logRow = self.results[rowId]
         if not logRow.featureLayer.isEditable():
             return

@@ -57,7 +57,7 @@ class LoggedActionsTable(QTableWidget):
             self.insertRow(r)
 
             for c in range(self.columnCount()):
-                crn = self.horizontalHeaderItem(c).data(Qt.UserRole).toString()
+                crn = self.horizontalHeaderItem(c).data(Qt.UserRole)
                 dataStr = eval("row.%s()" % crn)
                 if crn == "dateStr":
                     item = LoggedActiontItem(dataStr)
@@ -83,12 +83,12 @@ class LoggedActiontItem(QTableWidgetItem):
         QTableWidgetItem.__init__(self, text)
 
     def __gt__(self, other):
-        return self.data(Qt.UserRole).toInt()[0] > other.data(Qt.UserRole).toInt()[0]
+        return long(self.data(Qt.UserRole)) > long(other.data(Qt.UserRole))
 
     def __lt__(self, other):
-        return self.data(Qt.UserRole).toInt()[0] < other.data(Qt.UserRole).toInt()[0]
+        return long(self.data(Qt.UserRole)) < long(other.data(Qt.UserRole))
 
     def __eq__(self, other):
-        return self.data(Qt.UserRole).toInt()[0] == other.data(Qt.UserRole).toInt()[0]
+        return long(self.data(Qt.UserRole)) == long(other.data(Qt.UserRole))
 
 

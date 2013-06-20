@@ -19,5 +19,5 @@ class MySettings(SettingManager):
                         ("Date", "User", "Action", "Changed geometry", "Changed fields"))
 
         # project
-        self.addSetting("redefineSubset", "bool", "project", False)
+        self.addSetting("redefineSubset", "bool", "project", True)
         self.addSetting("logLayer", "string", "project", "")
