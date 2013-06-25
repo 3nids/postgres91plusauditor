@@ -42,12 +42,11 @@ class Postgres91plusAuditor():
         self.iface.removePluginMenu("&Postgres 91 plus Auditor", self.auditAction)
         self.iface.removePluginMenu("&Postgres 91 plus Auditor", self.helpAction)
         self.iface.removeToolBarIcon(self.auditAction)
-        for layerid, layer in QgsMapLayerRegistry.instance().mapLayers().iteritems():
+        for layer in QgsMapLayerRegistry.instance().mapLayers().values():
             if layer.dataProvider().name() == "postgres":
                 actions = layer.actions()
                 for i in range(actions.size()):
-                    action = actions.at(i)
-                    if action.name() == actionName:
+                    if actions[i].name() == actionName:
                         actions.removeAction(i)
 
     def showLogLayerChooser(self):
