@@ -44,10 +44,13 @@ class Postgres91plusAuditor():
         self.iface.removeToolBarIcon(self.auditAction)
         for layer in QgsMapLayerRegistry.instance().mapLayers().values():
             if layer.dataProvider().name() == "postgres":
-                actions = layer.actions()
-                for i in range(actions.size()):
-                    if actions[i].name() == actionName:
-                        actions.removeAction(i)
+                while True:
+                    actions = layer.actions()
+                    for i in range(actions.size()):
+                        if actions[i].name() == actionName:
+                            actions.removeAction(i)
+                            continue
+                    break
 
     def showLogLayerChooser(self):
         LoggedActionsTableChooserDialog().exec_()
@@ -64,12 +67,11 @@ class Postgres91plusAuditor():
                 actionExists = False
                 actions = layer.actions()
                 for i in range(actions.size()):
-                    action = actions.at(i)
-                    if action.name() == actionName:
+                    if actions[i].name() == actionName:
                         actionExists = True
                         break
                 if actionExists:
-                    break
+                    continue
 
                 actionStr = "qgis.utils.plugins['%s'].audit('%s',[%% $id %%])" % (pluginName, layerid)
 
