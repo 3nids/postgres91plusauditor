@@ -1,5 +1,9 @@
 
-### Versio 1.0 20.06.2013
+### Version 1.0.1 26.06.2013
+
+* Fix add layer action
+
+### Version 1.0 20.06.2013
 
 * Stable release
 * Updated for new API
